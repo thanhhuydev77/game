@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="src\Brick.h" />
+    <ClInclude Include="src\CBratizer.h" />
+    <ClInclude Include="src\Const_Value.h" />
+    <ClInclude Include="src\debug.h" />
+    <ClInclude Include="src\Game.h" />
+    <ClInclude Include="src\Gamemap.h" />
+    <ClInclude Include="src\GameObject.h" />
+    <ClInclude Include="src\Goomba.h" />
+    <ClInclude Include="src\Large_heart.h" />
+    <ClInclude Include="src\LoadResourceHelper.h" />
+    <ClInclude Include="src\Map.h" />
+    <ClInclude Include="src\Mario.h" />
+    <ClInclude Include="src\MathHelper.h" />
+    <ClInclude Include="src\Simon.h" />
+    <ClInclude Include="src\Sprites.h" />
+    <ClInclude Include="src\Sword.h" />
+    <ClInclude Include="src\SwordItem.h" />
+    <ClInclude Include="src\Textures.h" />
+    <ClInclude Include="src\tile.h" />
+    <ClInclude Include="src\Whip.h" />
+    <ClInclude Include="src\Whip_PowerUp.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header">
+      <UniqueIdentifier>{1fa7538d-0d05-4efc-90a5-ccc5e7530719}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{704a40d8-4236-4cda-926d-2bb916a02134}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\Resource Files">
+      <UniqueIdentifier>{d7344996-f973-4b81-b4b4-cba7abb245b4}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Brick.cpp" />
+    <ClCompile Include="src\CBratizer.cpp" />
+    <ClCompile Include="src\Const_Value.cpp" />
+    <ClCompile Include="src\debug.cpp" />
+    <ClCompile Include="src\Game.cpp" />
+    <ClCompile Include="src\Gamemap.cpp" />
+    <ClCompile Include="src\GameObject.cpp" />
+    <ClCompile Include="src\Goomba.cpp" />
+    <ClCompile Include="src\Large_heart.cpp" />
+    <ClCompile Include="src\LoadResourceHelper.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Map.cpp" />
+    <ClCompile Include="src\Mario.cpp" />
+    <ClCompile Include="src\MathHelper.cpp" />
+    <ClCompile Include="src\Simon.cpp" />
+    <ClCompile Include="src\Sprites.cpp" />
+    <ClCompile Include="src\Sword.cpp" />
+    <ClCompile Include="src\SwordItem.cpp" />
+    <ClCompile Include="src\Textures.cpp" />
+    <ClCompile Include="src\tile.cpp" />
+    <ClCompile Include="src\Whip.cpp" />
+    <ClCompile Include="src\Whip_PowerUp.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="content\textures\bbox.png" />
+    <Image Include="content\textures\Block.png" />
+    <Image Include="content\textures\Block_01.png" />
+    <Image Include="content\textures\Brazier.png" />
+    <Image Include="content\textures\brick.png" />
+    <Image Include="content\textures\Courtyard.bmp" />
+    <Image Include="content\textures\Dagger.png" />
+    <Image Include="content\textures\Dirt_Block.png" />
+    <Image Include="content\textures\enemies.png" />
+    <Image Include="content\textures\Large_Heart.png" />
+    <Image Include="content\textures\mario.png" />
+    <Image Include="content\textures\mario2.png" />
+    <Image Include="content\textures\misc.png" />
+    <Image Include="content\textures\Simon.png" />
+    <Image Include="content\textures\Whip.png" />
+    <Image Include="content\textures\Whip_Powerup.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="content\items\Large_heart.txt" />
+    <Text Include="content\items\Large_heart_ani.txt" />
+    <Text Include="content\items\Whip_PowerUp.txt" />
+    <Text Include="content\items\Whip_PowerUp_ani.txt" />
+    <Text Include="content\characters\player\player_all_ani.txt" />
+    <Text Include="content\characters\player\player_sprites.txt" />
+    <Text Include="content\characters\player\Sword\Sword_ani.txt" />
+    <Text Include="content\characters\player\Sword\Sword_sprites.txt" />
+    <Text Include="content\characters\player\player_ani\attack.txt" />
+    <Text Include="content\characters\player\player_ani\godown.txt" />
+    <Text Include="content\characters\player\player_ani\goup.txt" />
+    <Text Include="content\characters\player\player_ani\idle.txt" />
+    <Text Include="content\characters\player\player_ani\jump.txt" />
+    <Text Include="content\characters\player\player_ani\sit.txt" />
+    <Text Include="content\characters\player\player_ani\sitattack.txt" />
+    <Text Include="content\characters\player\player_ani\walk.txt" />
+  </ItemGroup>
+</Project>
