@@ -3,7 +3,7 @@
 #include <d3dx9.h>
 #include <unordered_map>
 #include <string>
-#include "Sprites.h"
+#include "../sample/Sprites.h"
 using namespace std;
 
 class TileSet

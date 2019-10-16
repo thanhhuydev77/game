@@ -6,7 +6,7 @@
 #include "Game.h"
 #include "GameObject.h"
 #include "Sprites.h"
-#include "MathHelper.h"
+#include "../utility/MathHelper.h"
 CGameObject::CGameObject()
 {
 	x = y = 0;

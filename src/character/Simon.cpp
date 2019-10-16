@@ -1,9 +1,9 @@
-#include "Simon.h"
-#include"Goomba.h"
+#include "../character/Simon.h"
+#include"../sample/Goomba.h"
 #include<fstream>
 #include <vector>
 #include <string>
-#include"CBratizer.h"
+#include"../map/CBratizer.h"
 Simon::Simon(double scalerate)
 {
 	LoadResourceHelper::Loadspritefromfile("content\\characters\\player\\player_sprites.txt", ID_TEX_SIMON);

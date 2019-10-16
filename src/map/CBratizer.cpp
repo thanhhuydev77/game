@@ -1,5 +1,5 @@
 #include "CBratizer.h"
-#include "Const_Value.h"
+#include "../sample/Const_Value.h"
 
 
 void CBratizer::Render()

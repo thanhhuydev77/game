@@ -1,7 +1,7 @@
 #pragma once
-#include "Sprites.h"
+#include "../sample/Sprites.h"
 #include <string>
-#include "GameObject.h"
+#include "../sample/GameObject.h"
 class LoadResourceHelper 
 {
 public:

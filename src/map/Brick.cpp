@@ -1,7 +1,7 @@
 #include "Brick.h"
-#include"LoadResourceHelper.h"
-#include "Textures.h"
-#include "Const_Value.h"
+#include"../utility/LoadResourceHelper.h"
+#include "../sample/Textures.h"
+#include "../sample/Const_Value.h"
 
 void CBrick::Render()
 {

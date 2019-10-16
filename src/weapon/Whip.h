@@ -1,11 +1,11 @@
 #pragma once
-#include "GameObject.h"
-#include "LoadResourceHelper.h"
-#include "Sprites.h"
-#include "Const_Value.h"
-#include "CBratizer.h"
+#include "../sample/GameObject.h"
+#include "../utility/LoadResourceHelper.h"
+#include "../sample/Sprites.h"
+#include "../sample/Const_Value.h"
+#include "../map/CBratizer.h"
 #include <vector>
-#include "Large_heart.h"
+#include "../item/Large_heart.h"
 using namespace std;
 
 class Whip : public CGameObject 

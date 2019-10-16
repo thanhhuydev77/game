@@ -1,1 +1,40 @@
-﻿  castle_vania.vcxproj -> C:\Users\huy\Desktop\GameProject\Debug\castle_vania.exe
+﻿  Brick.cpp
+c:\users\huy\desktop\game\src\sample\gameobject.h(11): warning C4005: 'ID_TEX_BBOX': macro redefinition
+  c:\users\huy\desktop\game\src\sample\const_value.h(21): note: see previous definition of 'ID_TEX_BBOX'
+  CBratizer.cpp
+c:\users\huy\desktop\game\src\sample\gameobject.h(11): warning C4005: 'ID_TEX_BBOX': macro redefinition
+  c:\users\huy\desktop\game\src\sample\const_value.h(21): note: see previous definition of 'ID_TEX_BBOX'
+  Gamemap.cpp
+c:\users\huy\desktop\game\src\sample\gameobject.h(11): warning C4005: 'ID_TEX_BBOX': macro redefinition
+  c:\users\huy\desktop\game\src\sample\const_value.h(21): note: see previous definition of 'ID_TEX_BBOX'
+  main.cpp
+c:\users\huy\desktop\game\src\sample\gameobject.h(11): warning C4005: 'ID_TEX_BBOX': macro redefinition
+  c:\users\huy\desktop\game\src\sample\const_value.h(21): note: see previous definition of 'ID_TEX_BBOX'
+c:\users\huy\desktop\game\src\sample\main.cpp(129): warning C4018: '<': signed/unsigned mismatch
+c:\users\huy\desktop\game\src\sample\main.cpp(155): warning C4018: '<': signed/unsigned mismatch
+c:\users\huy\desktop\game\src\sample\main.cpp(157): warning C4018: '<': signed/unsigned mismatch
+c:\users\huy\desktop\game\src\sample\main.cpp(175): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\huy\desktop\game\src\sample\main.cpp(199): warning C4018: '<': signed/unsigned mismatch
+  Simon.cpp
+c:\users\huy\desktop\game\src\sample\gameobject.h(11): warning C4005: 'ID_TEX_BBOX': macro redefinition
+  c:\users\huy\desktop\game\src\sample\const_value.h(21): note: see previous definition of 'ID_TEX_BBOX'
+c:\users\huy\desktop\game\src\character\simon.cpp(333): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\huy\desktop\game\src\character\simon.cpp(334): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  Sword.cpp
+c:\users\huy\desktop\game\src\sample\gameobject.h(11): warning C4005: 'ID_TEX_BBOX': macro redefinition
+  c:\users\huy\desktop\game\src\sample\const_value.h(21): note: see previous definition of 'ID_TEX_BBOX'
+c:\users\huy\desktop\game\src\weapon\sword.cpp(73): warning C4101: 'y': unreferenced local variable
+c:\users\huy\desktop\game\src\weapon\sword.cpp(73): warning C4101: 'x': unreferenced local variable
+  Whip.cpp
+c:\users\huy\desktop\game\src\sample\gameobject.h(11): warning C4005: 'ID_TEX_BBOX': macro redefinition
+  c:\users\huy\desktop\game\src\sample\const_value.h(21): note: see previous definition of 'ID_TEX_BBOX'
+c:\users\huy\desktop\game\src\weapon\whip.cpp(33): warning C4018: '<=': signed/unsigned mismatch
+c:\users\huy\desktop\game\src\weapon\whip.cpp(38): warning C4018: '<': signed/unsigned mismatch
+c:\users\huy\desktop\game\src\weapon\whip.cpp(43): warning C4018: '<=': signed/unsigned mismatch
+c:\users\huy\desktop\game\src\weapon\whip.cpp(55): warning C4018: '<=': signed/unsigned mismatch
+c:\users\huy\desktop\game\src\weapon\whip.cpp(59): warning C4018: '<=': signed/unsigned mismatch
+c:\users\huy\desktop\game\src\weapon\whip.cpp(63): warning C4018: '<=': signed/unsigned mismatch
+c:\users\huy\desktop\game\src\weapon\whip.cpp(116): warning C4101: 'y': unreferenced local variable
+c:\users\huy\desktop\game\src\weapon\whip.cpp(116): warning C4101: 'x': unreferenced local variable
+  Generating Code...
+  castle_vania.vcxproj -> C:\Users\huy\Desktop\game\Debug\castle_vania.exe

@@ -1,6 +1,6 @@
 #include "LoadResourceHelper.h"
 #include<fstream>
-#include"textures.h"
+#include"../sample/textures.h"
 #include <string>
 LoadResourceHelper::LoadResourceHelper()
 {

@@ -1,5 +1,5 @@
 #include "Sword.h"
-#include "Const_Value.h"
+#include "../sample/Const_Value.h"
 #include <vector>
 
 

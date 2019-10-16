@@ -3,10 +3,10 @@
 #include "tile.h"
 #include "CBratizer.h"
 #include "Brick.h"
-#include "Simon.h"
-#include "Large_heart.h"
-#include "Whip_PowerUp.h"
-#include "SwordItem.h"
+#include "../character/Simon.h"
+#include "../item/Large_heart.h"
+#include "../item/Whip_PowerUp.h"
+#include "../item/SwordItem.h"
 class Map1
 {
 private:

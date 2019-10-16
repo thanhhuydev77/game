@@ -1,8 +1,8 @@
 #pragma once
 #include <string>
 #include "Map.h"
-#include "GameObject.h"
-#include "Simon.h"
+#include "../sample/GameObject.h"
+#include "../character/Simon.h"
 using namespace std;
 
 class Gamemap

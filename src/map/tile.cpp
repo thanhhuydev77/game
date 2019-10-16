@@ -1,8 +1,8 @@
 #include "tile.h"
-#include"Game.h"
+#include"../sample/Game.h"
 #include<fstream>
-#include "Sprites.h"
-#include "textures.h"
+#include "../sample/Sprites.h"
+#include "../sample/textures.h"
 
 
 

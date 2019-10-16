@@ -1,9 +1,9 @@
 #pragma once
-#include "GameObject.h"
-#include "Textures.h"
-#include "LoadResourceHelper.h"
-#include "Const_Value.h"
-#include "Simon.h"
+#include "../sample/GameObject.h"
+#include "../sample/Textures.h"
+#include "../utility/LoadResourceHelper.h"
+#include "../sample/Const_Value.h"
+#include "../character/Simon.h"
 class Whip_PowerUp :
 	public CGameObject
 {

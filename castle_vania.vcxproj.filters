@@ -1,27 +1,27 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClInclude Include="src\Brick.h" />
-    <ClInclude Include="src\CBratizer.h" />
-    <ClInclude Include="src\Const_Value.h" />
-    <ClInclude Include="src\debug.h" />
-    <ClInclude Include="src\Game.h" />
-    <ClInclude Include="src\Gamemap.h" />
-    <ClInclude Include="src\GameObject.h" />
-    <ClInclude Include="src\Goomba.h" />
-    <ClInclude Include="src\Large_heart.h" />
-    <ClInclude Include="src\LoadResourceHelper.h" />
-    <ClInclude Include="src\Map.h" />
-    <ClInclude Include="src\Mario.h" />
-    <ClInclude Include="src\MathHelper.h" />
-    <ClInclude Include="src\Simon.h" />
-    <ClInclude Include="src\Sprites.h" />
-    <ClInclude Include="src\Sword.h" />
-    <ClInclude Include="src\SwordItem.h" />
-    <ClInclude Include="src\Textures.h" />
-    <ClInclude Include="src\tile.h" />
-    <ClInclude Include="src\Whip.h" />
-    <ClInclude Include="src\Whip_PowerUp.h" />
+    <ClInclude Include="src\map\Brick.h" />
+    <ClInclude Include="src\map\CBratizer.h" />
+    <ClInclude Include="src\sample\Const_Value.h" />
+    <ClInclude Include="src\sample\debug.h" />
+    <ClInclude Include="src\sample\Game.h" />
+    <ClInclude Include="src\map\Gamemap.h" />
+    <ClInclude Include="src\sample\GameObject.h" />
+    <ClInclude Include="src\sample\Goomba.h" />
+    <ClInclude Include="src\item\Large_heart.h" />
+    <ClInclude Include="src\utility\LoadResourceHelper.h" />
+    <ClInclude Include="src\map\Map.h" />
+    <ClInclude Include="src\sample\Mario.h" />
+    <ClInclude Include="src\utility\MathHelper.h" />
+    <ClInclude Include="src\character\Simon.h" />
+    <ClInclude Include="src\sample\Sprites.h" />
+    <ClInclude Include="src\weapon\Sword.h" />
+    <ClInclude Include="src\item\SwordItem.h" />
+    <ClInclude Include="src\sample\Textures.h" />
+    <ClInclude Include="src\map\tile.h" />
+    <ClInclude Include="src\weapon\Whip.h" />
+    <ClInclude Include="src\item\Whip_PowerUp.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header">
@@ -35,28 +35,28 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Brick.cpp" />
-    <ClCompile Include="src\CBratizer.cpp" />
-    <ClCompile Include="src\Const_Value.cpp" />
-    <ClCompile Include="src\debug.cpp" />
-    <ClCompile Include="src\Game.cpp" />
-    <ClCompile Include="src\Gamemap.cpp" />
-    <ClCompile Include="src\GameObject.cpp" />
-    <ClCompile Include="src\Goomba.cpp" />
-    <ClCompile Include="src\Large_heart.cpp" />
-    <ClCompile Include="src\LoadResourceHelper.cpp" />
-    <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\Map.cpp" />
-    <ClCompile Include="src\Mario.cpp" />
-    <ClCompile Include="src\MathHelper.cpp" />
-    <ClCompile Include="src\Simon.cpp" />
-    <ClCompile Include="src\Sprites.cpp" />
-    <ClCompile Include="src\Sword.cpp" />
-    <ClCompile Include="src\SwordItem.cpp" />
-    <ClCompile Include="src\Textures.cpp" />
-    <ClCompile Include="src\tile.cpp" />
-    <ClCompile Include="src\Whip.cpp" />
-    <ClCompile Include="src\Whip_PowerUp.cpp" />
+    <ClCompile Include="src\map\Brick.cpp" />
+    <ClCompile Include="src\map\CBratizer.cpp" />
+    <ClCompile Include="src\sample\Const_Value.cpp" />
+    <ClCompile Include="src\sample\debug.cpp" />
+    <ClCompile Include="src\sample\Game.cpp" />
+    <ClCompile Include="src\map\Gamemap.cpp" />
+    <ClCompile Include="src\sample\GameObject.cpp" />
+    <ClCompile Include="src\sample\Goomba.cpp" />
+    <ClCompile Include="src\item\Large_heart.cpp" />
+    <ClCompile Include="src\utility\LoadResourceHelper.cpp" />
+    <ClCompile Include="src\sample\main.cpp" />
+    <ClCompile Include="src\map\Map.cpp" />
+    <ClCompile Include="src\sample\Mario.cpp" />
+    <ClCompile Include="src\utility\MathHelper.cpp" />
+    <ClCompile Include="src\character\Simon.cpp" />
+    <ClCompile Include="src\sample\Sprites.cpp" />
+    <ClCompile Include="src\weapon\Sword.cpp" />
+    <ClCompile Include="src\item\SwordItem.cpp" />
+    <ClCompile Include="src\sample\Textures.cpp" />
+    <ClCompile Include="src\map\tile.cpp" />
+    <ClCompile Include="src\weapon\Whip.cpp" />
+    <ClCompile Include="src\item\Whip_PowerUp.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="content\textures\bbox.png" />
@@ -93,5 +93,13 @@
     <Text Include="content\characters\player\player_ani\sit.txt" />
     <Text Include="content\characters\player\player_ani\sitattack.txt" />
     <Text Include="content\characters\player\player_ani\walk.txt" />
+    <Text Include="content\characters\player\whip\whip_ani_lv1.txt" />
+    <Text Include="content\characters\player\whip\whip_ani_lv3.txt" />
+    <Text Include="content\characters\player\whip\whip_sprites.txt" />
+    <Text Include="content\characters\player\whip\whip_ani_lv2.txt" />
+    <Text Include="content\tilemap\Courtyard.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="README.md" />
   </ItemGroup>
 </Project>

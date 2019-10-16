@@ -6,15 +6,15 @@
 #include "Game.h"
 #include "GameObject.h"
 #include "Textures.h"
-#include "LoadResourceHelper.h"
-#include "GameMap.h"
+#include "../utility/LoadResourceHelper.h"
+#include "../map/Gamemap.h"
 #include "Mario.h"
-#include "Brick.h"
+#include "../map/Brick.h"
 #include "Goomba.h"
-#include "Simon.h"
+#include "../character/Simon.h"
 #include "Const_Value.h"
-#include"Whip.h"
-#include "Sword.h"
+#include "../weapon/Whip.h"
+#include "../weapon/Sword.h"
 
 Sword *sword;
 CGame *game;

@@ -1,10 +1,10 @@
 #pragma once
-#include "GameObject.h"
-#include "Textures.h"
-#include "LoadResourceHelper.h"
-#include "Const_Value.h"
-#include "Simon.h"
-class SwordItem :
+#include "../sample/GameObject.h"
+#include "../sample/Textures.h"
+#include "../utility/LoadResourceHelper.h"
+#include "../sample/Const_Value.h"
+#include "../character/Simon.h"
+class Large_heart :
 	public CGameObject
 {
 	double Scale_Rate;
@@ -13,6 +13,6 @@ public:
 	virtual void Render();
 	void Render(double scalerate = 1);
 	virtual void GetBoundingBox(float &l, float &t, float &r, float &b);
-	SwordItem(double scalerate = 1);
+	Large_heart(double scalerate = 1);
 };
 

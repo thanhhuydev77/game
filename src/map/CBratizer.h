@@ -1,8 +1,8 @@
 #pragma once
-#include "GameObject.h"
-#include "LoadResourceHelper.h"
-#include "Const_Value.h"
-#include "textures.h"
+#include "../sample/GameObject.h"
+#include "../utility/LoadResourceHelper.h"
+#include "../sample/Const_Value.h"
+#include "../sample/textures.h"
 
 class CBratizer :
 	public CGameObject

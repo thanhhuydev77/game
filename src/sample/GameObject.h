@@ -5,7 +5,7 @@
 #include <vector>
 #include "Const_Value.h"
 #include "Sprites.h"
-#include "MathHelper.h"
+#include "../utility/MathHelper.h"
 using namespace std;
 
 #define ID_TEX_BBOX -100		// special texture to draw object bounding box

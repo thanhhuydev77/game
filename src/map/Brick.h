@@ -1,7 +1,7 @@
 #pragma once
-#include "GameObject.h"
-#include "LoadResourceHelper.h"
-#include "Const_Value.h"
+#include "../sample/GameObject.h"
+#include "../utility/LoadResourceHelper.h"
+#include "../sample/Const_Value.h"
 #define BRICK_BBOX_WIDTH  32
 #define BRICK_BBOX_HEIGHT 32
 
