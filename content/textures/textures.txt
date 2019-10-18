@@ -1,0 +1,11 @@
+ID_TEX_MARIO		content\\textures\\mario.png 		255 255 255
+ID_TEX_MISC		content\\textures\\Dirt_Block.png 	176 224 248
+ID_TEX_ENEMY		content\\textures\\enemies.png 		3 26 110
+ID_TEX_BBOX		content\\textures\\bbox.png 		255 255 255
+ID_TEX_SIMON		content\\textures\\simon.png 		255 255 255
+ID_TEX_MAP1		content\\textures\\Courtyard.bmp 	255 255 255
+ID_TEX_BRATIZER		content\\textures\\Brazier.png  	255 255 255
+ID_TEX_WHIP		content\\textures\\Whip.png			255 255 255
+ID_TEX_LARGE_HEART	content\\textures\\Large_Heart.png  255 255 255
+ID_TEX_WHIP_POWER_UP 	content\\textures\\Whip_Powerup.png 255 255 255
+ID_TEX_SWORD		content\\textures\\Dagger.png		255 255 255

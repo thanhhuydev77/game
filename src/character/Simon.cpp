@@ -136,8 +136,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 					lh->SetPosition(0 - LARGE_HEART_BBOX_WIDTH, 0);
 				}
 			}
-			else
-				if (dynamic_cast<Whip_PowerUp*>(object) && object->state == ITEM_STATE_ACTIVE && CheckOverLap(object))
+			else if (dynamic_cast<Whip_PowerUp*>(object) && object->state == ITEM_STATE_ACTIVE && CheckOverLap(object))
 				{
 					if (GetTickCount() - overlap_time > SIMON_ATTACK_TIME + 150)
 					{
@@ -147,8 +146,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 						this->Upgrate();
 					}
 				}
-				else
-					if (dynamic_cast<SwordItem*>(object) && object->state == ITEM_STATE_ACTIVE && CheckOverLap(object))
+			else if (dynamic_cast<SwordItem*>(object) && object->state == ITEM_STATE_ACTIVE && CheckOverLap(object))
 					{
 						if (GetTickCount() - overlap_time > SIMON_ATTACK_TIME + 150)
 						{
@@ -171,14 +169,14 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 			if (dynamic_cast<CBrick *>(e->obj))
 			{
 				// block 
-				x += min_tx * dx + nx * 0.5f;		// nx*0.5f : need to push out a bit to avoid overlapping next frame
-				y += min_ty * dy + ny * 0.5f;
+				x += min_tx * dx + nx * 0.1f;		// nx*0.5f : need to push out a bit to avoid overlapping next frame
+				y += min_ty * dy + ny * 0.1f;
 
 				if (nx != 0) vx = 0;
 				if (ny != 0) vy = 0;
 				onstate = true;
 			}
-			if (dynamic_cast<Large_heart *>(e->obj))
+			else if (dynamic_cast<Large_heart *>(e->obj))
 			{
 				if ((e->obj)->GetState() == ITEM_STATE_ACTIVE)
 				{
@@ -186,7 +184,6 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 
 					lh->SetState(ITEM_STATE_UNACTIVE);
 					lh->SetPosition(0 - LARGE_HEART_BBOX_WIDTH, 0);
-					this->sword_turn += 5;
 					//this->them mau
 				}
 				
@@ -225,11 +222,6 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 
 void Simon::Render()
 {
-	this->Render(1);
-}
-
-void Simon::Render(double Scale_rate)
-{
 	int ani;
 
 	if (state == SIMON_STATE_DIE)
@@ -257,16 +249,18 @@ void Simon::Render(double Scale_rate)
 		else
 			ani = SIMON_ANI_WALKING;
 	}
-
-	int alpha = 255;
-	if (untouchable) alpha = 128;
 	if (attacking) {
 		ani = SIMON_ANI_ATTACK;
 	}
-	animations[ani]->Render(x, y, alpha, nx*Scale_rate, Scale_rate);
-
+	animations[ani]->Render(x, y, 255, nx*scale_rate);
 	RenderBoundingBox();
 }
+
+void Simon::setswordturndesc()
+{
+	if (sword_turn >= 1) sword_turn--; else sword_turn = 0;
+}
+
 void Simon::SetState(int state)
 {
 	CGameObject::SetState(state);
@@ -327,11 +321,13 @@ int Simon::GetDirect()
 //chua sua
 void Simon::GetBoundingBox(float & left, float & top, float & right, float & bottom)
 {
-	left = x;
-	top = y;
+	x_p = (SIMON_BIG_BBOX_WIDTH - SIMON_BIG_BBOX_WIDTH * scale_rate)/2;
+	y_p = (SIMON_BIG_BBOX_HEIGHT - SIMON_BIG_BBOX_HEIGHT * scale_rate) / 2;
+	left = x+x_p;
+	top = y+y_p;
 
-	right = x + SIMON_BIG_BBOX_WIDTH * scale_rate;
-	bottom = y + SIMON_BIG_BBOX_HEIGHT * scale_rate;
+	right = left + SIMON_BIG_BBOX_WIDTH * scale_rate;
+	bottom = top + SIMON_BIG_BBOX_HEIGHT * scale_rate;
 
 
 }

@@ -20,9 +20,9 @@ void Whip::UpdatePositionRelateToObject(DWORD dt)
 	level = owner->getlevel();
 	nx = owner->GetDirect();
 	int frame = animations[level - 1]->GetCurrentFrame();
-	int t1 = animations[level - 1]->GetFrame(0)->GetTime();
-	int t2 = animations[level - 1]->GetFrame(1)->GetTime() + t1;
-	int t3 = animations[level - 1]->GetFrame(2)->GetTime() + t2;
+	unsigned int t1 = animations[level - 1]->GetFrame(0)->GetTime();
+	unsigned int t2 = animations[level - 1]->GetFrame(1)->GetTime() + t1;
+	unsigned int t3 = animations[level - 1]->GetFrame(2)->GetTime() + t2;
 	//right
 	//simon.nx == 1
 	if (owner->GetDirect() == 1)
@@ -113,7 +113,8 @@ void Whip::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		if (CheckOverLap(bratizer))
 		{
 			bratizer->SetState(BRATIZER_STATE_UNACTIVE);
-			float x, y;
+			bratizer ->SetPosition(-BRATIZER_BBOX_WIDTH,0);
+			
 			if (dynamic_cast<Large_heart *>(item[i]))
 				item[i]->SetState(ITEM_STATE_ACTIVE);
 			else
@@ -125,7 +126,13 @@ void Whip::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 void Whip::Render()
 {
-	Render(1.0f);
+	if (state == WHIP_STATE_ACTIVE)
+	{
+		//level begin at 1 and ani begin at 0
+		animations[level - 1]->Render(x, y, 255, nx*scale_rate);//
+		RenderBoundingBox();
+	}
+
 }
 
 Whip::Whip()
@@ -142,52 +149,62 @@ Whip::Whip(double scalerate, CGameObject * owner)
 	};
 	LoadResourceHelper::Loadanimationfromfile(source, 3, this);
 	level = 3;
+	this->scale_rate = scalerate;
 	state = WHIP_STATE_UNACTIVE;
 	this->owner = owner;
 }
 
 void Whip::GetBoundingBox(float & left, float & top, float & right, float & bottom)
 {
+
 	int frame = animations[level - 1]->GetCurrentFrame();
 	left = x;
 	top = y;
 	switch (frame)
 	{
 	case 0:
-	case 1:
-		right = x;
-		bottom = y;
+	{
+		x_p = (WHIP_F1_BBOX_WIDTH - WHIP_F1_BBOX_WIDTH * scale_rate) / 2;
+		y_p = (WHIP_F1_BBOX_HEIGHT - WHIP_F1_BBOX_HEIGHT * scale_rate) / 2;
+		left = x + x_p;
+		top = y + y_p;
+
+		right = left + WHIP_F1_BBOX_WIDTH * scale_rate;
+		bottom = top + WHIP_F1_BBOX_HEIGHT * scale_rate;
 		break;
+	}
+	case 1:
+	{
+		x_p = (WHIP_F2_BBOX_WIDTH - WHIP_F2_BBOX_WIDTH * scale_rate) / 2;
+		y_p = (WHIP_F2_BBOX_HEIGHT - WHIP_F2_BBOX_HEIGHT * scale_rate) / 2;
+		left = x + x_p;
+		top = y + y_p;
+
+		right = left + WHIP_F2_BBOX_WIDTH * scale_rate;
+		bottom = top + WHIP_F2_BBOX_HEIGHT * scale_rate;
+		break;
+	}
 	case 2:
-		if (level == 1)
+	{
+		x_p = (WHIP_F3_BBOX_WIDTH - WHIP_F3_BBOX_WIDTH * scale_rate) / 2;
+		y_p = (WHIP_F3_BBOX_HEIGHT - WHIP_F3_BBOX_HEIGHT * scale_rate) / 2;
+		if (level == 1 || level == 2)
 		{
-			right = x + WHIP_F3_BBOX_WIDTH;
-			bottom = y + WHIP_F3_BBOX_HEIGHT;
-		}
-		else if (level == 2)
-		{
-			right = x + WHIP_F3_BBOX_WIDTH;
-			bottom = y + WHIP_F3_BBOX_HEIGHT;
+			right = left + WHIP_F3_BBOX_WIDTH * scale_rate;
+			bottom = top + WHIP_F3_BBOX_HEIGHT * scale_rate;
 		}
 		//lv3 
 		else
 		{
-			right = x + WHIP_F3_HLV_BBOX_WIDTH;
-			bottom = y + WHIP_F3_BBOX_HEIGHT;
+			right = left + WHIP_F3_HLV_BBOX_WIDTH * scale_rate;
+			bottom = top + WHIP_F3_BBOX_HEIGHT * scale_rate;
 		}
-	default:
 		break;
 	}
-
-}
-
-void Whip::Render(double scale_rate)
-{
-	if (state == WHIP_STATE_ACTIVE)
-	{
-		//level begin at 1 and ani begin at 0
-		animations[level - 1]->Render(x, y, 255, nx*scale_rate, scale_rate);//
-		RenderBoundingBox();
+	default:
+		right = left;
+		bottom = top;
+		break;
 	}
 
 }

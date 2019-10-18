@@ -2,6 +2,7 @@
 #include "../sample/Sprites.h"
 #include <string>
 #include "../sample/GameObject.h"
+#include "../sample/Const_Value.h"
 class LoadResourceHelper 
 {
 public:
@@ -11,6 +12,7 @@ public:
 	//lay tat ca idanimation vao danh sach animation cua doi tuong object 
 	static void Loadanimationfromfile(string arrsource[],int numofsource, CGameObject *object );
 	static void loadtileset();
+	static void loadtextures(string path);
 	~LoadResourceHelper();
 };
 

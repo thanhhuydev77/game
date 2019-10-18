@@ -42,21 +42,20 @@ void Whip_PowerUp::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void Whip_PowerUp::Render()
 {
-	this->Render(1);
-}
-
-void Whip_PowerUp::Render(double scalerate)
-{
-	if (state ==ITEM_STATE_ACTIVE)
-		animations[0]->Render(x, y, 255, scalerate, scalerate);
+	if (state == ITEM_STATE_ACTIVE)
+		animations[0]->Render(x, y, 255, scale_rate);
+	RenderBoundingBox();
 }
 
 void Whip_PowerUp::GetBoundingBox(float & l, float & t, float & r, float & b)
 {
-	l = x;
-	t = y;
-	r = x + WHIP_POWER_UP_BBOX_WIDTH;
-	b = y + WHIP_POWER_UP_BBOX_HEIGHT;
+	x_p = (WHIP_POWER_UP_BBOX_WIDTH - WHIP_POWER_UP_BBOX_WIDTH * scale_rate) / 2;
+	y_p = (WHIP_POWER_UP_BBOX_HEIGHT - WHIP_POWER_UP_BBOX_HEIGHT * scale_rate) / 2;
+	l = x + x_p;
+	t = y + y_p;
+
+	r = l + WHIP_POWER_UP_BBOX_WIDTH * scale_rate;
+	b = t + WHIP_POWER_UP_BBOX_HEIGHT * scale_rate;
 
 }
 
@@ -67,6 +66,6 @@ Whip_PowerUp::Whip_PowerUp(double scalerate)
 	"content\\items\\Whip_PowerUp_ani.txt"
 	};
 	LoadResourceHelper::Loadanimationfromfile(source, 1, this);
-	this->Scale_Rate = scalerate;
+	this->scale_rate = scalerate;
 	this->state = ITEM_STATE_UNACTIVE;
 }

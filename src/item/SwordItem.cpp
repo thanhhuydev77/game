@@ -42,22 +42,20 @@ void  SwordItem::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void  SwordItem::Render()
 {
-	this->Render(1);
-}
-
-void  SwordItem::Render(double scalerate)
-{
 	if (state == ITEM_STATE_ACTIVE)
-		animations[0]->Render(x, y, 255, scalerate, scalerate);
+		animations[0]->Render(x, y, 255, scale_rate);
+	RenderBoundingBox();
 }
 
 void  SwordItem::GetBoundingBox(float & l, float & t, float & r, float & b)
 {
+	x_p = (SWORD_BBOX_WIDTH - SWORD_BBOX_WIDTH * scale_rate) / 2;
+	y_p = (SWORD_BBOX_HEIGHT - SWORD_BBOX_HEIGHT * scale_rate) / 2;
+	l = x + x_p;
+	t = y + y_p;
 
-	l = x;
-	t = y;
-	r = x + SWORD_BBOX_WIDTH;
-	b = y + SWORD_BBOX_HEIGHT;
+	r = l + SWORD_BBOX_WIDTH * scale_rate;
+	b = t + SWORD_BBOX_HEIGHT * scale_rate;
 
 }
 
@@ -68,6 +66,6 @@ SwordItem::SwordItem(double scalerate)
 		"content\\characters\\player\\Sword\\Sword_ani.txt"
 	};
 	LoadResourceHelper::Loadanimationfromfile(source, 1, this);
-	this->Scale_Rate = scalerate;
+	this->scale_rate = scalerate;
 	this->state = ITEM_STATE_UNACTIVE;
 }

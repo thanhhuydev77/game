@@ -5,15 +5,17 @@
 
 void CBrick::Render()
 {
-	animations[0]->Render(x, y,255,scale_rate,scale_rate);
-	//RenderBoundingBox();
+	animations[0]->Render(x, y, 255, scale_rate);
+	RenderBoundingBox();
 }
 void CBrick::GetBoundingBox(float &l, float &t, float &r, float &b)
 {
-	l = x;
-	t = y;
-	r = x + BRICK_BBOX_WIDTH;
-	b = y + BRICK_BBOX_HEIGHT;
+	x_p = (BRICK_BBOX_WIDTH - BRICK_BBOX_WIDTH * scale_rate) / 2;
+	y_p = (BRICK_BBOX_HEIGHT - BRICK_BBOX_HEIGHT * scale_rate) / 2;
+	l = x+x_p;
+	t = y+y_p;
+	r = l + BRICK_BBOX_WIDTH*scale_rate;
+	b = t + BRICK_BBOX_HEIGHT*scale_rate;
 }
 CBrick::CBrick(float scalerate)
 {
@@ -31,7 +33,3 @@ CBrick::CBrick(float scalerate)
 		
 }
 
-void CBrick::Render(double scale_rate)
-{
-	animations[0]->Render(x, y, 255, scale_rate, scale_rate);
-}

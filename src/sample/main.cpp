@@ -55,8 +55,8 @@ void CSampleKeyHander::OnKeyDown(int KeyCode)
 
 		if (game->IsKeyDown(DIK_UP))
 		{
-			if (simon->getswordturn() >= 1)
-			{  //animation with sword - sword turn - 1
+			if (simon->getswordturn() >= 1 && !simon->isattacking())
+			{  //animation with sword , sword turn - 1
 				simon->StartAttack();
 				simon->setswordturndesc();
 				sword->StartAttack();
@@ -65,8 +65,11 @@ void CSampleKeyHander::OnKeyDown(int KeyCode)
 		else
 		{
 			//animation with whip
-			simon->StartAttack();
-			whip->StartAttack();
+			if (!simon->isattacking())
+			{
+				simon->StartAttack();
+				whip->StartAttack();
+			}
 		}break;
 	}
 }
@@ -126,7 +129,7 @@ void LoadResources()
 	coObjects = gm->getBrickobjects();
 	BratizerandItemObjects = gm->getBratizerobjects();
 
-	for (int i = 0; i < ItemObjects.size(); i++)
+	for (unsigned int i = 0; i < ItemObjects.size(); i++)
 	{
 		if (ItemObjects[i]->GetState() == ITEM_STATE_ACTIVE)
 			coObjects.push_back(gm->getItemobjects().at(i));
@@ -134,7 +137,7 @@ void LoadResources()
 	}
 	//init simon with defaul position
 	simon = new Simon(Scale_rate);
-	simon->SetPosition(10.0f, 190.0f);
+	simon->SetPosition(10.0f, 180.0f);
 	objects.push_back(simon);
 	//init sword and whip
 	sword = new Sword(Scale_rate, simon);
@@ -152,9 +155,9 @@ void LoadResources()
 void Update(DWORD dt)
 {
 
-	for (int i = 0; i < ItemObjects.size(); i++)
+	for (unsigned int i = 0; i < ItemObjects.size(); i++)
 		ItemObjects[i]->Update(dt, &BrickObjects);
-	for (int i = 0; i < ItemObjects.size(); i++)
+	for (unsigned int i = 0; i < ItemObjects.size(); i++)
 	{
 		if (ItemObjects[i]->GetState() == ITEM_STATE_ACTIVE)
 			coObjects.push_back(ItemObjects[i]);
@@ -196,8 +199,8 @@ void Render()
 		spriteHandler->Begin(D3DXSPRITE_ALPHABLEND);
 
 		gm->Render();
-		for (int i = 0; i < objects.size(); i++)
-			objects[i]->Render(Scale_rate);
+		for (unsigned int i = 0; i < objects.size(); i++)
+			objects[i]->Render();
 		spriteHandler->End();
 		d3ddv->EndScene();
 	}

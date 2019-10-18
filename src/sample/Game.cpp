@@ -55,26 +55,27 @@ void CGame::Init(HWND hWnd)
 /*
 	Utility function to wrap LPD3DXSPRITE::Draw 
 */
-void CGame::Draw(float x, float y, LPDIRECT3DTEXTURE9 texture, int left, int top, int right, int bottom, int alpha, double ScaleX, double ScaleY)
+void CGame::Draw(float x, float y, LPDIRECT3DTEXTURE9 texture, int left, int top, int right, int bottom, int alpha, double Scale)
 {
-
-	//D3DXVECTOR3 p(floor(x), floor(y), 0); // https://docs.microsoft.com/vi-vn/windows/desktop/direct3d9/directly-mapping-texels-to-pixels
-	// Try removing floor() to see blurry Mario
+	
+	 
 	D3DXVECTOR3 p(floor(x - cam_x), floor(y - cam_y), 0);
 	RECT r;
 	r.left = left;
 	r.top = top;
 	r.right = right ;
 	r.bottom = bottom;
+
 	D3DXMATRIX old;
 	spriteHandler->GetTransform(&old);
 		D3DXVECTOR2 center((x -cam_x+ ((right-left) / 2)),(y - cam_y+((bottom-top)/ 2)));
 		D3DXMATRIX scale;
-		D3DXMatrixTransformation2D(&scale, &center, 0.0f, &D3DXVECTOR2(ScaleX*1.0f, ScaleY*1.0f), NULL, 0.0f, NULL);
+		D3DXMatrixTransformation2D(&scale, &center, 0.0f, &D3DXVECTOR2(Scale*1.0f, Scale*1.0f), NULL, 0.0f,NULL);
 		D3DXMATRIX CC = old * scale;
 		spriteHandler->SetTransform(&CC);
-		x = x -(right - left);
+
 		spriteHandler->Draw(texture,&r,NULL, &p, D3DCOLOR_ARGB(alpha, 255, 255, 255));
+		
 		spriteHandler->SetTransform(&old);
 }
 

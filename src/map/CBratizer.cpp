@@ -4,24 +4,23 @@
 
 void CBratizer::Render()
 {
-	this->Render(1);
-}
-
-void CBratizer::Render(double scalerate)
-{
-	if(state == BRATIZER_STATE_ACTIVE)
-	animations[0]->Render(x, y, 255, scalerate, scalerate);
+	if (state == BRATIZER_STATE_ACTIVE)
+		animations[0]->Render(x, y, 255, scale_rate);
+	RenderBoundingBox();
 }
 
 void CBratizer::GetBoundingBox(float & l, float & t, float & r, float & b)
 {
-	l = x;
-	t = y;
-	r = x + BRATIZER_BBOX_WIDTH;
-	b = y + BRATIZER_BBOX_HEIGHT;
+	x_p = (BRATIZER_BBOX_WIDTH - BRATIZER_BBOX_WIDTH * scale_rate) / 2;
+	y_p = (BRATIZER_BBOX_HEIGHT - BRATIZER_BBOX_HEIGHT * scale_rate) / 2;
+	l = x + x_p;
+	t = y + y_p;
+
+	r = l + BRATIZER_BBOX_WIDTH * scale_rate;
+	b = t + BRATIZER_BBOX_HEIGHT * scale_rate;
 }
 
-CBratizer::CBratizer()
+CBratizer::CBratizer(double scalerate)
 {
 	LPANIMATION ani;
 	CTextures * textures = CTextures::GetInstance();
@@ -34,6 +33,7 @@ CBratizer::CBratizer()
 	ani->Add(20111);
 	ani->Add(20112);
 	animations->Add(602, ani);
+	this->scale_rate = scalerate;
 	this->AddAnimation(602);
 	this->state = BRATIZER_STATE_ACTIVE;
 }

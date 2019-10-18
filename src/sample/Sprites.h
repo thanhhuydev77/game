@@ -15,7 +15,7 @@ class CSprite
 	LPDIRECT3DTEXTURE9 texture;	
 public: 
 	CSprite(int id, int left, int top, int right, int bottom, LPDIRECT3DTEXTURE9 tex);
-	void Draw(float x, float y, int alpha = 255, double scalex = 1, double scaley = 1);
+	void Draw(float x, float y, int alpha = 255, double scale = 1);
 	int GetCurrentFrame();
 	
 };
@@ -64,7 +64,7 @@ class CAnimation
 public:
 	CAnimation(int defaultTime) { this->defaultTime = defaultTime; lastFrameTime = -1; currentFrame = -1; }
 	void Add(int spriteId, DWORD time = 100);
-	void Render(float x, float y, int alpha, double ScaleX = 1, double ScaleY = 1);
+	void Render(float x, float y, int alpha, double Scale = 1);
 	int GetCurrentFrame() { return currentFrame; };
 	void reset() { currentFrame = -1; };
 	LPANIMATION_FRAME GetFrame(int i) { return frames[i]; };

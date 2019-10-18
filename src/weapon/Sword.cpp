@@ -70,7 +70,6 @@ void Sword::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			if (CheckOverLap(bratizer))
 			{
 				bratizer->SetState(BRATIZER_STATE_UNACTIVE);
-				float x, y;
 				if (dynamic_cast<Large_heart *>(item[i]))
 					item[i]->SetState(ITEM_STATE_ACTIVE);
 				else
@@ -83,7 +82,11 @@ void Sword::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 void Sword::Render()
 {
-	Render(1.0f);
+	if (state == SWORD_STATE_ACTIVE)
+	{
+		animations[0]->Render(x, y, 255, nx*scale_rate);//
+		RenderBoundingBox();
+	}
 }
 
 Sword::Sword()
@@ -97,6 +100,7 @@ Sword::Sword(double scalerate, CGameObject * owner)
 		"content\\characters\\player\\Sword\\Sword_ani.txt"
 	};
 	LoadResourceHelper::Loadanimationfromfile(source, 1, this);
+	this->scale_rate = scalerate;
 	state = SWORD_STATE_UNACTIVE;
 	this->owner = owner;
 	
@@ -104,21 +108,11 @@ Sword::Sword(double scalerate, CGameObject * owner)
 
 void Sword::GetBoundingBox(float & left, float & top, float & right, float & bottom)
 {
+	x_p = (SWORD_BBOX_WIDTH - SWORD_BBOX_WIDTH * scale_rate) / 2;
+	y_p = (SWORD_BBOX_HEIGHT - SWORD_BBOX_HEIGHT * scale_rate) / 2;
+	left = x + x_p;
+	top = y + y_p;
 
-	left = x;
-	top = y;
-	right = x + SWORD_BBOX_WIDTH;
-	bottom = y + SWORD_BBOX_HEIGHT;
-
-
-}
-
-void Sword::Render(double scale_rate)
-{
-	if (state == SWORD_STATE_ACTIVE)
-	{
-		animations[0]->Render(x, y, 255, nx*scale_rate, scale_rate);//
-		RenderBoundingBox();
-	}
-
+	right = left + SWORD_BBOX_WIDTH * scale_rate;
+	bottom = top + SWORD_BBOX_HEIGHT * scale_rate;
 }

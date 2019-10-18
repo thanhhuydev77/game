@@ -115,7 +115,8 @@ void CGameObject::FilterCollision(vector<LPCOLLISIONEVENT> &coEvents,vector<LPCO
 }
 void CGameObject::RenderBoundingBox()
 {
-	D3DXVECTOR3 p(x, y, 0);
+
+	//D3DXVECTOR3 p(x, y, 0);
 	RECT rect;
 
 	LPDIRECT3DTEXTURE9 bbox = CTextures::GetInstance()->Get(ID_TEX_BBOX);
@@ -123,12 +124,18 @@ void CGameObject::RenderBoundingBox()
 	float l,t,r,b; 
 
 	GetBoundingBox(l, t, r, b);
-	rect.left = 0;
+	
+	/*rect.left = 0;
 	rect.top = 0;
-	rect.right = (int)r  -(int)l;
-	rect.bottom = (int)b  -(int)t;
+	rect.right = (int)r - (int)l;
+	rect.bottom = (int)b - (int)t;*/
 
-	CGame::GetInstance()->Draw(x, y, bbox, rect.left, rect.top, rect.right, rect.bottom);
+	rect.left = l;
+	rect.top = t;
+	rect.right = r;
+	rect.bottom = b;
+
+	CGame::GetInstance()->Draw(x+x_p, y+y_p, bbox, rect.left, rect.top, rect.right, rect.bottom,120);
 }
 
 void CGameObject::AddAnimation(int aniId)
@@ -136,8 +143,6 @@ void CGameObject::AddAnimation(int aniId)
 	LPANIMATION ani = CAnimations::GetInstance()->Get(aniId);
 	animations.push_back(ani);
 }
-
-
 
 CGameObject::~CGameObject()
 {

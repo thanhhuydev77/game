@@ -2,6 +2,7 @@
 #include<fstream>
 #include"../sample/textures.h"
 #include <string>
+using namespace std;
 LoadResourceHelper::LoadResourceHelper()
 {
 }
@@ -60,6 +61,49 @@ void LoadResourceHelper::Loadanimationfromfile(string arrsource[],int numofsourc
 
 void LoadResourceHelper::loadtileset()
 {
+}
+//copy ,i don't know
+wstring s2ws(string s) {
+
+	int len;
+	int slength = (int)s.length() + 1;
+	len = MultiByteToWideChar(CP_ACP, 0, s.c_str(), slength, 0, 0);
+	wchar_t* buf = new wchar_t[len];
+	MultiByteToWideChar(CP_ACP, 0, s.c_str(), slength, buf, len);
+	std::wstring r(buf);
+	delete[] buf;
+	return r;
+};
+void LoadResourceHelper::loadtextures(string path)
+{
+	//string sourcepath = "content\\textures\\";
+	CTextures * textures = CTextures::GetInstance();
+	const string texture_name_collection[] = { "ID_TEX_MARIO","ID_TEX_ENEMY","ID_TEX_MISC","ID_TEX_SIMON","ID_TEX_WHIP","ID_TEX_MAP1","ID_TEX_BBOX","ID_TEX_BRATIZER","ID_TEX_LARGE_HEART","ID_TEX_WHIP_POWER_UP","ID_TEX_SWORD" };
+	const int texture_collection[] = { ID_TEX_MARIO,ID_TEX_ENEMY,ID_TEX_MISC,ID_TEX_SIMON,ID_TEX_WHIP,ID_TEX_MAP1,ID_TEX_BBOX,ID_TEX_BRATIZER,ID_TEX_LARGE_HEART,ID_TEX_WHIP_POWER_UP,ID_TEX_SWORD };
+	string idtex;
+	string pathimage;
+	int trans_r;
+	int trans_g;
+	int trans_b;
+	
+	ifstream infile;
+	infile.open(path);
+	if (!infile)
+		return;
+	while (!infile.eof())
+	{
+		infile >> idtex >> pathimage >> trans_r >> trans_g >> trans_b;
+		for (unsigned int i = 0; i <= texture_name_collection->size(); i++)
+		{
+			if (idtex == texture_name_collection[i])
+			{
+				wstring stemp = s2ws(pathimage);
+				LPCWSTR image = stemp.c_str();
+				textures->Add(texture_collection[i],image, D3DCOLOR_XRGB(trans_r, trans_g, trans_b));
+			}
+		}
+	
+	}
 }
 
 LoadResourceHelper ::~LoadResourceHelper()

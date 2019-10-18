@@ -67,19 +67,7 @@ LPDIRECT3DTEXTURE9 CTextures::Get(unsigned int i)
 
 void CTextures::loadcontent()
 {
-	CTextures * textures = CTextures::GetInstance();
-	textures->Add(ID_TEX_MARIO,			L"content\\textures\\mario.png", D3DCOLOR_XRGB(255, 255, 255));
-	textures->Add(ID_TEX_MISC,			L"content\\textures\\Dirt_Block.png", D3DCOLOR_XRGB(176, 224, 248));
-	textures->Add(ID_TEX_ENEMY,			L"content\\textures\\enemies.png", D3DCOLOR_XRGB(3, 26, 110));
-	textures->Add(ID_TEX_BBOX,			L"content\\textures\\bbox.png", D3DCOLOR_XRGB(255, 255, 25));
-	textures->Add(ID_TEX_SIMON,			L"content\\textures\\simon.png", D3DCOLOR_XRGB(255, 255, 255));
-	textures->Add(ID_TEX_MAP1,			L"content\\textures\\Courtyard.bmp", D3DCOLOR_XRGB(255, 255, 255));
-	textures->Add(ID_TEX_BRATIZER,		L"content\\textures\\Brazier.png", D3DCOLOR_XRGB(255, 255, 255));
-	textures->Add(ID_TEX_WHIP,			L"content\\textures\\Whip.png", D3DCOLOR_XRGB(255, 255, 255));
-	textures->Add(ID_TEX_LARGE_HEART,	L"content\\textures\\Large_Heart.png", D3DCOLOR_XRGB(255, 255, 255));
-	textures->Add(ID_TEX_WHIP_POWER_UP, L"content\\textures\\Whip_Powerup.png", D3DCOLOR_XRGB(255, 255, 255));
-	textures->Add(ID_TEX_SWORD,			L"content\\textures\\Dagger.png", D3DCOLOR_XRGB(255, 255, 255));
-
+	LoadResourceHelper::loadtextures("content\\textures\\textures.txt");
 }
 
 

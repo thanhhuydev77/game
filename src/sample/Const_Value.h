@@ -1,4 +1,6 @@
 #pragma once
+#include <string>
+using namespace std;
 class Const_Value
 {
 public:
@@ -11,6 +13,8 @@ public:
 #define SCREEN_HEIGHT 320
 
 #define MAX_FRAME_RATE 120
+#pragma endregion
+#pragma region texture
 
 #define ID_TEX_MARIO 0
 #define ID_TEX_ENEMY 10
@@ -23,6 +27,7 @@ public:
 #define ID_TEX_LARGE_HEART 7
 #define ID_TEX_WHIP_POWER_UP 5
 #define	ID_TEX_SWORD 4
+
 #pragma endregion
 #pragma region Simon
 #define SIMON_TIME_ATTACK_OFF 40
@@ -56,8 +61,8 @@ public:
 #define SIMON_ANI_ATTACK			1
 #define SIMON_ANI_SIT_ATTACK		6
 
-#define SIMON_BIG_BBOX_WIDTH  35
-#define SIMON_BIG_BBOX_HEIGHT 62
+#define SIMON_BIG_BBOX_WIDTH  32
+#define SIMON_BIG_BBOX_HEIGHT 61
 #define SIMON_ATTACK_TIME 400
 #define SIMON_JUMP_TIME 100
 #define SIMON_UNTOUCHABLE_TIME 3000

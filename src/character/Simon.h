@@ -21,14 +21,14 @@ class Simon : public CGameObject
 		DWORD attack_start;
 		DWORD jump_start;
 		DWORD jumpplus_start;
-		double scale_rate;
 		int temp_nx;
 		int sword_turn;
 public:
 	Simon(double scalerate = 1);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *colliable_objects = NULL);
 	virtual void Render();
-	void setswordturndesc() { if (sword_turn >= 1) sword_turn--; };
+	void setswordturndesc() ;
+	bool isattacking() { return attacking; }
 	int getswordturn() { return sword_turn; }
 	bool isOnState() { return onstate; };
 	void SetState(int state);
@@ -39,7 +39,6 @@ public:
 	void Upgrate();
 	int getlevel() { return level; }
 	int GetDirect();
-	virtual void Render(double Scale_rate=1);
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom);
 };
 

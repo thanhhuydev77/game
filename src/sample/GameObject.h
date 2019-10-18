@@ -8,8 +8,6 @@
 #include "../utility/MathHelper.h"
 using namespace std;
 
-#define ID_TEX_BBOX -100		// special texture to draw object bounding box
-
 class CGameObject; 
 typedef CGameObject * LPGAMEOBJECT;
 
@@ -46,6 +44,9 @@ public:
 	int state;
 	int level;
 	DWORD dt; 
+	float scale_rate;
+	float x_p;
+	float y_p;
 	vector<LPANIMATION> animations;
 
 public: 
@@ -76,7 +77,6 @@ public:
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom) = 0;
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects = NULL);
 	virtual void Render() = 0;
-	virtual void Render(double scale_rate)=0;
 	virtual void SetState(int state) { this->state = state; }
 	
 

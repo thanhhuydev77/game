@@ -35,21 +35,20 @@ void Large_heart::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void Large_heart::Render()
 {
-	this->Render(1);
-}
-
-void Large_heart::Render(double scalerate)
-{
 	if (state == ITEM_STATE_ACTIVE)
-		animations[0]->Render(x, y, 255, scalerate, scalerate);
+		animations[0]->Render(x, y, 255, scale_rate);
+	RenderBoundingBox();
 }
 
 void Large_heart::GetBoundingBox(float & l, float & t, float & r, float & b)
 {
-	l = x;
-	t = y;
-	r = x + LARGE_HEART_BBOX_WIDTH;
-	b = y + LARGE_HEART_BBOX_HEIGHT;
+	x_p = (LARGE_HEART_BBOX_WIDTH - LARGE_HEART_BBOX_WIDTH * scale_rate) / 2;
+	y_p = (LARGE_HEART_BBOX_HEIGHT - LARGE_HEART_BBOX_HEIGHT * scale_rate) / 2;
+	l = x + x_p;
+	t = y + y_p;
+
+	r = l + LARGE_HEART_BBOX_WIDTH * scale_rate;
+	b = t + LARGE_HEART_BBOX_HEIGHT * scale_rate;
 
 }
 
@@ -60,6 +59,6 @@ Large_heart::Large_heart(double scalerate)
 	"content\\items\\Large_heart_ani.txt"
 	};
 	LoadResourceHelper::Loadanimationfromfile(source, 1, this);
-	this->Scale_Rate = scalerate;
+	this->scale_rate = scalerate;
 	this->state = ITEM_STATE_UNACTIVE;
 }

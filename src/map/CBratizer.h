@@ -8,12 +8,10 @@ class CBratizer :
 	public CGameObject
 {
 	LPANIMATION ani;
-
 public:
 	
 	virtual void Render();
-	void Render(double scalerate = 1);
 	virtual void GetBoundingBox(float &l, float &t, float &r, float &b);
-	CBratizer();
+	CBratizer(double scalerate = 1);
 };
 

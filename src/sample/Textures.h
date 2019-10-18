@@ -2,7 +2,7 @@
 #include <unordered_map>
 #include <d3dx9.h>
 #include "Const_Value.h"
-
+#include "../utility/LoadResourceHelper.h"
 using namespace std;
 
 /*

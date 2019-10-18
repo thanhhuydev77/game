@@ -103,7 +103,7 @@ void Map1::Draw()
 		for (int y = 0;y< maheight; y++)
 			for (int x = 0; x < mawidth; x++)
 			{
-				ts->get((mapsprite->at(i)))->Draw(x*t_width*scale_rate,y*t_height*scale_rate,255,scale_rate,scale_rate);
+				ts->get((mapsprite->at(i)))->Draw(x*t_width*scale_rate,y*t_height*scale_rate,255,scale_rate);
 				if((mapsprite->at(i))>=25 && (mapsprite->at(i)) <= 33)
 					for (int k = 0; k < 2; k++)
 					{
@@ -114,7 +114,7 @@ void Map1::Draw()
 					}
 					if ((x == 4 || x == 7 || x == 10|| x==13 || x ==17) && y == 4)
 						{
-							bra = new CBratizer();
+							bra = new CBratizer(scale_rate);
 							bra->SetPosition(((x*t_width*scale_rate)+ 3),(y*t_height*scale_rate - 32 * scale_rate -0.5));
 							Bratizerobjects.push_back(bra);
 							objects.push_back(bra);
@@ -124,7 +124,7 @@ void Map1::Draw()
 								Largeh = new Whip_PowerUp(scale_rate);
 							else
 								Largeh = new SwordItem(scale_rate);
-							Largeh->SetPosition(((x*t_width*scale_rate) + 13), (y*t_height*scale_rate - 19 * scale_rate - 0.5 ));
+							Largeh->SetPosition(((x*t_width*scale_rate) + 3), (y*t_height*scale_rate - 19 * scale_rate - 0.5 ));
 							itemsobjects.push_back(Largeh);
 							objects.push_back(Largeh);
 						}

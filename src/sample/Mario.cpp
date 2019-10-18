@@ -127,7 +127,7 @@ void CMario::Render(double Scale_rate)
 
 	int alpha = 255;
 	if (untouchable) alpha = 128;
-	animations[ani]->Render(x, y, alpha, nx*Scale_rate,Scale_rate);
+	animations[ani]->Render(x, y, alpha, nx*Scale_rate);
 
 	RenderBoundingBox();
 }

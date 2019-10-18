@@ -7,12 +7,9 @@
 
 class CBrick : public CGameObject
 {
-	float scale_rate;
 public:
 	virtual void Render();
 	virtual void GetBoundingBox(float &l, float &t, float &r, float &b);
 	CBrick(float scalerate = 1);
-	// Inherited via CGameObject
-	virtual void Render(double scale_rate) override;
 
 };

@@ -23,12 +23,12 @@ CSprites *CSprites::GetInstance()
 	return __instance;
 }
 
-void CSprite::Draw(float x, float y, int alpha, double scalex, double scaley)
+void CSprite::Draw(float x, float y, int alpha, double scale)
 {
 	//D3DXMATRIX matScale;
 	CGame * game = CGame::GetInstance();
 	//D3DXMatrixScaling(&matScale, -1.0f, -1.0f, .0f);
-	game->Draw(x, y, texture, left, top, right, bottom,alpha,scalex,scaley);	
+	game->Draw(x, y, texture, left, top, right, bottom,alpha,scale);	
 }
 
 int CSprite::GetCurrentFrame()
@@ -61,7 +61,7 @@ void CAnimation::Add(int spriteId, DWORD time)
 	frames.push_back(frame);
 }
 
-void CAnimation::Render(float x, float y, int alpha, double ScaleX,double ScaleY )
+void CAnimation::Render(float x, float y, int alpha, double Scale)
 {
 	DWORD now = GetTickCount();
 	if (currentFrame == -1) 
@@ -80,7 +80,7 @@ void CAnimation::Render(float x, float y, int alpha, double ScaleX,double ScaleY
 		}
 		
 	}
-	frames[currentFrame]->GetSprite()->Draw(x, y, alpha,ScaleX,ScaleY);
+	frames[currentFrame]->GetSprite()->Draw(x, y, alpha,Scale);
 }
 
 CAnimations * CAnimations::__instance = NULL;

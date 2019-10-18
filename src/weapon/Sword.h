@@ -24,6 +24,5 @@ public:
 	// Inherited via CGameObject
 	virtual void GetBoundingBox(float & left, float & top, float & right, float & bottom);
 	virtual void Render();
-	void Render(double scale_rate);
 };
 
