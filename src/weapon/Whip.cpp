@@ -20,53 +20,123 @@ void Whip::UpdatePositionRelateToObject(DWORD dt)
 	level = owner->getlevel();
 	nx = owner->GetDirect();
 	int frame = animations[level - 1]->GetCurrentFrame();
-	unsigned int t1 = animations[level - 1]->GetFrame(0)->GetTime();
-	unsigned int t2 = animations[level - 1]->GetFrame(1)->GetTime() + t1;
-	unsigned int t3 = animations[level - 1]->GetFrame(2)->GetTime() + t2;
-	//right
+	unsigned int t1 = animations[0]->GetFrame(0)->GetTime();
+	unsigned int t2 = animations[0]->GetFrame(1)->GetTime() + t1;
+	unsigned int t3 = animations[0]->GetFrame(2)->GetTime() + t2;
+
+	//level 1,2
+	if (level != 3)
+
+	{	//right
 	//simon.nx == 1
-	if (owner->GetDirect() == 1)
-	{
-		switch (frame)
+		if (owner->GetDirect() == 1)
 		{
-		case 0:
-			if (GetTickCount() - attack_start <= t1)
-				newposition = { x1 - WHIP_F1_BBOX_WIDTH + 10, y1 + 14 };
+			switch (frame)
+			{
+			case 0:
+				if (GetTickCount() - attack_start <= t1)
+					newposition = { x1 - WHIP_F1_BBOX_WIDTH*scale_rate - 10 , y1 + 7 };
 
-			break;
-		case 1:
-			if (GetTickCount() - attack_start < t2)
-				newposition = { x1 - WHIP_F2_BBOX_WIDTH + 10, y1 + 9 };
+				break;
+			case 1:
+				if (GetTickCount() - attack_start < t2)
+					newposition = { x1 - WHIP_F2_BBOX_WIDTH*scale_rate -10 , y1 + 7 };
 
-			break;
-		case 2:
-			if (GetTickCount() - attack_start <= t3)
-				newposition = { x2 + 4 ,y1 + 30 - WHIP_F3_BBOX_HEIGHT };
+				break;
+			case 2:
+				if (GetTickCount() - attack_start <= t3)
+					newposition = { x2 + 6,y2 - 41};
 
-			break;
+				break;
+			}
+		}
+		else // Facing::Left
+		{
+			switch (animations[level - 1]->GetCurrentFrame())
+			{
+
+			case 0:
+				if (GetTickCount() - attack_start <= t1)
+					newposition = { x2 + 9, y1 + 9 };
+				break;
+			case 1:
+				if (GetTickCount() - attack_start <= t2)
+					newposition = { x2 + 9, y1 + 9 };
+				break;
+			case 2:
+				if (GetTickCount() - attack_start <= t3)
+					/*if (level != 3)*/
+					newposition = { x1 - WHIP_F3_BBOX_WIDTH*scale_rate -14,y2 - 41 };
+				/*else
+					newposition = { x1 - WHIP_F3_HLV_BBOX_WIDTH + 12 , y1 + 33 - WHIP_F3_BBOX_HEIGHT };*/
+				break;
+
+			}
 		}
 	}
-	else // Facing::Left
+	else //level 3
 	{
-		switch (animations[level - 1]->GetCurrentFrame())
-		{
+		{	//right
+			//simon.nx == 1
+			if (owner->GetDirect() == 1)
+			{
+				switch (frame)
+				{
+				case 0:
+				case 1:
+				case 2:
+				case 3:
+					if (GetTickCount() - attack_start <= t1)
+						newposition = { x1 - WHIP_F1_BBOX_WIDTH * scale_rate - 10 , y1 + 7 };
+					break;
+				case 4:
+				case 5:
+				case 6:
+				case 7:
+					if (GetTickCount() - attack_start < t2)
+						newposition = { x1 - WHIP_F2_BBOX_WIDTH * scale_rate - 10 , y1 + 7 };
+					break;
+				case 8:
+				case 9:
+				case 10:
+				case 11:
+					if (GetTickCount() - attack_start <= t3)
+						newposition = { x2 + 6,y2 - 41 };
+					break;
+				}
+			}
+			else // Facing::Left
+			{
+				switch (animations[level - 1]->GetCurrentFrame())
+				{
 
-		case 0:
-			if (GetTickCount() - attack_start <= t1)
-				newposition = { x2 + 13, y1 + 14 };
-			break;
-		case 1:
-			if (GetTickCount() - attack_start <= t2)
-				newposition = { x2 + 13, y1 + 14 };
-			break;
-		case 2:
-			if (GetTickCount() - attack_start <= t3)
-				if (level != 3)
-					newposition = { x1 - WHIP_F3_BBOX_WIDTH + 10 , y1 + 29 - WHIP_F3_BBOX_HEIGHT };
-				else
-					newposition = { x1 - WHIP_F3_HLV_BBOX_WIDTH + 12 , y1 + 33 - WHIP_F3_BBOX_HEIGHT };
-			break;
+				case 0:
+				case 1:
+				case 2:
+				case 3:
+					if (GetTickCount() - attack_start <= t1)
+						newposition = { x2 + 9, y1 + 9 };
+					break;
+				case 4:
+				case 5:
+				case 6:
+				case 7:
+					if (GetTickCount() - attack_start <= t2)
+						newposition = { x2 + 9, y1 + 9 };
+					break;
+				case 8:
+				case 9:
+				case 10:
+				case 11:
+					if (GetTickCount() - attack_start <= t3)
+						/*if (level != 3)
+							newposition = { x1 - WHIP_F3_BBOX_WIDTH + 10 , y1 + 29 - WHIP_F3_BBOX_HEIGHT };
+						else*/
+						newposition = { x1 - WHIP_F3_HLV_BBOX_WIDTH * scale_rate - 14,y2 - 41 };
+					break;
 
+				}
+			}
 		}
 	}
 
@@ -113,8 +183,8 @@ void Whip::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		if (CheckOverLap(bratizer))
 		{
 			bratizer->SetState(BRATIZER_STATE_UNACTIVE);
-			bratizer ->SetPosition(-BRATIZER_BBOX_WIDTH,0);
-			
+			bratizer->SetPosition(-BRATIZER_BBOX_WIDTH, 0);
+
 			if (dynamic_cast<Large_heart *>(item[i]))
 				item[i]->SetState(ITEM_STATE_ACTIVE);
 			else
@@ -160,51 +230,89 @@ void Whip::GetBoundingBox(float & left, float & top, float & right, float & bott
 	int frame = animations[level - 1]->GetCurrentFrame();
 	left = x;
 	top = y;
-	switch (frame)
-	{
-	case 0:
-	{
-		x_p = (WHIP_F1_BBOX_WIDTH - WHIP_F1_BBOX_WIDTH * scale_rate) / 2;
-		y_p = (WHIP_F1_BBOX_HEIGHT - WHIP_F1_BBOX_HEIGHT * scale_rate) / 2;
-		left = x + x_p;
-		top = y + y_p;
-
-		right = left + WHIP_F1_BBOX_WIDTH * scale_rate;
-		bottom = top + WHIP_F1_BBOX_HEIGHT * scale_rate;
-		break;
-	}
-	case 1:
-	{
-		x_p = (WHIP_F2_BBOX_WIDTH - WHIP_F2_BBOX_WIDTH * scale_rate) / 2;
-		y_p = (WHIP_F2_BBOX_HEIGHT - WHIP_F2_BBOX_HEIGHT * scale_rate) / 2;
-		left = x + x_p;
-		top = y + y_p;
-
-		right = left + WHIP_F2_BBOX_WIDTH * scale_rate;
-		bottom = top + WHIP_F2_BBOX_HEIGHT * scale_rate;
-		break;
-	}
-	case 2:
-	{
-		x_p = (WHIP_F3_BBOX_WIDTH - WHIP_F3_BBOX_WIDTH * scale_rate) / 2;
-		y_p = (WHIP_F3_BBOX_HEIGHT - WHIP_F3_BBOX_HEIGHT * scale_rate) / 2;
-		if (level == 1 || level == 2)
+	if (level != 3)   //level 1,2
+		switch (frame)
 		{
+		case 0:
+		{
+			x_p = (WHIP_F1_BBOX_WIDTH - WHIP_F1_BBOX_WIDTH * scale_rate) / 2;
+			y_p = (WHIP_F1_BBOX_HEIGHT - WHIP_F1_BBOX_HEIGHT * scale_rate) / 2;
+			left = x + x_p;
+			top = y + y_p;
+
+			right = left + WHIP_F1_BBOX_WIDTH * scale_rate;
+			bottom = top + WHIP_F1_BBOX_HEIGHT * scale_rate;
+			break;
+		}
+		case 1:
+		{
+			x_p = (WHIP_F2_BBOX_WIDTH - WHIP_F2_BBOX_WIDTH * scale_rate) / 2;
+			y_p = (WHIP_F2_BBOX_HEIGHT - WHIP_F2_BBOX_HEIGHT * scale_rate) / 2;
+			left = x + x_p;
+			top = y + y_p;
+
+			right = left + WHIP_F2_BBOX_WIDTH * scale_rate;
+			bottom = top + WHIP_F2_BBOX_HEIGHT * scale_rate;
+			break;
+		}
+		case 2:
+		{
+			x_p = (WHIP_F3_BBOX_WIDTH - WHIP_F3_BBOX_WIDTH * scale_rate) / 2;
+			y_p = (WHIP_F3_BBOX_HEIGHT - WHIP_F3_BBOX_HEIGHT * scale_rate) / 2;
 			right = left + WHIP_F3_BBOX_WIDTH * scale_rate;
 			bottom = top + WHIP_F3_BBOX_HEIGHT * scale_rate;
+			break;
 		}
-		//lv3 
-		else
+		default:
+			right = left;
+			bottom = top;
+			break;
+		}
+	else //level 3
+		switch (frame)
 		{
+		case 0:
+		case 1:
+		case 2:
+		case 3:
+		{
+			x_p = (WHIP_F1_BBOX_WIDTH - WHIP_F1_BBOX_WIDTH * scale_rate) / 2;
+			y_p = (WHIP_F1_BBOX_HEIGHT - WHIP_F1_BBOX_HEIGHT * scale_rate) / 2;
+			left = x + x_p;
+			top = y + y_p;
+			right = left + WHIP_F1_BBOX_WIDTH * scale_rate;
+			bottom = top + WHIP_F1_BBOX_HEIGHT * scale_rate;
+			break;
+		}
+		case 4:
+		case 5:
+		case 6:
+		case 7:
+		{
+			x_p = (WHIP_F2_BBOX_WIDTH - WHIP_F2_BBOX_WIDTH * scale_rate) / 2;
+			y_p = (WHIP_F2_BBOX_HEIGHT - WHIP_F2_BBOX_HEIGHT * scale_rate) / 2;
+			left = x + x_p;
+			top = y + y_p;
+			right = left + WHIP_F2_BBOX_WIDTH * scale_rate;
+			bottom = top + WHIP_F2_BBOX_HEIGHT * scale_rate;
+			break;
+		}
+		case 8:
+		case 9:
+		case 10:
+		case 11:
+		{
+			x_p = (WHIP_F3_BBOX_WIDTH - WHIP_F3_BBOX_WIDTH * scale_rate) / 2;
+			y_p = (WHIP_F3_BBOX_HEIGHT - WHIP_F3_BBOX_HEIGHT * scale_rate) / 2;
+			left = x + x_p;
+			top = y + y_p;
 			right = left + WHIP_F3_HLV_BBOX_WIDTH * scale_rate;
 			bottom = top + WHIP_F3_BBOX_HEIGHT * scale_rate;
+			break;
 		}
-		break;
-	}
-	default:
-		right = left;
-		bottom = top;
-		break;
-	}
-
+		default:
+			right = left;
+			bottom = top;
+			break;
+		}
 }

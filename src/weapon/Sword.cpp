@@ -19,11 +19,11 @@ void Sword::UpdatePositionRelateToObject(DWORD dt)
 	//simon.nx == 1
 	if (owner->GetDirect() == 1)
 	{
-		newposition = { x2,y1 + 5 };
+		newposition = { x2+5,y1 + 12 };
 	}
 	else //Left
 	{
-		newposition = { x1 - SWORD_BBOX_WIDTH,y1 + 5 };
+		newposition = { x1 - SWORD_BBOX_WIDTH - 5,y1 + 12 };
 	}
 
 	this->SetPosition(newposition.x, newposition.y);
@@ -33,8 +33,9 @@ void Sword::StartAttack()
 {
 	if (state != SWORD_STATE_ACTIVE)
 	{
-		
-		state = SWORD_STATE_ACTIVE;
+		//state = SWORD_STATE_ACTIVE;
+		attacking = true;
+		waiting = true;
 		attack_start = GetTickCount();
 		UpdatePositionRelateToObject(dt);
 	}
@@ -42,18 +43,34 @@ void Sword::StartAttack()
 
 void Sword::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
-	if (state == SWORD_STATE_ACTIVE)
+	if (state == SWORD_STATE_ACTIVE ||waiting )
 	{
 
 		x += vx;
-		if (GetTickCount() - attack_start > SIMON_ATTACK_TIME)
+		//waiting time : 200 --> attack time = 200->600
+		if (GetTickCount() - attack_start > SIMON_ATTACK_TIME +200 )
 		{
+			attacking = false;
 			attack_start = 0;
 			state = SWORD_STATE_UNACTIVE;
+			waiting = false;
 		}
 		else
 		{
-			vx = nx * SWORD_FLY_SPEED;
+			//start transit sword
+			if (GetTickCount() - attack_start > SIMON_ATTACK_TIME - 200)
+			{
+				waiting = false;
+				state = SWORD_STATE_ACTIVE;
+				vx = nx * SWORD_FLY_SPEED;
+			}
+			//waiting 200ms before transit
+			else
+			{
+				state = SWORD_STATE_UNACTIVE;
+				vx = 0;
+				waiting = true;
+			}
 		}
 		vector<LPGAMEOBJECT> bra;
 		vector<LPGAMEOBJECT> item;
@@ -103,7 +120,7 @@ Sword::Sword(double scalerate, CGameObject * owner)
 	this->scale_rate = scalerate;
 	state = SWORD_STATE_UNACTIVE;
 	this->owner = owner;
-	
+	waiting = false;
 }
 
 void Sword::GetBoundingBox(float & left, float & top, float & right, float & bottom)

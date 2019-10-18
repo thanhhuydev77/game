@@ -55,7 +55,7 @@ void CSampleKeyHander::OnKeyDown(int KeyCode)
 
 		if (game->IsKeyDown(DIK_UP))
 		{
-			if (simon->getswordturn() >= 1 && !simon->isattacking())
+			if (simon->getswordturn() >= 1 && !simon->isattacking() && !sword->isattacking())
 			{  //animation with sword , sword turn - 1
 				simon->StartAttack();
 				simon->setswordturndesc();
@@ -81,7 +81,11 @@ void CSampleKeyHander::OnKeyUp(int KeyCode)
 
 void CSampleKeyHander::KeyState(BYTE *states)
 {
-	if (game->IsKeyDown(DIK_RIGHT))
+	if (game->IsKeyDown(DIK_DOWN))
+	{
+		simon->SetState(SIMON_STATE_SIT);
+	}
+	else if (game->IsKeyDown(DIK_RIGHT))
 	{
 		if (simon->isOnState())
 			simon->SetState(SIMON_STATE_WALKING_RIGHT);
@@ -93,7 +97,6 @@ void CSampleKeyHander::KeyState(BYTE *states)
 	}
 	else
 	{
-
 		if (simon->isOnState())
 			simon->SetState(SIMON_STATE_IDLE);
 	}

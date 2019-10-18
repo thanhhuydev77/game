@@ -102,8 +102,9 @@ void LoadResourceHelper::loadtextures(string path)
 				textures->Add(texture_collection[i],image, D3DCOLOR_XRGB(trans_r, trans_g, trans_b));
 			}
 		}
-	
+		
 	}
+	infile.close();
 }
 
 LoadResourceHelper ::~LoadResourceHelper()

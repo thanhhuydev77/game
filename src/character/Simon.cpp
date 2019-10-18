@@ -21,15 +21,15 @@ Simon::Simon(double scalerate)
 	untouchable = 0;
 	attacking = false;
 	level = 1;
-	sword_turn = 0;
+	sword_turn = 10;
 	onstate = false;
 }
 
 void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 {
 	CGameObject::Update(dt);
-	if (x < 10)
-		x = 10;
+	if (x < -5)
+		x = 0;
 	
 	vy += SIMON_GRAVITY * dt;
 	vector<LPCOLLISIONEVENT> coEvents;
@@ -89,8 +89,8 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 #pragma region plex jump
 
 
-	// No collision occured, proceed normally
-	if (GetTickCount() - jumpplus_start > SIMON_ATTACK_TIME)
+	//jump and has ->
+	if (GetTickCount() - jumpplus_start > SIMON_JUMP_TIME)
 	{
 
 		jumpplus_start = 0;
@@ -236,15 +236,10 @@ void Simon::Render()
 		{
 			if (state == SIMON_STATE_ATTACK)
 			{
-
 				ani = SIMON_ANI_ATTACK;
 			}
 			else
-
 				ani = SIMON_ANI_IDLE;
-
-
-
 		}
 		else
 			ani = SIMON_ANI_WALKING;
@@ -252,6 +247,11 @@ void Simon::Render()
 	if (attacking) {
 		ani = SIMON_ANI_ATTACK;
 	}
+	/*if (jumping)
+		ani = SIMON_ANI_JUMP;*/
+	if (state == SIMON_STATE_SIT)
+		ani = SIMON_ANI_SIT;
+
 	animations[ani]->Render(x, y, 255, nx*scale_rate);
 	RenderBoundingBox();
 }
@@ -321,13 +321,13 @@ int Simon::GetDirect()
 //chua sua
 void Simon::GetBoundingBox(float & left, float & top, float & right, float & bottom)
 {
-	x_p = (SIMON_BIG_BBOX_WIDTH - SIMON_BIG_BBOX_WIDTH * scale_rate)/2;
-	y_p = (SIMON_BIG_BBOX_HEIGHT - SIMON_BIG_BBOX_HEIGHT * scale_rate) / 2;
+	
+	x_p = (SIMON_BIG_BBOX_WIDTH -  SIMON_SMALL_BBOX_WIDTH  * scale_rate)/2;
+	y_p = (SIMON_BIG_BBOX_HEIGHT - SIMON_SMALL_BBOX_HEIGHT * scale_rate)/2;
 	left = x+x_p;
 	top = y+y_p;
-
-	right = left + SIMON_BIG_BBOX_WIDTH * scale_rate;
-	bottom = top + SIMON_BIG_BBOX_HEIGHT * scale_rate;
+	right = left + SIMON_SMALL_BBOX_WIDTH * scale_rate ;
+	bottom = top + SIMON_SMALL_BBOX_HEIGHT * scale_rate;
 
 
 }

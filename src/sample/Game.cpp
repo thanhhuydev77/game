@@ -65,12 +65,12 @@ void CGame::Draw(float x, float y, LPDIRECT3DTEXTURE9 texture, int left, int top
 	r.top = top;
 	r.right = right ;
 	r.bottom = bottom;
-
+	double ScaleY = (Scale > 0) ? Scale : -Scale;
 	D3DXMATRIX old;
 	spriteHandler->GetTransform(&old);
 		D3DXVECTOR2 center((x -cam_x+ ((right-left) / 2)),(y - cam_y+((bottom-top)/ 2)));
 		D3DXMATRIX scale;
-		D3DXMatrixTransformation2D(&scale, &center, 0.0f, &D3DXVECTOR2(Scale*1.0f, Scale*1.0f), NULL, 0.0f,NULL);
+		D3DXMatrixTransformation2D(&scale, &center, 0.0f, &D3DXVECTOR2(Scale*1.0f, ScaleY*1.0f), NULL, 0.0f,NULL);
 		D3DXMATRIX CC = old * scale;
 		spriteHandler->SetTransform(&CC);
 
