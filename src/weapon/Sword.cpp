@@ -3,6 +3,23 @@
 #include <vector>
 
 
+Sword::Sword()
+{
+}
+
+Sword::Sword(double scalerate, CGameObject * owner)
+{
+	LoadResourceHelper::Loadspritefromfile("content\\characters\\player\\Sword\\Sword_sprites.txt", ID_TEX_SWORD);
+	string source[] = {
+		"content\\characters\\player\\Sword\\Sword_ani.txt"
+	};
+	LoadResourceHelper::Loadanimationfromfile(source, 1, this);
+	this->scale_rate = scalerate;
+	state = SWORD_STATE_UNACTIVE;
+	this->owner = owner;
+	waiting = false;
+}
+
 CGameObject * Sword::GetOwner()
 {
 	return owner;
@@ -104,23 +121,6 @@ void Sword::Render()
 		animations[0]->Render(x, y, 255, nx*scale_rate);//
 		RenderBoundingBox();
 	}
-}
-
-Sword::Sword()
-{
-}
-
-Sword::Sword(double scalerate, CGameObject * owner)
-{
-	LoadResourceHelper::Loadspritefromfile("content\\characters\\player\\Sword\\Sword_sprites.txt", ID_TEX_SWORD);
-	string source[] = {
-		"content\\characters\\player\\Sword\\Sword_ani.txt"
-	};
-	LoadResourceHelper::Loadanimationfromfile(source, 1, this);
-	this->scale_rate = scalerate;
-	state = SWORD_STATE_UNACTIVE;
-	this->owner = owner;
-	waiting = false;
 }
 
 void Sword::GetBoundingBox(float & left, float & top, float & right, float & bottom)

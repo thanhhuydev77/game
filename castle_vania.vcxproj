@@ -151,7 +151,7 @@
     <ClInclude Include="src\weapon\Sword.h" />
     <ClInclude Include="src\item\SwordItem.h" />
     <ClInclude Include="src\sample\Textures.h" />
-    <ClInclude Include="src\map\tile.h" />
+    <ClInclude Include="src\map\tileset.h" />
     <ClInclude Include="src\weapon\Whip.h" />
     <ClInclude Include="src\item\Whip_PowerUp.h" />
   </ItemGroup>
@@ -175,7 +175,7 @@
     <ClCompile Include="src\weapon\Sword.cpp" />
     <ClCompile Include="src\item\SwordItem.cpp" />
     <ClCompile Include="src\sample\Textures.cpp" />
-    <ClCompile Include="src\map\tile.cpp" />
+    <ClCompile Include="src\map\tileset.cpp" />
     <ClCompile Include="src\weapon\Whip.cpp" />
     <ClCompile Include="src\item\Whip_PowerUp.cpp" />
   </ItemGroup>

@@ -135,7 +135,7 @@ void CGameObject::RenderBoundingBox()
 	rect.right = r;
 	rect.bottom = b;
 
-	CGame::GetInstance()->Draw(x+x_p, y+y_p, bbox, rect.left, rect.top, rect.right, rect.bottom,0);
+	CGame::GetInstance()->Draw(x+x_p, y+y_p, bbox, rect.left, rect.top, rect.right, rect.bottom,120);
 }
 
 void CGameObject::AddAnimation(int aniId)

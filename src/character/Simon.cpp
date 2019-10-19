@@ -15,13 +15,14 @@ Simon::Simon(double scalerate)
 	"content\\characters\\player\\player_ani\\godown.txt",
 	"content\\characters\\player\\player_ani\\jump.txt",
 	"content\\characters\\player\\player_ani\\sitattack.txt",
-	"content\\characters\\player\\player_ani\\sit.txt" };
-	LoadResourceHelper::Loadanimationfromfile(source, 8, this);
+	"content\\characters\\player\\player_ani\\sit.txt",
+	"content\\characters\\player\\player_ani\\collect.txt" };
+	LoadResourceHelper::Loadanimationfromfile(source, 9, this);
 	this->scale_rate = scalerate;
 	untouchable = 0;
 	attacking = false;
 	level = 1;
-	sword_turn = 10;
+	sword_turn = 0;
 	onstate = false;
 }
 
@@ -116,6 +117,14 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 	}
 
 #pragma endregion
+#pragma region collect
+	if (GetTickCount() - collect_start > SIMON_TIME_COLLECT)
+	{
+		collecting = false;
+		collect_start = 0;
+	}
+#pragma endregion
+
 	if (coEvents.size() == 0)
 	{
 		x += dx;
@@ -143,6 +152,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 						Whip_PowerUp *lh = dynamic_cast<Whip_PowerUp *>(object);
 						lh->SetState(ITEM_STATE_UNACTIVE);
 						lh->SetPosition(0 - WHIP_POWER_UP_BBOX_WIDTH, 0);
+						this->StartCollect();
 						this->Upgrate();
 					}
 				}
@@ -196,6 +206,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 
 					wp->SetState(ITEM_STATE_UNACTIVE);
 					wp->SetPosition(0 - WHIP_POWER_UP_BBOX_WIDTH, 0);
+					this->StartCollect();
 					this->Upgrate();
 				}
 				
@@ -218,7 +229,6 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 #pragma endregion
 }
-
 
 void Simon::Render()
 {
@@ -251,6 +261,8 @@ void Simon::Render()
 		ani = SIMON_ANI_JUMP;*/
 	if (state == SIMON_STATE_SIT)
 		ani = SIMON_ANI_SIT;
+	if (collecting)
+		ani = SIMON_ANI_COLLECT;
 
 	animations[ani]->Render(x, y, 255, nx*scale_rate);
 	RenderBoundingBox();
@@ -282,6 +294,7 @@ void Simon::SetState(int state)
 		vx = 0;
 	}
 }
+
 void Simon::StartAttack()
 {
 	if (!attacking) {
@@ -309,16 +322,24 @@ void Simon::StartplexJump()
 	
 }
 
+void Simon::StartCollect()
+{
+	if (!collecting) {
+		collecting = true; collect_start = GetTickCount();
+	}
+}
+
 void Simon::Upgrate()
 {
 	if (level < SIMON_MAX_LEVEL)
 		level++;
 }
+
 int Simon::GetDirect()
 {
 	return nx;
 }
-//chua sua
+
 void Simon::GetBoundingBox(float & left, float & top, float & right, float & bottom)
 {
 	

@@ -1,28 +1,34 @@
 #include "Map.h"
-#include"tile.h"
+#include"tileset.h"
 #include <fstream>
 #include <vector>
 #include "Brick.h"
+
 vector<LPGAMEOBJECT> Map1::getallObject()
 {
 	return objects;
 }
+
 vector<LPGAMEOBJECT> Map1::getBricksObject()
 {
 	return Brickobjects;
 }
+
 vector<LPGAMEOBJECT> Map1::getBratizersObject()
 {
 	return Bratizerobjects;
 }
+
 vector<LPGAMEOBJECT> Map1::getItemsObject()
 {
 	return itemsobjects;
 }
+
 double Map1::getscalerate()
 {
 	return scale_rate;
 }
+
 Map1::Map1(string filePath,int idtex,int width, int height)
 {
 	
@@ -133,6 +139,7 @@ void Map1::Draw()
 					i++;
 			}
 }
+
 Map1::~Map1()
 {
 }

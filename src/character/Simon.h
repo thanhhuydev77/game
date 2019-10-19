@@ -14,9 +14,11 @@ class Simon : public CGameObject
 {
 		bool onstate;
 		bool attacking;
+		bool collecting;
 		bool jumping;
 		int untouchable;
 		DWORD untouchable_start;
+		DWORD collect_start;
 		DWORD overlap_time;
 		DWORD attack_start;
 		DWORD jump_start;
@@ -31,11 +33,13 @@ public:
 	bool isattacking() { return attacking; }
 	int getswordturn() { return sword_turn; }
 	bool isOnState() { return onstate; };
+	bool iscollecting() { return collecting; }
 	void SetState(int state);
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount(); }
 	void StartAttack();
 	void StartmonoJump();
 	void StartplexJump();
+	void StartCollect();
 	void Upgrate();
 	int getlevel() { return level; }
 	int GetDirect();

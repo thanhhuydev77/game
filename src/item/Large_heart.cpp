@@ -1,5 +1,16 @@
 #include "Large_heart.h"
- 
+
+Large_heart::Large_heart(double scalerate)
+{
+	LoadResourceHelper::Loadspritefromfile("content\\items\\Large_heart.txt", ID_TEX_LARGE_HEART);
+	string source[] = {
+	"content\\items\\Large_heart_ani.txt"
+	};
+	LoadResourceHelper::Loadanimationfromfile(source, 1, this);
+	this->scale_rate = scalerate;
+	this->state = ITEM_STATE_UNACTIVE;
+}
+
 void Large_heart::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 
@@ -52,13 +63,3 @@ void Large_heart::GetBoundingBox(float & l, float & t, float & r, float & b)
 
 }
 
-Large_heart::Large_heart(double scalerate)
-{
-	LoadResourceHelper::Loadspritefromfile("content\\items\\Large_heart.txt", ID_TEX_LARGE_HEART);
-	string source[] = {
-	"content\\items\\Large_heart_ani.txt"
-	};
-	LoadResourceHelper::Loadanimationfromfile(source, 1, this);
-	this->scale_rate = scalerate;
-	this->state = ITEM_STATE_UNACTIVE;
-}

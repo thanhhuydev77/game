@@ -2,6 +2,25 @@
 #include "../sample/Const_Value.h"
 #include <vector>
 
+Whip::Whip()
+{
+}
+
+Whip::Whip(double scalerate, CGameObject * owner)
+{
+	LoadResourceHelper::Loadspritefromfile("content\\characters\\player\\whip\\whip_sprites.txt", ID_TEX_WHIP);
+	string source[] = {
+		"content\\characters\\player\\whip\\whip_ani_lv1.txt",
+		"content\\characters\\player\\whip\\whip_ani_lv2.txt",
+		"content\\characters\\player\\whip\\whip_ani_lv3.txt"
+	};
+	LoadResourceHelper::Loadanimationfromfile(source, 3, this);
+	level = 3;
+	this->scale_rate = scalerate;
+	state = WHIP_STATE_UNACTIVE;
+	this->owner = owner;
+}
+
 int Whip::GetLevel()
 {
 	return level;
@@ -203,25 +222,6 @@ void Whip::Render()
 		RenderBoundingBox();
 	}
 
-}
-
-Whip::Whip()
-{
-}
-
-Whip::Whip(double scalerate, CGameObject * owner)
-{
-	LoadResourceHelper::Loadspritefromfile("content\\characters\\player\\whip\\whip_sprites.txt", ID_TEX_WHIP);
-	string source[] = {
-		"content\\characters\\player\\whip\\whip_ani_lv1.txt",
-		"content\\characters\\player\\whip\\whip_ani_lv2.txt",
-		"content\\characters\\player\\whip\\whip_ani_lv3.txt"
-	};
-	LoadResourceHelper::Loadanimationfromfile(source, 3, this);
-	level = 3;
-	this->scale_rate = scalerate;
-	state = WHIP_STATE_UNACTIVE;
-	this->owner = owner;
 }
 
 void Whip::GetBoundingBox(float & left, float & top, float & right, float & bottom)

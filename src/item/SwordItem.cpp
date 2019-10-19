@@ -1,6 +1,15 @@
 #include "SwordItem.h"
 
-
+SwordItem::SwordItem(double scalerate)
+{
+	LoadResourceHelper::Loadspritefromfile("content\\characters\\player\\Sword\\Sword_sprites.txt", ID_TEX_SWORD);
+	string source[] = {
+		"content\\characters\\player\\Sword\\Sword_ani.txt"
+	};
+	LoadResourceHelper::Loadanimationfromfile(source, 1, this);
+	this->scale_rate = scalerate;
+	this->state = ITEM_STATE_UNACTIVE;
+}
 
 void  SwordItem::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
@@ -59,13 +68,4 @@ void  SwordItem::GetBoundingBox(float & l, float & t, float & r, float & b)
 
 }
 
-SwordItem::SwordItem(double scalerate)
-{
-	LoadResourceHelper::Loadspritefromfile("content\\characters\\player\\Sword\\Sword_sprites.txt", ID_TEX_SWORD);
-	string source[] = {
-		"content\\characters\\player\\Sword\\Sword_ani.txt"
-	};
-	LoadResourceHelper::Loadanimationfromfile(source, 1, this);
-	this->scale_rate = scalerate;
-	this->state = ITEM_STATE_UNACTIVE;
-}
+

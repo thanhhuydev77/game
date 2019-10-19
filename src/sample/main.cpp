@@ -23,6 +23,7 @@ Gamemap *gm;
 Whip *whip;
 double Scale_rate;
 int mapwidth;
+
 vector<LPGAMEOBJECT> objects;  //all object
 vector<LPGAMEOBJECT> BratizerObjects; //all bratizer
 vector<LPGAMEOBJECT> coObjects;//all object except simon
@@ -45,15 +46,14 @@ void CSampleKeyHander::OnKeyDown(int KeyCode)
 	switch (KeyCode)
 	{
 	case DIK_SPACE:
-		if (game->IsKeyDown(DIK_RIGHT) || game->IsKeyDown(DIK_LEFT))
+		if (game->IsKeyDown(DIK_RIGHT) || game->IsKeyDown(DIK_LEFT) )
 		{
 			simon->StartplexJump();
 		}
 		simon->StartmonoJump();
 		break;
 	case DIK_A:
-
-		if (game->IsKeyDown(DIK_UP))
+		if (game->IsKeyDown(DIK_UP) && !game->IsKeyDown(DIK_DOWN) && !simon->iscollecting())
 		{
 			if (simon->getswordturn() >= 1 && !simon->isattacking() && !sword->isattacking())
 			{  //animation with sword , sword turn - 1
@@ -65,12 +65,13 @@ void CSampleKeyHander::OnKeyDown(int KeyCode)
 		else
 		{
 			//animation with whip
-			if (!simon->isattacking())
+			if (!simon->isattacking() && !game->IsKeyDown(DIK_DOWN) && !simon->iscollecting())
 			{
 				simon->StartAttack();
 				whip->StartAttack();
 			}
-		}break;
+		}
+		break;
 	}
 }
 
@@ -81,16 +82,16 @@ void CSampleKeyHander::OnKeyUp(int KeyCode)
 
 void CSampleKeyHander::KeyState(BYTE *states)
 {
-	if (game->IsKeyDown(DIK_DOWN))
+	if (game->IsKeyDown(DIK_DOWN) && !simon->iscollecting())
 	{
 		simon->SetState(SIMON_STATE_SIT);
 	}
-	else if (game->IsKeyDown(DIK_RIGHT))
+	else if (game->IsKeyDown(DIK_RIGHT) && !simon->iscollecting())
 	{
 		if (simon->isOnState())
 			simon->SetState(SIMON_STATE_WALKING_RIGHT);
 	}
-	else if (game->IsKeyDown(DIK_LEFT))
+	else if (game->IsKeyDown(DIK_LEFT) && !simon->iscollecting())
 	{
 		if (simon->isOnState())
 			simon->SetState(SIMON_STATE_WALKING_LEFT);
@@ -114,7 +115,6 @@ LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 	return 0;
 }
-
 
 void LoadResources()
 {
@@ -149,7 +149,6 @@ void LoadResources()
 	objects.push_back(whip);
 
 }
-
 
 /*
 	Update world status for this frame

@@ -14,6 +14,8 @@ class Whip : public CGameObject
 	int level;
 	DWORD attack_start;
 public:
+	Whip();
+	Whip(double scalerate = 1, CGameObject * owner = NULL);
 	int GetLevel();
 	void setstate(int state) { this->state = state; }
 	CGameObject* GetOwner();
@@ -21,9 +23,6 @@ public:
 	void Upgrade();
 	void StartAttack();
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects = NULL);
-	Whip();
-	Whip(double scalerate = 1, CGameObject * owner = NULL);
-	// Inherited via CGameObject
 	virtual void GetBoundingBox(float & left, float & top, float & right, float & bottom);
 	virtual void Render();
 };

@@ -12,20 +12,19 @@ class Sword : public CGameObject
 {
 	CGameObject* owner;
 	DWORD attack_start;
-	//int turn;
 	bool attacking;
 	bool waiting;
 public:
+	Sword();
+	Sword(double scalerate = 1, CGameObject * owner = NULL);
 	void setstate(int state) { this->state = state; }
 	CGameObject* GetOwner();
 	void UpdatePositionRelateToObject(DWORD dt);
 	void StartAttack();
 	bool isattacking() { return attacking; };
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects = NULL);
-	Sword();
-	Sword(double scalerate = 1, CGameObject * owner = NULL);
-	// Inherited via CGameObject
-	virtual void GetBoundingBox(float & left, float & top, float & right, float & bottom);
+	
+	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom);
 	virtual void Render();
 };
 

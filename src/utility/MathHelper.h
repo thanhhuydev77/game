@@ -3,5 +3,5 @@ class MathHelper
 {
 public:
 	static int getsign(float x);
-	};
+};
 

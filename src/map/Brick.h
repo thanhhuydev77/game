@@ -7,8 +7,9 @@
 class CBrick : public CGameObject
 {
 public:
+	CBrick(float scalerate = 1);
 	virtual void Render();
 	virtual void GetBoundingBox(float &l, float &t, float &r, float &b);
-	CBrick(float scalerate = 1);
+	
 
 };

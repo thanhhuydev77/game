@@ -19,9 +19,9 @@
     <ClInclude Include="src\weapon\Sword.h" />
     <ClInclude Include="src\item\SwordItem.h" />
     <ClInclude Include="src\sample\Textures.h" />
-    <ClInclude Include="src\map\tile.h" />
     <ClInclude Include="src\weapon\Whip.h" />
     <ClInclude Include="src\item\Whip_PowerUp.h" />
+    <ClInclude Include="src\map\tileset.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header">
@@ -37,7 +37,6 @@
   <ItemGroup>
     <ClCompile Include="src\map\Brick.cpp" />
     <ClCompile Include="src\map\CBratizer.cpp" />
-    <ClCompile Include="src\sample\Const_Value.cpp" />
     <ClCompile Include="src\sample\debug.cpp" />
     <ClCompile Include="src\sample\Game.cpp" />
     <ClCompile Include="src\map\Gamemap.cpp" />
@@ -54,9 +53,10 @@
     <ClCompile Include="src\weapon\Sword.cpp" />
     <ClCompile Include="src\item\SwordItem.cpp" />
     <ClCompile Include="src\sample\Textures.cpp" />
-    <ClCompile Include="src\map\tile.cpp" />
     <ClCompile Include="src\weapon\Whip.cpp" />
     <ClCompile Include="src\item\Whip_PowerUp.cpp" />
+    <ClCompile Include="src\map\tileset.cpp" />
+    <ClCompile Include="src\sample\Const_Value.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="content\textures\bbox.png" />

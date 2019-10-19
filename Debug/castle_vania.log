@@ -1,6 +1,2 @@
-﻿  main.cpp
-c:\users\huy\desktop\game\src\sample\main.cpp(181): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-  Sword.cpp
-c:\users\huy\desktop\game\src\weapon\sword.cpp(120): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-  Generating Code...
+﻿  Brick.cpp
   castle_vania.vcxproj -> C:\Users\huy\Desktop\game\Debug\castle_vania.exe

@@ -1,6 +1,15 @@
 #include "Whip_PowerUp.h"
 
-
+Whip_PowerUp::Whip_PowerUp(double scalerate)
+{
+	LoadResourceHelper::Loadspritefromfile("content\\items\\Whip_PowerUp.txt", ID_TEX_WHIP_POWER_UP);
+	string source[] = {
+	"content\\items\\Whip_PowerUp_ani.txt"
+	};
+	LoadResourceHelper::Loadanimationfromfile(source, 1, this);
+	this->scale_rate = scalerate;
+	this->state = ITEM_STATE_UNACTIVE;
+}
 
 void Whip_PowerUp::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
@@ -59,13 +68,4 @@ void Whip_PowerUp::GetBoundingBox(float & l, float & t, float & r, float & b)
 
 }
 
-Whip_PowerUp::Whip_PowerUp(double scalerate)
-{
-	LoadResourceHelper::Loadspritefromfile("content\\items\\Whip_PowerUp.txt", ID_TEX_WHIP_POWER_UP);
-	string source[] = {
-	"content\\items\\Whip_PowerUp_ani.txt"
-	};
-	LoadResourceHelper::Loadanimationfromfile(source, 1, this);
-	this->scale_rate = scalerate;
-	this->state = ITEM_STATE_UNACTIVE;
-}
+

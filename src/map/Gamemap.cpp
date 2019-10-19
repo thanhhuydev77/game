@@ -42,7 +42,6 @@ int Gamemap::getmapwidth()
 	return mmap->GetWidth();
 }
 
-
 void Gamemap::Render()
 {
 	mmap->Draw();

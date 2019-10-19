@@ -74,6 +74,7 @@ wstring s2ws(string s) {
 	delete[] buf;
 	return r;
 };
+
 void LoadResourceHelper::loadtextures(string path)
 {
 	//string sourcepath = "content\\textures\\";

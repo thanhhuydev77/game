@@ -1,6 +1,6 @@
 #pragma once
 #include <vector>
-#include "tile.h"
+#include "tileset.h"
 #include "CBratizer.h"
 #include "Brick.h"
 #include "../character/Simon.h"
@@ -10,6 +10,7 @@
 class Map1
 {
 private:
+
 	TileSet *ts;
 	CBrick *br;
 	CBratizer *bra;
@@ -28,6 +29,7 @@ private:
 	vector<LPGAMEOBJECT> Bratizerobjects;
 	vector<LPGAMEOBJECT> itemsobjects;
 public:
+	Map1();
 	vector<LPGAMEOBJECT> getallObject();
 	vector<LPGAMEOBJECT> getBricksObject();
 	vector<LPGAMEOBJECT> getBratizersObject();
@@ -35,7 +37,6 @@ public:
 	double getscalerate();
 	Map1 (string filePath,int idtex, int width, int height);
 	Map1* GetMap();
-	Map1();
 	int GetWidth();
 	int GetHeight();
 	int GetTileWidth();
