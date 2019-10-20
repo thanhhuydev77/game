@@ -8,7 +8,7 @@ Gamemap::Gamemap()
 
 void Gamemap::loadmap(string path,int idtex,int screenheight,int screenwidth)
 {
-	mmap = new Map1(path,idtex,screenwidth,screenheight);
+	mmap = new Map(path,idtex,screenwidth,screenheight);
 	mmap->Draw();
 }
 

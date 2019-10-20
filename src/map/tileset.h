@@ -24,6 +24,7 @@ public:
 	int GetTileWidth() const { return tileWidth; }
 	int GetTileHeight() const { return tileHeight; }
 	int Getmawidth() const { return mawidth; }
+	string getname() { return name; }
 	int Getmaheight() const { return maheight; }
 	vector<CSprite*> tiles;
 	CSprite* get(int index);

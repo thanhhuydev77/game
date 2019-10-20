@@ -7,7 +7,7 @@ using namespace std;
 
 class Gamemap
 {
-	Map1 * mmap;
+	Map * mmap;
 	
 public:
 	Gamemap();

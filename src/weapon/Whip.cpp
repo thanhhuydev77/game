@@ -15,7 +15,7 @@ Whip::Whip(double scalerate, CGameObject * owner)
 		"content\\characters\\player\\whip\\whip_ani_lv3.txt"
 	};
 	LoadResourceHelper::Loadanimationfromfile(source, 3, this);
-	level = 3;
+	level = 0;
 	this->scale_rate = scalerate;
 	state = WHIP_STATE_UNACTIVE;
 	this->owner = owner;

@@ -7,3 +7,13 @@ int MathHelper::getsign(float x)
 	else
 		return -1;
 }
+
+bool MathHelper::isvectorhaselement(vector<int> v, int element)
+{
+	for (int i = 0; i < v.size(); i++)
+	{
+		if (element == v[i])
+			return true;
+	}
+	return false;
+}
