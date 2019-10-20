@@ -50,7 +50,7 @@ void Sword::StartAttack()
 {
 	if (state != SWORD_STATE_ACTIVE)
 	{
-		//state = SWORD_STATE_ACTIVE;
+		state = SWORD_STATE_ACTIVE;
 		attacking = true;
 		waiting = true;
 		attack_start = GetTickCount();
@@ -101,9 +101,11 @@ void Sword::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		for (UINT i = 0; i < bra.size(); i++)
 		{
 			CBratizer *bratizer = dynamic_cast<CBratizer *>(bra[i]);
-			if (CheckOverLap(bratizer))
+			if (CheckOverLap(bratizer) && bratizer->GetState() == BRATIZER_STATE_ACTIVE)
 			{
 				bratizer->SetState(BRATIZER_STATE_UNACTIVE);
+				this->state = SWORD_STATE_UNACTIVE;
+				this->attacking = false;
 				if (dynamic_cast<Large_heart *>(item[i]))
 					item[i]->SetState(ITEM_STATE_ACTIVE);
 				else

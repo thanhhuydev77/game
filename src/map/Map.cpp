@@ -51,7 +51,6 @@ Map::Map(string filePath, int idtex, int width, int height)
 	int maheight;
 	int numobjecthasbrick;
 	int numobject;
-	while (!infile.eof())
 	{
 		infile >> trashname >> mapname >> trashname >> tileWidth >> trashname >> tileHeight >> trashname >> imagesource >> imageWidth >> imageHeight >> trashname >> mawidth >> trashname >> maheight >> numobjecthasbrick;
 		this->mawidth = mawidth;
@@ -72,13 +71,13 @@ Map::Map(string filePath, int idtex, int width, int height)
 		for (int i = 0; i < numobject; i++)
 		{
 			{
-				int id, left, top;
-				infile >> id >> left >> top;
-				saveobject obj{ id,left,top };
+				int id,iditem, left, top;
+				infile >> id>> iditem >> left >> top;
+				saveobject obj{ id,iditem,left,top };
 				arrobjects.push_back(obj);
 			}
 		}
-		while(!infile.eof())
+		for (int i = 0; i <maheight*mawidth; i++)
 		{
 			int mapindex;
 			infile >> mapindex;
@@ -89,7 +88,6 @@ Map::Map(string filePath, int idtex, int width, int height)
 	infile.close();
 
 	scale_rate = (screenheight*1.0) / ((maheight)*GetTileHeight());
-	addobjects();
 }
 
 Map * Map::GetMap()
@@ -121,34 +119,27 @@ int Map::GetTileHeight()
 	return ts->GetTileHeight();
 }
 
-void Map::addobjects()
-{
-	for (int i = 0; i < arrobjects.size(); i++)
-	{
-		if (arrobjects[i].id == 1)
-			bra = new CBratizer(scale_rate);
-		bra->SetPosition(arrobjects[i].left, arrobjects[i].top);
-		Bratizerobjects.push_back(bra);
-		objects.push_back(bra);
-		if (i == 0 || i == 2)
-			Largeh = new Large_heart(scale_rate);
-		else if (i == 1 || i == 3)
-			Largeh = new Whip_PowerUp(scale_rate);
-		else
-			Largeh = new SwordItem(scale_rate);
-		Largeh->SetPosition(arrobjects[i].left, arrobjects[i].top);
-		itemsobjects.push_back(Largeh);
-		objects.push_back(Largeh);
-	}
-}
 
 void Map::Draw()
 {
-	//ve len man hinh theo ma tran trong mapsprite
 	int i = 0;
 	int t_width = GetTileWidth();
 	int t_height = GetTileHeight();
-	
+	//ve len man hinh theo ma tran trong mapsprite
+	for (int y = 0; y < maheight; y++)
+		for (int x = 0; x < mawidth; x++)
+		{
+			ts->get((mapsprite->at(i)))->Draw(x*t_width*scale_rate, y*t_height*scale_rate, 255, scale_rate);
+			i++;
+		}
+}
+
+void Map::drawfirst()
+{
+	int i = 0;
+	int t_width = GetTileWidth();
+	int t_height = GetTileHeight();
+
 	//ve tu trai sang phai, tren xuong duoi
 	for (int y = 0; y < maheight; y++)
 		for (int x = 0; x < mawidth; x++)
@@ -162,7 +153,7 @@ void Map::Draw()
 					for (int k = 0; k < 2; k++)
 					{
 						br = new CBrick(scale_rate);
-						br->SetPosition((x*t_width*scale_rate) + k * 32 * scale_rate, y*t_height*scale_rate + 32 * scale_rate);
+						br->SetPosition((x*t_width*scale_rate) + k * 32 * scale_rate,y*t_height*scale_rate +32);
 						Brickobjects.push_back(br);
 						objects.push_back(br);
 					}
@@ -170,7 +161,24 @@ void Map::Draw()
 			}
 
 		}
-	
+	for (int i = 0; i < arrobjects.size(); i++)
+	{
+		if (arrobjects[i].id == 1)
+			bra = new CBratizer(scale_rate);
+		bra->SetPosition(arrobjects[i].left, arrobjects[i].top);
+		Bratizerobjects.push_back(bra);
+		objects.push_back(bra);
+		if (arrobjects[i].iditem == 2)
+			Largeh = new Large_heart(scale_rate);
+		else if (arrobjects[i].iditem == 3)
+			Largeh = new Whip_PowerUp(scale_rate);
+		else if (arrobjects[i].iditem == 4)
+			Largeh = new SwordItem(scale_rate);
+		Largeh->SetPosition(arrobjects[i].left, arrobjects[i].top);
+		itemsobjects.push_back(Largeh);
+		objects.push_back(Largeh);
+	}
+
 }
 
 Map::~Map()

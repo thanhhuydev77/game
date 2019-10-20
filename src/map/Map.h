@@ -14,6 +14,7 @@ private:
 	struct saveobject
 	{
 		int id;
+		int iditem;
 		int left;
 		int top;
 	};
@@ -49,8 +50,8 @@ public:
 	int GetHeight();
 	int GetTileWidth();
 	int GetTileHeight();
-	void addobjects();
 	void Draw();
+	void drawfirst();
 	~Map();
 };
 

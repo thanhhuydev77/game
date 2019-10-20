@@ -21,7 +21,7 @@ Simon::Simon(double scalerate)
 	this->scale_rate = scalerate;
 	untouchable = 0;
 	attacking = false;
-	level = 3;
+	level = 1;
 	sword_turn = 0;
 	onstate = false;
 }
