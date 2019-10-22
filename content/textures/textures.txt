@@ -9,3 +9,4 @@ ID_TEX_WHIP		content\\textures\\Whip.png			255 255 255
 ID_TEX_LARGE_HEART	content\\textures\\Large_Heart.png  255 255 255
 ID_TEX_WHIP_POWER_UP 	content\\textures\\Whip_Powerup.png 255 255 255
 ID_TEX_SWORD		content\\textures\\Dagger.png		255 255 255
+ID_TEX_SPARK		content\\textures\\Spark.png		255 255 255

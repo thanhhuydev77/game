@@ -7,9 +7,13 @@
 class CBratizer :
 	public CGameObject
 {
+	bool disappearing;
+	DWORD disappear_start;
 public:
 	CBratizer(double scalerate = 1);
 	virtual void Render();
+	void start_disappear();
+	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects = NULL);
 	virtual void GetBoundingBox(float &l, float &t, float &r, float &b);
 	
 };

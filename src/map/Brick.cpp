@@ -5,11 +5,8 @@
 
 CBrick::CBrick(float scalerate)
 {
-	string source[] = {
-	"content\\tilemap\\brick_ani.txt"
-	};
 	LoadResourceHelper::Loadspritefromfile("content\\tilemap\\brick_sprites.txt", ID_TEX_MISC);
-	LoadResourceHelper::Loadanimationfromfile(source, 1, this);
+	LoadResourceHelper::Loadanimationfromfile("content\\tilemap\\brick_ani.txt", this);
 	scale_rate = scalerate;
 }
 

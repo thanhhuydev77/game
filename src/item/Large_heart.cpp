@@ -3,10 +3,7 @@
 Large_heart::Large_heart(double scalerate)
 {
 	LoadResourceHelper::Loadspritefromfile("content\\items\\Large_heart.txt", ID_TEX_LARGE_HEART);
-	string source[] = {
-	"content\\items\\Large_heart_ani.txt"
-	};
-	LoadResourceHelper::Loadanimationfromfile(source, 1, this);
+	LoadResourceHelper::Loadanimationfromfile("content\\items\\Large_heart_ani.txt", this);
 	this->scale_rate = scalerate;
 	this->state = ITEM_STATE_UNACTIVE;
 }

@@ -10,7 +10,6 @@ LoadResourceHelper::LoadResourceHelper()
 void LoadResourceHelper::Loadspritefromfile(string arrsource, int texnumber)
 {
 	int idsprite, left, top, right, bottom;
-	//string arrsource[] = { "characters\\player\\player_sprites.txt" };
 	ifstream infile;
 	CSprites * sprites = CSprites::GetInstance();
 	CTextures * textures = CTextures::GetInstance();
@@ -26,7 +25,7 @@ void LoadResourceHelper::Loadspritefromfile(string arrsource, int texnumber)
 		}
 }
 
-void LoadResourceHelper::Loadanimationfromfile(string arrsource[],int numofsource,CGameObject *object)
+void LoadResourceHelper::Loadanimationfromfile(string arrsource,CGameObject *object)
 {
 	
 	int idani, time, idsprite;
@@ -35,16 +34,16 @@ void LoadResourceHelper::Loadanimationfromfile(string arrsource[],int numofsourc
 	CSprites * sprites = CSprites::GetInstance();
 	CAnimations *anis =CAnimations::GetInstance();
 	LPANIMATION ani;
-	for (int i = 0; i < numofsource; i++)
-	{
+	
 		idani = 0;
-		infile.open(arrsource[i]);
+		infile.open(arrsource);
 		while (!infile.eof())
 		{
-
+			int num_sprite;
 			infile >> idani;
 			ani = new CAnimation(100);
-			while (!infile.eof())
+			infile >> num_sprite;
+			for(int k = 0;k< num_sprite;k++)
 			{
 				infile >> idsprite >> time;
 				ani->Add(idsprite, time);
@@ -56,7 +55,7 @@ void LoadResourceHelper::Loadanimationfromfile(string arrsource[],int numofsourc
 		}
 		//infile.clear();
 		infile.close();
-	}
+	
 }
 
 void LoadResourceHelper::loadtileset()
@@ -79,8 +78,8 @@ void LoadResourceHelper::loadtextures(string path)
 {
 	//string sourcepath = "content\\textures\\";
 	CTextures * textures = CTextures::GetInstance();
-	const string texture_name_collection[] = { "ID_TEX_MARIO","ID_TEX_ENEMY","ID_TEX_MISC","ID_TEX_SIMON","ID_TEX_WHIP","ID_TEX_MAP1","ID_TEX_BBOX","ID_TEX_BRATIZER","ID_TEX_LARGE_HEART","ID_TEX_WHIP_POWER_UP","ID_TEX_SWORD" };
-	const int texture_collection[] = { ID_TEX_MARIO,ID_TEX_ENEMY,ID_TEX_MISC,ID_TEX_SIMON,ID_TEX_WHIP,ID_TEX_MAP1,ID_TEX_BBOX,ID_TEX_BRATIZER,ID_TEX_LARGE_HEART,ID_TEX_WHIP_POWER_UP,ID_TEX_SWORD };
+	const string texture_name_collection[] = { "ID_TEX_MARIO","ID_TEX_ENEMY","ID_TEX_MISC","ID_TEX_SIMON","ID_TEX_WHIP","ID_TEX_MAP1","ID_TEX_BBOX","ID_TEX_BRATIZER","ID_TEX_LARGE_HEART","ID_TEX_WHIP_POWER_UP","ID_TEX_SWORD","ID_TEX_SPARK" };
+	const int texture_collection[] = { ID_TEX_MARIO,ID_TEX_ENEMY,ID_TEX_MISC,ID_TEX_SIMON,ID_TEX_WHIP,ID_TEX_MAP1,ID_TEX_BBOX,ID_TEX_BRATIZER,ID_TEX_LARGE_HEART,ID_TEX_WHIP_POWER_UP,ID_TEX_SWORD,ID_TEX_SPARK };
 	string idtex;
 	string pathimage;
 	int trans_r;

@@ -3,7 +3,7 @@
 #include "../utility/LoadResourceHelper.h"
 #include "../sample/Sprites.h"
 #include "../sample/Const_Value.h"
-#include "../map/CBratizer.h"
+#include "../item/CBratizer.h"
 #include <vector>
 #include "../item/Large_heart.h"
 using namespace std;

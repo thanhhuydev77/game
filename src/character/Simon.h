@@ -3,7 +3,7 @@
 #include "../utility/LoadResourceHelper.h"
 #include <string>
 #include "../sample/Const_Value.h"
-#include "../map/CBratizer.h"
+#include "../item/CBratizer.h"
 #include "../map/Brick.h"
 #include "../weapon/Whip.h"
 #include "../item/Large_heart.h"

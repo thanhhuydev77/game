@@ -3,27 +3,15 @@
 #include<fstream>
 #include <vector>
 #include <string>
-#include"../map/CBratizer.h"
+#include"../item/CBratizer.h"
 Simon::Simon(double scalerate)
 {
 	LoadResourceHelper::Loadspritefromfile("content\\characters\\player\\player_sprites.txt", ID_TEX_SIMON);
-	string source[] = {
-	"content\\characters\\player\\player_ani\\idle.txt",
-	"content\\characters\\player\\player_ani\\attack.txt",
-	"content\\characters\\player\\player_ani\\walk.txt",
-	"content\\characters\\player\\player_ani\\goup.txt",
-	"content\\characters\\player\\player_ani\\godown.txt",
-	"content\\characters\\player\\player_ani\\jump.txt",
-	"content\\characters\\player\\player_ani\\sitattack.txt",
-	"content\\characters\\player\\player_ani\\sit.txt",
-	"content\\characters\\player\\player_ani\\collect.txt" };
-	LoadResourceHelper::Loadanimationfromfile(source, 9, this);
+	LoadResourceHelper::Loadanimationfromfile("content\\characters\\player\\player_ani\\allani.txt", this);
+
 	this->scale_rate = scalerate;
-	untouchable = 0;
-	attacking = false;
 	level = 1;
 	sword_turn = 0;
-	onstate = false;
 }
 
 void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)

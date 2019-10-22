@@ -9,12 +9,7 @@ Whip::Whip()
 Whip::Whip(double scalerate, CGameObject * owner)
 {
 	LoadResourceHelper::Loadspritefromfile("content\\characters\\player\\whip\\whip_sprites.txt", ID_TEX_WHIP);
-	string source[] = {
-		"content\\characters\\player\\whip\\whip_ani_lv1.txt",
-		"content\\characters\\player\\whip\\whip_ani_lv2.txt",
-		"content\\characters\\player\\whip\\whip_ani_lv3.txt"
-	};
-	LoadResourceHelper::Loadanimationfromfile(source, 3, this);
+	LoadResourceHelper::Loadanimationfromfile("content\\characters\\player\\whip\\whip_ani.txt", this);
 	level = 0;
 	this->scale_rate = scalerate;
 	state = WHIP_STATE_UNACTIVE;
@@ -54,17 +49,17 @@ void Whip::UpdatePositionRelateToObject(DWORD dt)
 			{
 			case 0:
 				if (GetTickCount() - attack_start <= t1)
-					newposition = { x1 - WHIP_F1_BBOX_WIDTH*scale_rate - 10 , y1 + 7 };
+					newposition = { x1 - WHIP_F1_BBOX_WIDTH * scale_rate - 10 , y1 + 7 };
 
 				break;
 			case 1:
 				if (GetTickCount() - attack_start < t2)
-					newposition = { x1 - WHIP_F2_BBOX_WIDTH*scale_rate -10 , y1 + 7 };
+					newposition = { x1 - WHIP_F2_BBOX_WIDTH * scale_rate - 10 , y1 + 7 };
 
 				break;
 			case 2:
 				if (GetTickCount() - attack_start <= t3)
-					newposition = { x2 + 6,y2 - 41};
+					newposition = { x2 + 6,y2 - 41 };
 
 				break;
 			}
@@ -85,7 +80,7 @@ void Whip::UpdatePositionRelateToObject(DWORD dt)
 			case 2:
 				if (GetTickCount() - attack_start <= t3)
 					/*if (level != 3)*/
-					newposition = { x1 - WHIP_F3_BBOX_WIDTH*scale_rate -14,y2 - 41 };
+					newposition = { x1 - WHIP_F3_BBOX_WIDTH * scale_rate - 14,y2 - 41 };
 				/*else
 					newposition = { x1 - WHIP_F3_HLV_BBOX_WIDTH + 12 , y1 + 33 - WHIP_F3_BBOX_HEIGHT };*/
 				break;
@@ -202,12 +197,9 @@ void Whip::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		if (CheckOverLap(bratizer))
 		{
 			bratizer->SetState(BRATIZER_STATE_UNACTIVE);
+			//bratizer->start_disappear();
 			bratizer->SetPosition(-BRATIZER_BBOX_WIDTH, 0);
-
-			if (dynamic_cast<Large_heart *>(item[i]))
-				item[i]->SetState(ITEM_STATE_ACTIVE);
-			else
-				item[i]->SetState(ITEM_STATE_ACTIVE);
+			item[i]->SetState(ITEM_STATE_ACTIVE);
 		}
 	}
 

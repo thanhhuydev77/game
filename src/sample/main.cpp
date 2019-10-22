@@ -85,6 +85,7 @@ void CSampleKeyHander::KeyState(BYTE *states)
 	if (game->IsKeyDown(DIK_DOWN) && !simon->iscollecting())
 	{
 		simon->SetState(SIMON_STATE_SIT);
+		whip->SetState(WHIP_STATE_UNACTIVE);
 	}
 	else if (game->IsKeyDown(DIK_RIGHT) && !simon->iscollecting())
 	{
@@ -156,15 +157,21 @@ void LoadResources()
 */
 void Update(DWORD dt)
 {
-
+	coObjects = gm->getBrickobjects();
+	// item falling and stop when on stair
 	for (unsigned int i = 0; i < ItemObjects.size(); i++)
 		ItemObjects[i]->Update(dt, &BrickObjects);
+	//update bratizers
+	for (unsigned int i = 0; i < BratizerObjects.size(); i++)
+		BratizerObjects[i]->Update(dt);
+
 	for (unsigned int i = 0; i < ItemObjects.size(); i++)
 	{
 		if (ItemObjects[i]->GetState() == ITEM_STATE_ACTIVE)
 			coObjects.push_back(ItemObjects[i]);
 	}
 	simon->Update(dt, &coObjects);
+
 	whip->Update(dt, &BratizerandItemObjects);
 	sword->Update(dt, &BratizerandItemObjects);
 

@@ -3,10 +3,7 @@
 Whip_PowerUp::Whip_PowerUp(double scalerate)
 {
 	LoadResourceHelper::Loadspritefromfile("content\\items\\Whip_PowerUp.txt", ID_TEX_WHIP_POWER_UP);
-	string source[] = {
-	"content\\items\\Whip_PowerUp_ani.txt"
-	};
-	LoadResourceHelper::Loadanimationfromfile(source, 1, this);
+	LoadResourceHelper::Loadanimationfromfile("content\\items\\Whip_PowerUp_ani.txt", this);
 	this->scale_rate = scalerate;
 	this->state = ITEM_STATE_UNACTIVE;
 }

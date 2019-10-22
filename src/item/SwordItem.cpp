@@ -3,10 +3,7 @@
 SwordItem::SwordItem(double scalerate)
 {
 	LoadResourceHelper::Loadspritefromfile("content\\characters\\player\\Sword\\Sword_sprites.txt", ID_TEX_SWORD);
-	string source[] = {
-		"content\\characters\\player\\Sword\\Sword_ani.txt"
-	};
-	LoadResourceHelper::Loadanimationfromfile(source, 1, this);
+	LoadResourceHelper::Loadanimationfromfile("content\\characters\\player\\Sword\\Sword_ani.txt", this);
 	this->scale_rate = scalerate;
 	this->state = ITEM_STATE_UNACTIVE;
 }

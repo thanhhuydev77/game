@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include "tileset.h"
-#include "CBratizer.h"
+#include "../item/CBratizer.h"
 #include "Brick.h"
 #include "../utility/MathHelper.h"
 #include "../character/Simon.h"

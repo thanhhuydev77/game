@@ -26,7 +26,7 @@ public:
 #define ID_TEX_LARGE_HEART		7
 #define ID_TEX_WHIP_POWER_UP	5
 #define	ID_TEX_SWORD			4
-
+#define ID_TEX_SPARK			3
 #pragma endregion
 #pragma region Simon
 
@@ -50,17 +50,17 @@ public:
 #define SIMON_STATE_GODOWN			600
 #define SIMON_STATE_ATTACK			700
 #define SIMON_STATE_COLLECT			800
-	// value of const is base on location in init of class
-#define SIMON_ANI_IDLE				0
-#define SIMON_ANI_WALKING			2
+
+#define SIMON_ANI_IDLE				4
+#define SIMON_ANI_WALKING			8
 #define SIMON_ANI_DIE				4
 #define SIMON_ANI_JUMP				5
-#define SIMON_ANI_SIT				7
+#define SIMON_ANI_SIT				6
 #define SIMON_ANI_GOUP				3
-#define SIMON_ANI_GODOWN			4
-#define SIMON_ANI_ATTACK			1
-#define SIMON_ANI_SIT_ATTACK		6
-#define SIMON_ANI_COLLECT			8
+#define SIMON_ANI_GODOWN			2
+#define SIMON_ANI_ATTACK			0
+#define SIMON_ANI_SIT_ATTACK		7
+#define SIMON_ANI_COLLECT			1
 
 #define SIMON_BIG_BBOX_WIDTH		60
 #define SIMON_BIG_BBOX_HEIGHT		66
@@ -78,6 +78,8 @@ public:
 #define BRATIZER_STATE_UNACTIVE		0
 #define BRATIZER_BBOX_WIDTH			32
 #define BRATIZER_BBOX_HEIGHT		64
+#define BRATIZER_STATE_DISAPPEAR	2
+#define BRATIZER_ANI_DISAPPEAR		1
 #pragma endregion
 #pragma region whip
 
