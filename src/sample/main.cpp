@@ -46,30 +46,25 @@ void CSampleKeyHander::OnKeyDown(int KeyCode)
 	switch (KeyCode)
 	{
 	case DIK_SPACE:
-		if (game->IsKeyDown(DIK_RIGHT) || game->IsKeyDown(DIK_LEFT) )
+		if (game->IsKeyDown(DIK_RIGHT) || game->IsKeyDown(DIK_LEFT))
 		{
 			simon->StartplexJump();
 		}
 		simon->StartmonoJump();
 		break;
 	case DIK_A:
-		if (game->IsKeyDown(DIK_UP) && !game->IsKeyDown(DIK_DOWN) && !simon->iscollecting())
+		
+		if (game->IsKeyDown(DIK_UP) &&simon->getswordturn()>=1 )
 		{
-			if (simon->getswordturn() >= 1 && !simon->isattacking() && !sword->isattacking())
-			{  //animation with sword , sword turn - 1
-				simon->StartAttack();
-				simon->setswordturndesc();
-				sword->StartAttack();
-			}
+			simon->StartAttack();
+			simon->setswordturndesc();
+			sword->StartAttack();
 		}
 		else
 		{
 			//animation with whip
-			if (!simon->isattacking() && !game->IsKeyDown(DIK_DOWN) && !simon->iscollecting())
-			{
 				simon->StartAttack();
 				whip->StartAttack();
-			}
 		}
 		break;
 	}

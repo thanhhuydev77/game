@@ -72,8 +72,7 @@ public:
 #pragma endregion
 #pragma region backgroundobject
 
-#define BRICK_BBOX_WIDTH			32
-#define BRICK_BBOX_HEIGHT			32
+
 #define BRATIZER_STATE_ACTIVE		1
 #define BRATIZER_STATE_UNACTIVE		0
 #define BRATIZER_BBOX_WIDTH			32

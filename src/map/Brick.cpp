@@ -5,24 +5,21 @@
 
 CBrick::CBrick(float scalerate)
 {
-	LoadResourceHelper::Loadspritefromfile("content\\tilemap\\brick_sprites.txt", ID_TEX_MISC);
-	LoadResourceHelper::Loadanimationfromfile("content\\tilemap\\brick_ani.txt", this);
 	scale_rate = scalerate;
 }
 
 void CBrick::Render()
 {
-	animations[0]->Render(x, y, 255, scale_rate);
 	RenderBoundingBox();
 }
 
 void CBrick::GetBoundingBox(float &l, float &t, float &r, float &b)
 {
-	x_p = (BRICK_BBOX_WIDTH - BRICK_BBOX_WIDTH * scale_rate) / 2;
-	y_p = (BRICK_BBOX_HEIGHT - BRICK_BBOX_HEIGHT * scale_rate) / 2;
+	x_p = (boxwidth - boxwidth * scale_rate) / 2;
+	y_p = (boxheight - boxheight * scale_rate) / 2;
 	l = x+x_p;
 	t = y+y_p;
-	r = l + BRICK_BBOX_WIDTH*scale_rate;
-	b = t + BRICK_BBOX_HEIGHT*scale_rate;
+	r = l + boxwidth*scale_rate;
+	b = t + boxheight*scale_rate;
 }
 

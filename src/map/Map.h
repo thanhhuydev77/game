@@ -32,7 +32,7 @@ private:
 	int screenheight;
 	int screenwidth;
 	double scale_rate;
-	vector<int> tilehasbrick;
+	//vector<int> tilehasbrick;
 	vector<LPGAMEOBJECT> objects;
 	vector<LPGAMEOBJECT> Brickobjects;
 	vector<LPGAMEOBJECT> Bratizerobjects;
@@ -44,6 +44,8 @@ public:
 	vector<LPGAMEOBJECT> getBratizersObject();
 	vector<LPGAMEOBJECT> getItemsObject();
 	double getscalerate();
+	void loaditems();
+	void loadbricks(int top, int left, int width, int height);
 	Map (string filePath,int idtex, int width, int height);
 	Map* GetMap();
 	int GetWidth();

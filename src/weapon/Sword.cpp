@@ -45,7 +45,7 @@ void Sword::UpdatePositionRelateToObject(DWORD dt)
 
 void Sword::StartAttack()
 {
-	if (state != SWORD_STATE_ACTIVE)
+	if (state != SWORD_STATE_ACTIVE && !attacking && dynamic_cast<Simon*>(owner)->isattacking())
 	{
 		state = SWORD_STATE_ACTIVE;
 		attacking = true;
@@ -101,6 +101,7 @@ void Sword::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			if (CheckOverLap(bratizer) && bratizer->GetState() == BRATIZER_STATE_ACTIVE)
 			{
 				bratizer->SetState(BRATIZER_STATE_UNACTIVE);
+				bratizer->SetPosition(-BRATIZER_BBOX_WIDTH, 0);
 				this->state = SWORD_STATE_UNACTIVE;
 				this->attacking = false;
 				if (dynamic_cast<Large_heart *>(item[i]))

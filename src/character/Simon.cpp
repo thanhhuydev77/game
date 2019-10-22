@@ -285,8 +285,11 @@ void Simon::SetState(int state)
 
 void Simon::StartAttack()
 {
-	if (!attacking) {
-		attacking = true; attack_start = GetTickCount();
+	if (!attacking && !collecting) {
+		attacking = true;
+		attack_start = GetTickCount();
+		
+		animations[SIMON_ANI_ATTACK]->reset();
 		overlap_time = GetTickCount();
 		temp_nx = nx;
 	}
@@ -294,7 +297,7 @@ void Simon::StartAttack()
 
 void Simon::StartmonoJump()
 {
-	if (!jumping) {
+	if (!jumping && !collecting) {
 		jumping = true; jump_start = GetTickCount();
 		onstate = false;
 	}
@@ -302,7 +305,7 @@ void Simon::StartmonoJump()
 
 void Simon::StartplexJump()
 {
-	if (!jumping) {
+	if (!jumping && !collecting) {
 		jumping = true; jumpplus_start = GetTickCount();
 		temp_nx = nx;
 		onstate = false;
