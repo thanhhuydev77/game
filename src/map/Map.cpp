@@ -176,38 +176,6 @@ void Map::Draw()
 
 }
 
-void Map::drawfirst()
-{
-	int i = 0;
-	int t_width = GetTileWidth();
-	int t_height = GetTileHeight();
-
-	//ve tu trai sang phai, tren xuong duoi
-	for (int y = 0; y < maheight; y++)
-		for (int x = 0; x < mawidth; x++)
-		{
-			ts->get((mapsprite->at(i)))->Draw(x*t_width*scale_rate, y*t_height*scale_rate, 255, scale_rate);
-			i++;
-			// some tiles has brick inside
-			//if (ts->getname() == "map1")
-			//{
-			//	//if (MathHelper::isvectorhaselement(tilehasbrick, mapsprite->at(i)))
-			//	//	// 1 tile has 2 brick,1 brick has 2 small brick
-			//	//	for (int k = 0; k < 2; k++)
-			//	//	{
-			//	//		br = new CBrick(scale_rate);
-			//	//		br->SetPosition((x*t_width*scale_rate) + k * 32 * scale_rate,y*t_height*scale_rate +32);
-			//	//		Brickobjects.push_back(br);
-			//	//		objects.push_back(br);
-			//	//	}
-			//	
-			//}
-
-		}
-	
-
-}
-
 Map::~Map()
 {
 }
