@@ -6,9 +6,9 @@ Gamemap::Gamemap()
 {
 }
 
-void Gamemap::loadmap(string path,int idtex,int screenheight,int screenwidth)
+void Gamemap::loadmap(string path,int idtex)
 {
-	mmap = new Map(path,idtex,screenwidth,screenheight);
+	mmap = new Map(path,idtex);
 }
 
 vector<LPGAMEOBJECT> Gamemap::getBrickobjects()
@@ -31,10 +31,6 @@ vector<LPGAMEOBJECT> Gamemap::getallobjects()
 	return mmap->getallObject();
 }
 
-double Gamemap::getscalerate()
-{
-	return mmap->getscalerate();
-}
 
 int Gamemap::getmapwidth()
 {

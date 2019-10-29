@@ -44,9 +44,6 @@ public:
 	int state;
 	int level;
 	DWORD dt; 
-	float scale_rate;
-	float x_p;
-	float y_p;
 	vector<LPANIMATION> animations;
 
 public: 

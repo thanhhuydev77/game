@@ -7,11 +7,10 @@ Sword::Sword()
 {
 }
 
-Sword::Sword(double scalerate, CGameObject * owner)
+Sword::Sword(CGameObject * owner)
 {
 	LoadResourceHelper::Loadspritefromfile("content\\characters\\player\\Sword\\Sword_sprites.txt", ID_TEX_SWORD);
 	LoadResourceHelper::Loadanimationfromfile("content\\characters\\player\\Sword\\Sword_ani.txt", this);
-	this->scale_rate = scalerate;
 	state = SWORD_STATE_UNACTIVE;
 	this->owner = owner;
 	waiting = false;
@@ -33,11 +32,11 @@ void Sword::UpdatePositionRelateToObject(DWORD dt)
 	//simon.nx == 1
 	if (owner->GetDirect() == 1)
 	{
-		newposition = { x2+5,y1 + 12 };
+		newposition = { x2 + 5,y1 + 16 };
 	}
 	else //Left
 	{
-		newposition = { x1 - SWORD_BBOX_WIDTH - 5,y1 + 12 };
+		newposition = { x1 - SWORD_BBOX_WIDTH - 5,y1 + 16 };
 	}
 
 	this->SetPosition(newposition.x, newposition.y);
@@ -57,12 +56,12 @@ void Sword::StartAttack()
 
 void Sword::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
-	if (state == SWORD_STATE_ACTIVE ||waiting )
+	if (state == SWORD_STATE_ACTIVE || waiting)
 	{
 
 		x += vx;
 		//waiting time : 200 --> attack time = 200->600
-		if (GetTickCount() - attack_start > SIMON_ATTACK_TIME +200 )
+		if (GetTickCount() - attack_start > SIMON_ATTACK_TIME + 200)
 		{
 			attacking = false;
 			attack_start = 0;
@@ -118,18 +117,17 @@ void Sword::Render()
 {
 	if (state == SWORD_STATE_ACTIVE)
 	{
-		animations[0]->Render(x, y, 255, nx*scale_rate);//
+		animations[0]->Render(x, y, 255, nx);//
 		RenderBoundingBox();
 	}
 }
 
 void Sword::GetBoundingBox(float & left, float & top, float & right, float & bottom)
 {
-	x_p = (SWORD_BBOX_WIDTH - SWORD_BBOX_WIDTH * scale_rate) / 2;
-	y_p = (SWORD_BBOX_HEIGHT - SWORD_BBOX_HEIGHT * scale_rate) / 2;
-	left = x + x_p;
-	top = y + y_p;
 
-	right = left + SWORD_BBOX_WIDTH * scale_rate;
-	bottom = top + SWORD_BBOX_HEIGHT * scale_rate;
+	left = x;
+	top = y;
+
+	right = left + SWORD_BBOX_WIDTH;
+	bottom = top + SWORD_BBOX_HEIGHT;
 }

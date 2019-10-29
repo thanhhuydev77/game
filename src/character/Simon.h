@@ -26,7 +26,7 @@ class Simon : public CGameObject
 		int temp_nx;
 		int sword_turn;
 public:
-	Simon(double scalerate = 1);
+	Simon();
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *colliable_objects = NULL);
 	virtual void Render();
 	void setswordturndesc() ;

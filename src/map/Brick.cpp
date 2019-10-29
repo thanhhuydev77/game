@@ -3,23 +3,20 @@
 #include "../sample/Textures.h"
 #include "../sample/Const_Value.h"
 
-CBrick::CBrick(float scalerate)
+CInvisibleBrick::CInvisibleBrick()
 {
-	scale_rate = scalerate;
 }
 
-void CBrick::Render()
+void CInvisibleBrick::Render()
 {
 	RenderBoundingBox();
 }
 
-void CBrick::GetBoundingBox(float &l, float &t, float &r, float &b)
+void CInvisibleBrick::GetBoundingBox(float &l, float &t, float &r, float &b)
 {
-	x_p = (boxwidth - boxwidth * scale_rate) / 2;
-	y_p = (boxheight - boxheight * scale_rate) / 2;
-	l = x+x_p;
-	t = y+y_p;
-	r = l + boxwidth*scale_rate;
-	b = t + boxheight*scale_rate;
+	l = x;
+	t = y;
+	r = l + boxwidth;
+	b = t + boxheight;
 }
 

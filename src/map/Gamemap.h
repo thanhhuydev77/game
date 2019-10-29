@@ -11,12 +11,11 @@ class Gamemap
 	
 public:
 	Gamemap();
-	void loadmap(string path, int idtex, int screenheight, int screenwidth);
+	void loadmap(string path, int idtex);
 	vector<LPGAMEOBJECT> getBrickobjects();
 	vector<LPGAMEOBJECT> getBratizerobjects();
 	vector<LPGAMEOBJECT> getItemobjects();
 	vector<LPGAMEOBJECT> getallobjects();
-	double getscalerate();
 	int getmapwidth();
 	void Render();
 	~Gamemap();

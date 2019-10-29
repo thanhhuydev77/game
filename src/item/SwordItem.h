@@ -8,7 +8,7 @@ class SwordItem :
 	public CGameObject
 {
 public:
-	SwordItem(double scalerate = 1);
+	SwordItem();
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects = NULL);
 	virtual void Render();
 	virtual void GetBoundingBox(float &l, float &t, float &r, float &b);

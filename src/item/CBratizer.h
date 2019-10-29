@@ -10,7 +10,7 @@ class CBratizer :
 	bool disappearing;
 	DWORD disappear_start;
 public:
-	CBratizer(double scalerate = 1);
+	CBratizer();
 	virtual void Render();
 	void start_disappear();
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects = NULL);

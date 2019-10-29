@@ -1,10 +1,10 @@
 #include "SwordItem.h"
 
-SwordItem::SwordItem(double scalerate)
+SwordItem::SwordItem()
 {
 	LoadResourceHelper::Loadspritefromfile("content\\characters\\player\\Sword\\Sword_sprites.txt", ID_TEX_SWORD);
 	LoadResourceHelper::Loadanimationfromfile("content\\characters\\player\\Sword\\Sword_ani.txt", this);
-	this->scale_rate = scalerate;
+	
 	this->state = ITEM_STATE_UNACTIVE;
 }
 
@@ -32,7 +32,7 @@ void  SwordItem::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			for (UINT i = 0; i < coEventsResult.size(); i++)
 			{
 				LPCOLLISIONEVENT e = coEventsResult[i];
-				if (dynamic_cast<CBrick *>(e->obj))
+				if (dynamic_cast<CInvisibleBrick *>(e->obj))
 				{
 					// block 
 							// nx*0.4f : need to push out a bit to avoid overlapping next frame
@@ -49,19 +49,18 @@ void  SwordItem::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void  SwordItem::Render()
 {
 	if (state == ITEM_STATE_ACTIVE)
-		animations[0]->Render(x, y, 255, scale_rate);
+		animations[0]->Render(x, y, 255);
 	RenderBoundingBox();
 }
 
 void  SwordItem::GetBoundingBox(float & l, float & t, float & r, float & b)
 {
-	x_p = (SWORD_BBOX_WIDTH - SWORD_BBOX_WIDTH * scale_rate) / 2;
-	y_p = (SWORD_BBOX_HEIGHT - SWORD_BBOX_HEIGHT * scale_rate) / 2;
-	l = x + x_p;
-	t = y + y_p;
+	
+	l = x ;
+	t = y ;
 
-	r = l + SWORD_BBOX_WIDTH * scale_rate;
-	b = t + SWORD_BBOX_HEIGHT * scale_rate;
+	r = l + SWORD_BBOX_WIDTH ;
+	b = t + SWORD_BBOX_HEIGHT ;
 
 }
 

@@ -15,7 +15,7 @@ class Whip : public CGameObject
 	DWORD attack_start;
 public:
 	Whip();
-	Whip(double scalerate = 1, CGameObject * owner = NULL);
+	Whip( CGameObject * owner = NULL);
 	int GetLevel();
 	void setstate(int state) { this->state = state; }
 	CGameObject* GetOwner();

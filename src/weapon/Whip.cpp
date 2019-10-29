@@ -6,12 +6,12 @@ Whip::Whip()
 {
 }
 
-Whip::Whip(double scalerate, CGameObject * owner)
+Whip::Whip( CGameObject * owner)
 {
 	LoadResourceHelper::Loadspritefromfile("content\\characters\\player\\whip\\whip_sprites.txt", ID_TEX_WHIP);
 	LoadResourceHelper::Loadanimationfromfile("content\\characters\\player\\whip\\whip_ani.txt", this);
+	
 	level = 0;
-	this->scale_rate = scalerate;
 	state = WHIP_STATE_UNACTIVE;
 	this->owner = owner;
 }
@@ -49,17 +49,17 @@ void Whip::UpdatePositionRelateToObject(DWORD dt)
 			{
 			case 0:
 				if (GetTickCount() - attack_start <= t1)
-					newposition = { x1 - WHIP_F1_BBOX_WIDTH * scale_rate - 10 , y1 + 7 };
+					newposition = { x1 - WHIP_F1_BBOX_WIDTH -9  , y1 + 13 };
 
 				break;
 			case 1:
 				if (GetTickCount() - attack_start < t2)
-					newposition = { x1 - WHIP_F2_BBOX_WIDTH * scale_rate - 10 , y1 + 7 };
+					newposition = { x1 - WHIP_F2_BBOX_WIDTH -9 , y1 + 13 };
 
 				break;
 			case 2:
 				if (GetTickCount() - attack_start <= t3)
-					newposition = { x2 + 6,y2 - 41 };
+					newposition = { x2 + 12,y2 - 46 };
 
 				break;
 			}
@@ -71,16 +71,16 @@ void Whip::UpdatePositionRelateToObject(DWORD dt)
 
 			case 0:
 				if (GetTickCount() - attack_start <= t1)
-					newposition = { x2 + 9, y1 + 9 };
+					newposition = { x2 + 9, y1 + 13 };
 				break;
 			case 1:
 				if (GetTickCount() - attack_start <= t2)
-					newposition = { x2 + 9, y1 + 9 };
+					newposition = { x2 + 9, y1 + 13 };
 				break;
 			case 2:
 				if (GetTickCount() - attack_start <= t3)
 					/*if (level != 3)*/
-					newposition = { x1 - WHIP_F3_BBOX_WIDTH * scale_rate - 14,y2 - 41 };
+					newposition = { x1 - WHIP_F3_BBOX_WIDTH -11,y2 - 46 };
 				/*else
 					newposition = { x1 - WHIP_F3_HLV_BBOX_WIDTH + 12 , y1 + 33 - WHIP_F3_BBOX_HEIGHT };*/
 				break;
@@ -101,21 +101,21 @@ void Whip::UpdatePositionRelateToObject(DWORD dt)
 				case 2:
 				case 3:
 					if (GetTickCount() - attack_start <= t1)
-						newposition = { x1 - WHIP_F1_BBOX_WIDTH * scale_rate - 10 , y1 + 7 };
+						newposition = { x1 - WHIP_F1_BBOX_WIDTH - 9  , y1 + 13 };
 					break;
 				case 4:
 				case 5:
 				case 6:
 				case 7:
 					if (GetTickCount() - attack_start < t2)
-						newposition = { x1 - WHIP_F2_BBOX_WIDTH * scale_rate - 10 , y1 + 7 };
+						newposition = { x1 - WHIP_F2_BBOX_WIDTH - 9 , y1 + 13 };
 					break;
 				case 8:
 				case 9:
 				case 10:
 				case 11:
 					if (GetTickCount() - attack_start <= t3)
-						newposition = { x2 + 6,y2 - 41 };
+						newposition = { x2 + 12,y2 - 46 };
 					break;
 				}
 			}
@@ -129,14 +129,14 @@ void Whip::UpdatePositionRelateToObject(DWORD dt)
 				case 2:
 				case 3:
 					if (GetTickCount() - attack_start <= t1)
-						newposition = { x2 + 9, y1 + 9 };
+						newposition = { x2 + 9, y1 + 13 };
 					break;
 				case 4:
 				case 5:
 				case 6:
 				case 7:
 					if (GetTickCount() - attack_start <= t2)
-						newposition = { x2 + 9, y1 + 9 };
+						newposition = { x2 + 9, y1 + 13 };
 					break;
 				case 8:
 				case 9:
@@ -146,7 +146,7 @@ void Whip::UpdatePositionRelateToObject(DWORD dt)
 						/*if (level != 3)
 							newposition = { x1 - WHIP_F3_BBOX_WIDTH + 10 , y1 + 29 - WHIP_F3_BBOX_HEIGHT };
 						else*/
-						newposition = { x1 - WHIP_F3_HLV_BBOX_WIDTH * scale_rate - 14,y2 - 41 };
+						newposition = { x1 - WHIP_F3_HLV_BBOX_WIDTH - 11,y2 - 46 };
 					break;
 
 				}
@@ -210,7 +210,7 @@ void Whip::Render()
 	if (state == WHIP_STATE_ACTIVE)
 	{
 		//level begin at 1 and ani begin at 0
-		animations[level - 1]->Render(x, y, 255, nx*scale_rate);//
+		animations[level - 1]->Render(x, y, 255, nx);//
 		RenderBoundingBox();
 	}
 
@@ -227,32 +227,20 @@ void Whip::GetBoundingBox(float & left, float & top, float & right, float & bott
 		{
 		case 0:
 		{
-			x_p = (WHIP_F1_BBOX_WIDTH - WHIP_F1_BBOX_WIDTH * scale_rate) / 2;
-			y_p = (WHIP_F1_BBOX_HEIGHT - WHIP_F1_BBOX_HEIGHT * scale_rate) / 2;
-			left = x + x_p;
-			top = y + y_p;
-
-			right = left + WHIP_F1_BBOX_WIDTH * scale_rate;
-			bottom = top + WHIP_F1_BBOX_HEIGHT * scale_rate;
+			right = left + WHIP_F1_BBOX_WIDTH ;
+			bottom = top + WHIP_F1_BBOX_HEIGHT;
 			break;
 		}
 		case 1:
 		{
-			x_p = (WHIP_F2_BBOX_WIDTH - WHIP_F2_BBOX_WIDTH * scale_rate) / 2;
-			y_p = (WHIP_F2_BBOX_HEIGHT - WHIP_F2_BBOX_HEIGHT * scale_rate) / 2;
-			left = x + x_p;
-			top = y + y_p;
-
-			right = left + WHIP_F2_BBOX_WIDTH * scale_rate;
-			bottom = top + WHIP_F2_BBOX_HEIGHT * scale_rate;
+			right = left + WHIP_F2_BBOX_WIDTH ;
+			bottom = top + WHIP_F2_BBOX_HEIGHT ;
 			break;
 		}
 		case 2:
 		{
-			x_p = (WHIP_F3_BBOX_WIDTH - WHIP_F3_BBOX_WIDTH * scale_rate) / 2;
-			y_p = (WHIP_F3_BBOX_HEIGHT - WHIP_F3_BBOX_HEIGHT * scale_rate) / 2;
-			right = left + WHIP_F3_BBOX_WIDTH * scale_rate;
-			bottom = top + WHIP_F3_BBOX_HEIGHT * scale_rate;
+			right = left + WHIP_F3_BBOX_WIDTH ;
+			bottom = top + WHIP_F3_BBOX_HEIGHT ;
 			break;
 		}
 		default:
@@ -261,19 +249,19 @@ void Whip::GetBoundingBox(float & left, float & top, float & right, float & bott
 			break;
 		}
 	else //level 3
+		
 		switch (frame)
 		{
+
 		case 0:
 		case 1:
 		case 2:
 		case 3:
 		{
-			x_p = (WHIP_F1_BBOX_WIDTH - WHIP_F1_BBOX_WIDTH * scale_rate) / 2;
-			y_p = (WHIP_F1_BBOX_HEIGHT - WHIP_F1_BBOX_HEIGHT * scale_rate) / 2;
-			left = x + x_p;
-			top = y + y_p;
-			right = left + WHIP_F1_BBOX_WIDTH * scale_rate;
-			bottom = top + WHIP_F1_BBOX_HEIGHT * scale_rate;
+			
+			
+			right = left + WHIP_F1_BBOX_WIDTH ;
+			bottom = top + WHIP_F1_BBOX_HEIGHT ;
 			break;
 		}
 		case 4:
@@ -281,12 +269,9 @@ void Whip::GetBoundingBox(float & left, float & top, float & right, float & bott
 		case 6:
 		case 7:
 		{
-			x_p = (WHIP_F2_BBOX_WIDTH - WHIP_F2_BBOX_WIDTH * scale_rate) / 2;
-			y_p = (WHIP_F2_BBOX_HEIGHT - WHIP_F2_BBOX_HEIGHT * scale_rate) / 2;
-			left = x + x_p;
-			top = y + y_p;
-			right = left + WHIP_F2_BBOX_WIDTH * scale_rate;
-			bottom = top + WHIP_F2_BBOX_HEIGHT * scale_rate;
+			
+			right = left + WHIP_F2_BBOX_WIDTH ;
+			bottom = top + WHIP_F2_BBOX_HEIGHT ;
 			break;
 		}
 		case 8:
@@ -294,12 +279,8 @@ void Whip::GetBoundingBox(float & left, float & top, float & right, float & bott
 		case 10:
 		case 11:
 		{
-			x_p = (WHIP_F3_BBOX_WIDTH - WHIP_F3_BBOX_WIDTH * scale_rate) / 2;
-			y_p = (WHIP_F3_BBOX_HEIGHT - WHIP_F3_BBOX_HEIGHT * scale_rate) / 2;
-			left = x + x_p;
-			top = y + y_p;
-			right = left + WHIP_F3_HLV_BBOX_WIDTH * scale_rate;
-			bottom = top + WHIP_F3_BBOX_HEIGHT * scale_rate;
+			right = left + WHIP_F3_HLV_BBOX_WIDTH ;
+			bottom = top + WHIP_F3_BBOX_HEIGHT ;
 			break;
 		}
 		default:

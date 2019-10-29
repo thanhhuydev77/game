@@ -4,12 +4,11 @@
 #include <vector>
 #include <string>
 #include"../item/CBratizer.h"
-Simon::Simon(double scalerate)
+Simon::Simon()
 {
 	LoadResourceHelper::Loadspritefromfile("content\\characters\\player\\player_sprites.txt", ID_TEX_SIMON);
 	LoadResourceHelper::Loadanimationfromfile("content\\characters\\player\\player_ani\\allani.txt", this);
 
-	this->scale_rate = scalerate;
 	level = 1;
 	sword_turn = 0;
 }
@@ -164,7 +163,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 		for (UINT i = 0; i < coEventsResult.size(); i++)
 		{
 			LPCOLLISIONEVENT e = coEventsResult[i];
-			if (dynamic_cast<CBrick *>(e->obj))
+			if (dynamic_cast<CInvisibleBrick *>(e->obj))
 			{
 				// block 
 				x += min_tx * dx + nx * 0.1f;		// nx*0.5f : need to push out a bit to avoid overlapping next frame
@@ -252,7 +251,7 @@ void Simon::Render()
 	if (collecting)
 		ani = SIMON_ANI_COLLECT;
 
-	animations[ani]->Render(x, y, 255, nx*scale_rate);
+	animations[ani]->Render(x, y, 255, nx);
 	RenderBoundingBox();
 }
 
@@ -334,12 +333,10 @@ int Simon::GetDirect()
 void Simon::GetBoundingBox(float & left, float & top, float & right, float & bottom)
 {
 	
-	x_p = (SIMON_BIG_BBOX_WIDTH -  SIMON_SMALL_BBOX_WIDTH  * scale_rate)/2;
-	y_p = (SIMON_BIG_BBOX_HEIGHT - SIMON_SMALL_BBOX_HEIGHT * scale_rate)/2;
-	left = x+x_p;
-	top = y+y_p;
-	right = left + SIMON_SMALL_BBOX_WIDTH * scale_rate ;
-	bottom = top + SIMON_SMALL_BBOX_HEIGHT * scale_rate;
+	left = x+(SIMON_BIG_BBOX_WIDTH - SIMON_SMALL_BBOX_WIDTH)/2;
+	top = y;
+	right = left + SIMON_SMALL_BBOX_WIDTH ;
+	bottom = top + SIMON_SMALL_BBOX_HEIGHT;
 
 
 }

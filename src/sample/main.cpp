@@ -21,7 +21,6 @@ CGame *game;
 Simon *simon;
 Gamemap *gm;
 Whip *whip;
-double Scale_rate;
 int mapwidth;
 
 vector<LPGAMEOBJECT> objects;  //all object
@@ -117,10 +116,9 @@ void LoadResources()
 	CTextures * textures = CTextures::GetInstance();
 	textures->loadcontent();
 	gm = new Gamemap();
-	gm->loadmap("content\\tilemap\\Courtyard.txt", ID_TEX_MAP1, SCREEN_HEIGHT, SCREEN_WIDTH);
+	gm->loadmap("content\\tilemap\\Courtyard.txt", ID_TEX_MAP1);
 	mapwidth = gm->getmapwidth();
 
-	Scale_rate = gm->getscalerate();
 	objects = gm->getallobjects();
 	BrickObjects = gm->getBrickobjects();
 	BratizerObjects = gm->getBratizerobjects();
@@ -135,13 +133,13 @@ void LoadResources()
 		BratizerandItemObjects.push_back(gm->getItemobjects().at(i));
 	}
 	//init simon with defaul position
-	simon = new Simon(Scale_rate);
+	simon = new Simon();
 	simon->SetPosition(10.0f, 180.0f);
 	objects.push_back(simon);
 	//init sword and whip
-	sword = new Sword(Scale_rate, simon);
+	sword = new Sword(simon);
 	objects.push_back(sword);
-	whip = new Whip(Scale_rate, simon);
+	whip = new Whip(simon);
 	objects.push_back(whip);
 
 }

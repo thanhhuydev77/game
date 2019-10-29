@@ -1,7 +1,7 @@
 #include "CBratizer.h"
 #include "../sample/Const_Value.h"
 
-CBratizer::CBratizer(double scalerate)
+CBratizer::CBratizer()
 {
 
 	LoadResourceHelper::Loadspritefromfile("content\\tilemap\\bratizer_sprites.txt", ID_TEX_BRATIZER);
@@ -9,7 +9,7 @@ CBratizer::CBratizer(double scalerate)
 
 	LoadResourceHelper::Loadspritefromfile("content\\effect\\spark_sprites.txt", ID_TEX_SPARK);
 	LoadResourceHelper::Loadanimationfromfile("content\\effect\\spark_ani.txt", this);
-	this->scale_rate = scalerate;
+
 	this->AddAnimation(602);
 	this->state = BRATIZER_STATE_ACTIVE;
 }
@@ -22,7 +22,7 @@ void CBratizer::Render()
 		int ani = 0;
 		if (disappearing)
 			ani = BRATIZER_ANI_DISAPPEAR;
-		animations[ani]->Render(x, y, 255, scale_rate);
+		animations[ani]->Render(x, y, 255);
 	}RenderBoundingBox();
 }
 
@@ -50,11 +50,10 @@ void CBratizer::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void CBratizer::GetBoundingBox(float & l, float & t, float & r, float & b)
 {
-	x_p = (BRATIZER_BBOX_WIDTH - BRATIZER_BBOX_WIDTH * scale_rate) / 2;
-	y_p = (BRATIZER_BBOX_HEIGHT - BRATIZER_BBOX_HEIGHT * scale_rate) / 2;
-	l = x + x_p;
-	t = y + y_p;
+	
+	l = x ;
+	t = y ;
 
-	r = l + BRATIZER_BBOX_WIDTH * scale_rate;
-	b = t + BRATIZER_BBOX_HEIGHT * scale_rate;
+	r = l + BRATIZER_BBOX_WIDTH ;
+	b = t + BRATIZER_BBOX_HEIGHT ;
 }

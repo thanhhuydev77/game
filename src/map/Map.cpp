@@ -24,48 +24,39 @@ vector<LPGAMEOBJECT> Map::getItemsObject()
 	return itemsobjects;
 }
 
-double Map::getscalerate()
-{
-	return scale_rate;
-}
-
 void Map::loaditems()
 {
 	for (int i = 0; i < arrobjects.size(); i++)
 	{
 		if (arrobjects[i].id == 1)
-			bra = new CBratizer(scale_rate);
+			bra = new CBratizer();
 		bra->SetPosition(arrobjects[i].left, arrobjects[i].top);
 		Bratizerobjects.push_back(bra);
 		objects.push_back(bra);
 		if (arrobjects[i].iditem == 2)
-			Largeh = new Large_heart(scale_rate);
+			Largeh = new Large_heart();
 		else if (arrobjects[i].iditem == 3)
-			Largeh = new Whip_PowerUp(scale_rate);
+			Largeh = new Whip_PowerUp();
 		else if (arrobjects[i].iditem == 4)
-			Largeh = new SwordItem(scale_rate);
+			Largeh = new SwordItem();
 		Largeh->SetPosition(arrobjects[i].left, arrobjects[i].top);
 		itemsobjects.push_back(Largeh);
 		objects.push_back(Largeh);
 	}
 }
 
-void Map::loadbricks(int top, int left ,int width,int height)
+void Map::loadbricks(int top, int left, int width, int height)
 {
-	CBrick *brick = new CBrick(1);
-	
+	CInvisibleBrick *brick = new CInvisibleBrick();
+
 	brick->SetPosition(top, left);
 	brick->setsize(width, height);
 	Brickobjects.push_back(brick);
 	objects.push_back(brick);
 }
 
-Map::Map(string filePath, int idtex, int width, int height)
+Map::Map(string filePath, int idtex)
 {
-
-
-	this->screenwidth = width;
-	this->screenheight = height;
 	mapsprite = new vector<int>();
 	ifstream infile;
 	infile.open(filePath);
@@ -89,12 +80,6 @@ Map::Map(string filePath, int idtex, int width, int height)
 		this->tilewidth = tileWidth;
 		this->tileheight = tileHeight;
 		this->offset = idtex * 100;
-		/*for (int n = 0; n < numobjecthasbrick; n++)
-		{
-			int k;
-			infile >> k;
-			tilehasbrick.push_back(k);
-		}*/
 		ts = new TileSet(mapname, tileWidth, tileHeight, imagesource, imageWidth, imageHeight);
 		ts->LoadTileSet(idtex, offset);
 
@@ -102,8 +87,8 @@ Map::Map(string filePath, int idtex, int width, int height)
 		for (int i = 0; i < numobject; i++)
 		{
 			{
-				int id,iditem, left, top;
-				infile >> id>> iditem >> left >> top;
+				int id, iditem, left, top;
+				infile >> id >> iditem >> left >> top;
 				saveobject obj{ id,iditem,left,top };
 				arrobjects.push_back(obj);
 			}
@@ -115,19 +100,17 @@ Map::Map(string filePath, int idtex, int width, int height)
 			int top, left, width, height;
 			infile >> top >> left >> width >> height;
 			loadbricks(top, left, width, height);
-			
+
 		}
-		for (int i = 0; i <maheight*mawidth; i++)
+		for (int i = 0; i < maheight*mawidth; i++)
 		{
 			int mapindex;
 			infile >> mapindex;
 			mapsprite->push_back(mapindex);
 		}
-		
+
 	}
 	infile.close();
-
-	scale_rate = (screenheight*1.0) / ((maheight)*GetTileHeight());
 	loaditems();
 }
 
@@ -142,12 +125,12 @@ Map::Map()
 
 int Map::GetWidth()
 {
-	return mawidth * tilewidth*scale_rate;
+	return mawidth * tilewidth;
 }
 
 int Map::GetHeight()
 {
-	return maheight * tileheight*scale_rate;
+	return maheight * tileheight;
 }
 
 int Map::GetTileWidth()
@@ -170,7 +153,7 @@ void Map::Draw()
 	for (int y = 0; y < maheight; y++)
 		for (int x = 0; x < mawidth; x++)
 		{
-			ts->get((mapsprite->at(i)))->Draw(x*t_width*scale_rate, y*t_height*scale_rate, 255, scale_rate);
+			ts->get((mapsprite->at(i)))->Draw(x*t_width, y*t_height, 255);
 			i++;
 		}
 

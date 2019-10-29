@@ -1,10 +1,10 @@
 #include "Large_heart.h"
 
-Large_heart::Large_heart(double scalerate)
+Large_heart::Large_heart()
 {
 	LoadResourceHelper::Loadspritefromfile("content\\items\\Large_heart.txt", ID_TEX_LARGE_HEART);
 	LoadResourceHelper::Loadanimationfromfile("content\\items\\Large_heart_ani.txt", this);
-	this->scale_rate = scalerate;
+
 	this->state = ITEM_STATE_UNACTIVE;
 }
 
@@ -31,7 +31,7 @@ void Large_heart::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			for (UINT i = 0; i < coEventsResult.size(); i++)
 			{
 				LPCOLLISIONEVENT e = coEventsResult[i];
-				if (dynamic_cast<CBrick *>(e->obj))
+				if (dynamic_cast<CInvisibleBrick *>(e->obj))
 				{
 					y += min_ty * dy + ny * 0.1f;
 					if (ny != 0) vy = 0;
@@ -44,19 +44,18 @@ void Large_heart::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void Large_heart::Render()
 {
 	if (state == ITEM_STATE_ACTIVE)
-		animations[0]->Render(x, y, 255, scale_rate);
+		animations[0]->Render(x, y, 255);
 	RenderBoundingBox();
 }
 
 void Large_heart::GetBoundingBox(float & l, float & t, float & r, float & b)
 {
-	x_p = (LARGE_HEART_BBOX_WIDTH - LARGE_HEART_BBOX_WIDTH * scale_rate) / 2;
-	y_p = (LARGE_HEART_BBOX_HEIGHT - LARGE_HEART_BBOX_HEIGHT * scale_rate) / 2;
-	l = x + x_p;
-	t = y + y_p;
+	
+	l = x ;
+	t = y ;
 
-	r = l + LARGE_HEART_BBOX_WIDTH * scale_rate;
-	b = t + LARGE_HEART_BBOX_HEIGHT * scale_rate;
+	r = l + LARGE_HEART_BBOX_WIDTH ;
+	b = t + LARGE_HEART_BBOX_HEIGHT;
 
 }
 

@@ -1,10 +1,10 @@
 #include "Whip_PowerUp.h"
 
-Whip_PowerUp::Whip_PowerUp(double scalerate)
+Whip_PowerUp::Whip_PowerUp()
 {
 	LoadResourceHelper::Loadspritefromfile("content\\items\\Whip_PowerUp.txt", ID_TEX_WHIP_POWER_UP);
 	LoadResourceHelper::Loadanimationfromfile("content\\items\\Whip_PowerUp_ani.txt", this);
-	this->scale_rate = scalerate;
+
 	this->state = ITEM_STATE_UNACTIVE;
 }
 
@@ -32,7 +32,7 @@ void Whip_PowerUp::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			for (UINT i = 0; i < coEventsResult.size(); i++)
 			{
 				LPCOLLISIONEVENT e = coEventsResult[i];
-				if (dynamic_cast<CBrick *>(e->obj))
+				if (dynamic_cast<CInvisibleBrick *>(e->obj))
 				{
 					// block 
 							// nx*0.4f : need to push out a bit to avoid overlapping next frame
@@ -49,19 +49,18 @@ void Whip_PowerUp::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void Whip_PowerUp::Render()
 {
 	if (state == ITEM_STATE_ACTIVE)
-		animations[0]->Render(x, y, 255, scale_rate);
+		animations[0]->Render(x, y, 255);
 	RenderBoundingBox();
 }
 
 void Whip_PowerUp::GetBoundingBox(float & l, float & t, float & r, float & b)
 {
-	x_p = (WHIP_POWER_UP_BBOX_WIDTH - WHIP_POWER_UP_BBOX_WIDTH * scale_rate) / 2;
-	y_p = (WHIP_POWER_UP_BBOX_HEIGHT - WHIP_POWER_UP_BBOX_HEIGHT * scale_rate) / 2;
-	l = x + x_p;
-	t = y + y_p;
 
-	r = l + WHIP_POWER_UP_BBOX_WIDTH * scale_rate;
-	b = t + WHIP_POWER_UP_BBOX_HEIGHT * scale_rate;
+	l = x;
+	t = y;
+
+	r = l + WHIP_POWER_UP_BBOX_WIDTH;
+	b = t + WHIP_POWER_UP_BBOX_HEIGHT;
 
 }
 

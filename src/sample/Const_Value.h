@@ -10,7 +10,7 @@ public:
 #define MAIN_WINDOW_TITLE	L"CASTLEVANIA"
 #define BACKGROUND_COLOR	D3DCOLOR_XRGB(255, 255, 255)
 #define SCREEN_WIDTH		400
-#define SCREEN_HEIGHT		320
+#define SCREEN_HEIGHT		400
 #define MAX_FRAME_RATE		120
 #pragma endregion
 #pragma region texture

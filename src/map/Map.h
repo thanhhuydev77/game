@@ -20,7 +20,7 @@ private:
 	};
 	vector<saveobject> arrobjects;
 	TileSet *ts;
-	CBrick *br;
+	CInvisibleBrick *br;
 	CBratizer *bra;
 	CGameObject *Largeh;
 	std::vector<int> *mapsprite;
@@ -29,10 +29,6 @@ private:
 	int tilewidth;
 	int tileheight;
 	int offset;
-	int screenheight;
-	int screenwidth;
-	double scale_rate;
-	//vector<int> tilehasbrick;
 	vector<LPGAMEOBJECT> objects;
 	vector<LPGAMEOBJECT> Brickobjects;
 	vector<LPGAMEOBJECT> Bratizerobjects;
@@ -43,17 +39,15 @@ public:
 	vector<LPGAMEOBJECT> getBricksObject();
 	vector<LPGAMEOBJECT> getBratizersObject();
 	vector<LPGAMEOBJECT> getItemsObject();
-	double getscalerate();
 	void loaditems();
 	void loadbricks(int top, int left, int width, int height);
-	Map (string filePath,int idtex, int width, int height);
+	Map (string filePath,int idtex);
 	Map* GetMap();
 	int GetWidth();
 	int GetHeight();
 	int GetTileWidth();
 	int GetTileHeight();
 	void Draw();
-	void drawfirst();
 	~Map();
 };
 

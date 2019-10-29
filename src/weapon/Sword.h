@@ -16,7 +16,7 @@ class Sword : public CGameObject
 	bool waiting;
 public:
 	Sword();
-	Sword(double scalerate = 1, CGameObject * owner = NULL);
+	Sword( CGameObject * owner = NULL);
 	void setstate(int state) { this->state = state; }
 	CGameObject* GetOwner();
 	void UpdatePositionRelateToObject(DWORD dt);
