@@ -165,7 +165,7 @@ void Whip::Upgrade()
 
 void Whip::StartAttack()
 {
-	if (state != WHIP_STATE_ACTIVE)
+	if (state != WHIP_STATE_ACTIVE && owner->GetState() != SIMON_STATE_COLLECT)
 	{
 		state = WHIP_STATE_ACTIVE;
 		attack_start = GetTickCount();

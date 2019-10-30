@@ -1,4 +1,5 @@
-﻿#include <windows.h>
+﻿#pragma once
+#include <windows.h>
 #include <d3d9.h>
 #include <d3dx9.h>
 
@@ -6,22 +7,14 @@
 #include "Game.h"
 #include "GameObject.h"
 #include "Textures.h"
-#include "../utility/LoadResourceHelper.h"
-#include "../map/Gamemap.h"
-#include "Mario.h"
-#include "../map/Brick.h"
-#include "Goomba.h"
-#include "../character/Simon.h"
-#include "Const_Value.h"
-#include "../weapon/Whip.h"
-#include "../weapon/Sword.h"
+#include "CSampleKeyHandler.h"
+#include "../Scene/SceneManager.h"
+#include "../map/Scene1.h"
+#include"../Scene/SceneExample.h"
 
-Sword *sword;
+Scene1 *scene1;
 CGame *game;
-Simon *simon;
-Gamemap *gm;
-Whip *whip;
-int mapwidth;
+SceneManager *scenemanager;
 
 vector<LPGAMEOBJECT> objects;  //all object
 vector<LPGAMEOBJECT> BratizerObjects; //all bratizer
@@ -30,72 +23,22 @@ vector<LPGAMEOBJECT> ItemObjects; //all item object
 vector<LPGAMEOBJECT> BrickObjects; // all brick 
 vector<LPGAMEOBJECT> BratizerandItemObjects; //all bratizers and items
 
-class CSampleKeyHander : public CKeyEventHandler
-{
-	virtual void KeyState(BYTE *states);
-	virtual void OnKeyDown(int KeyCode);
-	virtual void OnKeyUp(int KeyCode);
-};
-
 CSampleKeyHander * keyHandler;
 
 void CSampleKeyHander::OnKeyDown(int KeyCode)
 {
-	DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
-	switch (KeyCode)
-	{
-	case DIK_SPACE:
-		if (game->IsKeyDown(DIK_RIGHT) || game->IsKeyDown(DIK_LEFT))
-		{
-			simon->StartplexJump();
-		}
-		simon->StartmonoJump();
-		break;
-	case DIK_A:
-		
-		if (game->IsKeyDown(DIK_UP) &&simon->getswordturn()>=1 )
-		{
-			simon->StartAttack();
-			simon->setswordturndesc();
-			sword->StartAttack();
-		}
-		else
-		{
-			//animation with whip
-				simon->StartAttack();
-				whip->StartAttack();
-		}
-		break;
-	}
+	SceneManager::getInstance()->GetCurrentScene()->OnKeyDown(KeyCode);
 }
 
 void CSampleKeyHander::OnKeyUp(int KeyCode)
 {
 	DebugOut(L"[INFO] KeyUp: %d\n", KeyCode);
+	SceneManager::getInstance()->GetCurrentScene()->OnKeyUp(KeyCode);
 }
 
 void CSampleKeyHander::KeyState(BYTE *states)
 {
-	if (game->IsKeyDown(DIK_DOWN) && !simon->iscollecting())
-	{
-		simon->SetState(SIMON_STATE_SIT);
-		whip->SetState(WHIP_STATE_UNACTIVE);
-	}
-	else if (game->IsKeyDown(DIK_RIGHT) && !simon->iscollecting())
-	{
-		if (simon->isOnState())
-			simon->SetState(SIMON_STATE_WALKING_RIGHT);
-	}
-	else if (game->IsKeyDown(DIK_LEFT) && !simon->iscollecting())
-	{
-		if (simon->isOnState())
-			simon->SetState(SIMON_STATE_WALKING_LEFT);
-	}
-	else
-	{
-		if (simon->isOnState())
-			simon->SetState(SIMON_STATE_IDLE);
-	}
+	SceneManager::getInstance()->GetCurrentScene()->KeyState(states);
 }
 
 LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -113,35 +56,10 @@ LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 void LoadResources()
 {
-	CTextures * textures = CTextures::GetInstance();
-	textures->loadcontent();
-	gm = new Gamemap();
-	gm->loadmap("content\\tilemap\\Courtyard.txt", ID_TEX_MAP1);
-	mapwidth = gm->getmapwidth();
-
-	objects = gm->getallobjects();
-	BrickObjects = gm->getBrickobjects();
-	BratizerObjects = gm->getBratizerobjects();
-	ItemObjects = gm->getItemobjects();
-	coObjects = gm->getBrickobjects();
-	BratizerandItemObjects = gm->getBratizerobjects();
-
-	for (unsigned int i = 0; i < ItemObjects.size(); i++)
-	{
-		if (ItemObjects[i]->GetState() == ITEM_STATE_ACTIVE)
-			coObjects.push_back(gm->getItemobjects().at(i));
-		BratizerandItemObjects.push_back(gm->getItemobjects().at(i));
-	}
-	//init simon with defaul position
-	simon = new Simon();
-	simon->SetPosition(10.0f, 180.0f);
-	objects.push_back(simon);
-	//init sword and whip
-	sword = new Sword(simon);
-	objects.push_back(sword);
-	whip = new Whip(simon);
-	objects.push_back(whip);
-
+	//scene1 = new Scene1();
+	scenemanager = SceneManager::getInstance();
+	scenemanager->ReplaceScene(new Scene1());
+	scenemanager->GetCurrentScene()->LoadContent();
 }
 
 /*
@@ -150,38 +68,7 @@ void LoadResources()
 */
 void Update(DWORD dt)
 {
-	coObjects = gm->getBrickobjects();
-	// item falling and stop when on stair
-	for (unsigned int i = 0; i < ItemObjects.size(); i++)
-		ItemObjects[i]->Update(dt, &BrickObjects);
-	//update bratizers
-	for (unsigned int i = 0; i < BratizerObjects.size(); i++)
-		BratizerObjects[i]->Update(dt);
-
-	for (unsigned int i = 0; i < ItemObjects.size(); i++)
-	{
-		if (ItemObjects[i]->GetState() == ITEM_STATE_ACTIVE)
-			coObjects.push_back(ItemObjects[i]);
-	}
-	simon->Update(dt, &coObjects);
-
-	whip->Update(dt, &BratizerandItemObjects);
-	sword->Update(dt, &BratizerandItemObjects);
-
-#pragma region Update camera to follow simon
-
-	float cx, cy;
-	simon->GetPosition(cx, cy);
-	if (cx >= SCREEN_WIDTH / 2 && cx < mapwidth - SCREEN_WIDTH / 2)
-		cx -= SCREEN_WIDTH / 2 - 10.0f;
-	else if (cx < SCREEN_WIDTH / 2)
-		cx = 10.0f;
-	else if (cx >= mapwidth - SCREEN_WIDTH / 2)
-		cx = mapwidth - SCREEN_WIDTH;
-
-	cy -= SCREEN_HEIGHT / 2;
-	CGame::GetInstance()->SetCamPos(cx, 0.0f /*cy*/);
-#pragma endregion
+	scenemanager->GetCurrentScene()->Update(dt);
 }
 
 /*
@@ -189,6 +76,7 @@ void Update(DWORD dt)
 */
 void Render()
 {
+
 	LPDIRECT3DDEVICE9 d3ddv = game->GetDirect3DDevice();
 	LPDIRECT3DSURFACE9 bb = game->GetBackBuffer();
 	LPD3DXSPRITE spriteHandler = game->GetSpriteHandler();
@@ -200,9 +88,7 @@ void Render()
 
 		spriteHandler->Begin(D3DXSPRITE_ALPHABLEND);
 
-		gm->Render();
-		for (unsigned int i = 0; i < objects.size(); i++)
-			objects[i]->Render();
+		scenemanager->GetCurrentScene()->Draw();
 		spriteHandler->End();
 		d3ddv->EndScene();
 	}
@@ -306,6 +192,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	keyHandler = new CSampleKeyHander();
 	game->InitKeyboard(keyHandler);
+
 
 
 	LoadResources();

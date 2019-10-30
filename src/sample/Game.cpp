@@ -4,7 +4,7 @@
 CGame * CGame::__instance = NULL;
 
 /*
-	Initialize DirectX, create a Direct3D device for rendering within the window, initial Sprite library for 
+	Initialize DirectX, create a Direct3D device for rendering within the window, initial Sprite library for
 	rendering 2D images
 	- hInst: Application instance handle
 	- hWnd: Application window handle
@@ -13,7 +13,7 @@ void CGame::Init(HWND hWnd)
 {
 	LPDIRECT3D9 d3d = Direct3DCreate9(D3D_SDK_VERSION);
 
-	this->hWnd = hWnd;									
+	this->hWnd = hWnd;
 
 	D3DPRESENT_PARAMETERS d3dpp;
 
@@ -53,30 +53,30 @@ void CGame::Init(HWND hWnd)
 }
 
 /*
-	Utility function to wrap LPD3DXSPRITE::Draw 
+	Utility function to wrap LPD3DXSPRITE::Draw
 */
 void CGame::Draw(float x, float y, LPDIRECT3DTEXTURE9 texture, int left, int top, int right, int bottom, int alpha, double Scale)
 {
-	
-	 
+
+
 	D3DXVECTOR3 p(floor(x - cam_x), floor(y - cam_y), 0);
 	RECT r;
 	r.left = left;
 	r.top = top;
-	r.right = right ;
+	r.right = right;
 	r.bottom = bottom;
 	double ScaleY = (Scale > 0) ? Scale : -Scale;
 	D3DXMATRIX old;
 	spriteHandler->GetTransform(&old);
-		D3DXVECTOR2 center((x -cam_x+ ((right-left) / 2)),(y - cam_y+((bottom-top)/ 2)));
-		D3DXMATRIX scale;
-		D3DXMatrixTransformation2D(&scale, &center, 0.0f, &D3DXVECTOR2(Scale*1.0f, ScaleY*1.0f), NULL, 0.0f,NULL);
-		D3DXMATRIX CC = old * scale;
-		spriteHandler->SetTransform(&CC);
+	D3DXVECTOR2 center((x - cam_x + ((right - left) / 2)), (y - cam_y + ((bottom - top) / 2)));
+	D3DXMATRIX scale;
+	D3DXMatrixTransformation2D(&scale, &center, 0.0f, &D3DXVECTOR2(Scale*1.0f, ScaleY*1.0f), NULL, 0.0f, NULL);
+	D3DXMATRIX CC = old * scale;
+	spriteHandler->SetTransform(&CC);
 
-		spriteHandler->Draw(texture,&r,NULL, &p, D3DCOLOR_ARGB(alpha, 255, 255, 255));
-		
-		spriteHandler->SetTransform(&old);
+	spriteHandler->Draw(texture, &r, NULL, &p, D3DCOLOR_ARGB(alpha, 255, 255, 255));
+
+	spriteHandler->SetTransform(&old);
 }
 
 int CGame::IsKeyDown(int KeyCode)
@@ -89,7 +89,7 @@ void CGame::InitKeyboard(LPKEYEVENTHANDLER handler)
 	HRESULT
 		hr = DirectInput8Create
 		(
-			(HINSTANCE)GetWindowLong(hWnd, GWL_HINSTANCE),
+		(HINSTANCE)GetWindowLong(hWnd, GWL_HINSTANCE),
 			DIRECTINPUT_VERSION,
 			IID_IDirectInput8, (VOID**)&di, NULL
 		);
@@ -103,7 +103,7 @@ void CGame::InitKeyboard(LPKEYEVENTHANDLER handler)
 	hr = di->CreateDevice(GUID_SysKeyboard, &didv, NULL);
 
 	// TO-DO: put in exception handling
-	if (hr != DI_OK) 
+	if (hr != DI_OK)
 	{
 		DebugOut(L"[ERROR] CreateDevice failed!\n");
 		return;
@@ -155,7 +155,7 @@ void CGame::InitKeyboard(LPKEYEVENTHANDLER handler)
 
 void CGame::ProcessKeyboard()
 {
-	HRESULT hr; 
+	HRESULT hr;
 
 	// Collect all key states first
 	hr = didv->GetDeviceState(sizeof(keyStates), keyStates);
@@ -165,8 +165,8 @@ void CGame::ProcessKeyboard()
 		if ((hr == DIERR_INPUTLOST) || (hr == DIERR_NOTACQUIRED))
 		{
 			HRESULT h = didv->Acquire();
-			if (h==DI_OK)
-			{ 
+			if (h == DI_OK)
+			{
 				DebugOut(L"[INFO] Keyboard re-acquired!\n");
 			}
 			else return;
@@ -212,11 +212,11 @@ CGame::~CGame()
 }
 
 /*
-	SweptAABB 
+	SweptAABB
 */
 void CGame::SweptAABB(
-	float ml, float mt,	float mr, float mb,			
-	float dx, float dy,			
+	float ml, float mt, float mr, float mb,
+	float dx, float dy,
 	float sl, float st, float sr, float sb,
 	float &t, float &nx, float &ny)
 {
@@ -224,8 +224,8 @@ void CGame::SweptAABB(
 	float dx_entry, dx_exit, tx_entry, tx_exit;
 	float dy_entry, dy_exit, ty_entry, ty_exit;
 
-	float t_entry; 
-	float t_exit; 
+	float t_entry;
+	float t_exit;
 
 	t = -1.0f;			// no collision
 	nx = ny = 0;
@@ -246,13 +246,13 @@ void CGame::SweptAABB(
 
 	if (dx > 0)
 	{
-		dx_entry = sl - mr; 
+		dx_entry = sl - mr;
 		dx_exit = sr - ml;
 	}
 	else if (dx < 0)
 	{
 		dx_entry = sr - ml;
-		dx_exit = sl- mr;
+		dx_exit = sl - mr;
 	}
 
 
@@ -277,7 +277,7 @@ void CGame::SweptAABB(
 		tx_entry = dx_entry / dx;
 		tx_exit = dx_exit / dx;
 	}
-	
+
 	if (dy == 0)
 	{
 		ty_entry = -99999999999;
@@ -288,32 +288,35 @@ void CGame::SweptAABB(
 		ty_entry = dy_entry / dy;
 		ty_exit = dy_exit / dy;
 	}
-	
 
-	if (  (tx_entry < 0.0f && ty_entry < 0.0f) || tx_entry > 1.0f || ty_entry > 1.0f) return;
+
+	if ((tx_entry < 0.0f && ty_entry < 0.0f) || tx_entry > 1.0f || ty_entry > 1.0f) return;
 
 	t_entry = max(tx_entry, ty_entry);
 	t_exit = min(tx_exit, ty_exit);
-	
-	if (t_entry > t_exit) return; 
 
-	t = t_entry; 
+	if (t_entry > t_exit) return;
+
+	t = t_entry;
 
 	if (tx_entry > ty_entry)
 	{
 		ny = 0.0f;
 		dx > 0 ? nx = -1.0f : nx = 1.0f;
 	}
-	else 
+	else
 	{
 		nx = 0.0f;
-		dy > 0?ny = -1.0f:ny = 1.0f;
+		dy > 0 ? ny = -1.0f : ny = 1.0f;
 	}
 
 }
 
 CGame *CGame::GetInstance()
 {
-	if (__instance == NULL) __instance = new CGame();
+	if (__instance == NULL)
+	{
+		__instance = new CGame();
+	}
 	return __instance;
 }

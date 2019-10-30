@@ -133,12 +133,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="enumScene.h" />
+    <ClInclude Include="src\sample\CSampleKeyHandler.h" />
+    <ClInclude Include="src\Scene\SceneExample.h" />
+    <ClInclude Include="src\Scene\SceneManager.h" />
     <ClInclude Include="src\map\Brick.h" />
     <ClInclude Include="src\item\CBratizer.h" />
     <ClInclude Include="src\sample\Const_Value.h" />
     <ClInclude Include="src\sample\debug.h" />
     <ClInclude Include="src\sample\Game.h" />
-    <ClInclude Include="src\map\Gamemap.h" />
+    <ClInclude Include="src\map\Scene1.h" />
     <ClInclude Include="src\sample\GameObject.h" />
     <ClInclude Include="src\sample\Goomba.h" />
     <ClInclude Include="src\item\Large_heart.h" />
@@ -156,12 +160,16 @@
     <ClInclude Include="src\item\Whip_PowerUp.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="enumScene.cpp" />
+    <ClCompile Include="src\sample\CSampleKeyHandler.cpp" />
+    <ClCompile Include="src\Scene\SceneExample.cpp" />
+    <ClCompile Include="src\Scene\SceneManager.cpp" />
     <ClCompile Include="src\map\Brick.cpp" />
     <ClCompile Include="src\item\CBratizer.cpp" />
     <ClCompile Include="src\sample\Const_Value.cpp" />
     <ClCompile Include="src\sample\debug.cpp" />
     <ClCompile Include="src\sample\Game.cpp" />
-    <ClCompile Include="src\map\Gamemap.cpp" />
+    <ClCompile Include="src\map\Scene1.cpp" />
     <ClCompile Include="src\sample\GameObject.cpp" />
     <ClCompile Include="src\sample\Goomba.cpp" />
     <ClCompile Include="src\item\Large_heart.cpp" />

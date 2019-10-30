@@ -315,7 +315,9 @@ void Simon::StartplexJump()
 void Simon::StartCollect()
 {
 	if (!collecting) {
-		collecting = true; collect_start = GetTickCount();
+		state = SIMON_STATE_COLLECT;
+		collecting = true; 
+		collect_start = GetTickCount();
 	}
 }
 
