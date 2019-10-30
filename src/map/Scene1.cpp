@@ -62,7 +62,11 @@ void Scene1::Update(DWORD dt)
 
 	whip->Update(dt, &BratizerandItemObjects);
 	sword->Update(dt, &BratizerandItemObjects);
+	if (simon->isendscene())
+	{
+		SceneManager::getInstance()->ReplaceScene(NULL);
 
+	}
 #pragma region Update camera to follow simon
 
 	float cx, cy;

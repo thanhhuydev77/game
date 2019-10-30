@@ -45,14 +45,28 @@ void Map::loaditems()
 	}
 }
 
-void Map::loadbricks(int top, int left, int width, int height)
+void Map::loadinvisibleobjects(int id,int top, int left, int width, int height)
 {
-	CInvisibleBrick *brick = new CInvisibleBrick();
-
-	brick->SetPosition(top, left);
-	brick->setsize(width, height);
-	Brickobjects.push_back(brick);
-	objects.push_back(brick);
+	switch (id)
+	{
+	case 0:
+		CInvisibleBrick *inbrick;
+		inbrick = new CInvisibleBrick();
+		inbrick->setsize(width, height);
+		inbrick->SetPosition(top, left);
+		Brickobjects.push_back(inbrick);
+		objects.push_back(inbrick);
+		break;
+	case 2:
+		Endpoint *inendpoint = new Endpoint();
+		inendpoint->SetPosition(top, left);
+		Brickobjects.push_back(inendpoint);
+		objects.push_back(inendpoint);
+		break;
+	}
+	
+	
+	
 }
 
 Map::Map(string filePath, int idtex)
@@ -80,9 +94,10 @@ Map::Map(string filePath, int idtex)
 		this->tilewidth = tileWidth;
 		this->tileheight = tileHeight;
 		this->offset = idtex * 100;
+		//load tileset
 		ts = new TileSet(mapname, tileWidth, tileHeight, imagesource, imageWidth, imageHeight);
 		ts->LoadTileSet(idtex, offset);
-
+		//load visible object
 		infile >> numobject;
 		for (int i = 0; i < numobject; i++)
 		{
@@ -93,13 +108,14 @@ Map::Map(string filePath, int idtex)
 				arrobjects.push_back(obj);
 			}
 		}
-		int numofbricks;
-		infile >> numofbricks;
-		for (int i = 0; i < numofbricks; i++)
+		int numofobjects;
+		//load invisible object
+		infile >> numofobjects;
+		for (int i = 0; i < numofobjects; i++)
 		{
-			int top, left, width, height;
-			infile >> top >> left >> width >> height;
-			loadbricks(top, left, width, height);
+			int id,top, left, width, height;
+			infile >>id>> top >> left >> width >> height;
+			loadinvisibleobjects(id,top, left, width, height);
 
 		}
 		for (int i = 0; i < maheight*mawidth; i++)

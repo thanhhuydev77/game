@@ -79,6 +79,9 @@ public:
 #define BRATIZER_BBOX_HEIGHT		64
 #define BRATIZER_STATE_DISAPPEAR	2
 #define BRATIZER_ANI_DISAPPEAR		1
+#define ENDPOINT_BBOX_WIDTH			32
+#define ENDPOINT_BBOX_HEIGHT		32
+
 #pragma endregion
 #pragma region whip
 

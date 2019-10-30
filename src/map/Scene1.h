@@ -15,6 +15,7 @@
 #include "../weapon/Sword.h"
 #include "Map.h"
 #include "../Scene/SceneExample.h"
+#include "../Scene/SceneManager.h"
 using namespace std;
 
 class Scene1 : public Scene

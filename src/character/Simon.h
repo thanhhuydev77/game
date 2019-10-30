@@ -2,6 +2,7 @@
 #include "../sample/GameObject.h"
 #include "../utility/LoadResourceHelper.h"
 #include <string>
+#include "../sample/Endpoint.h"
 #include "../sample/Const_Value.h"
 #include "../item/CBratizer.h"
 #include "../map/Brick.h"
@@ -25,6 +26,7 @@ class Simon : public CGameObject
 		DWORD jumpplus_start;
 		int temp_nx;
 		int sword_turn;
+		bool endscene;
 public:
 	Simon();
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *colliable_objects = NULL);
@@ -41,6 +43,7 @@ public:
 	void StartplexJump();
 	void StartCollect();
 	void Upgrate();
+	bool isendscene() { return endscene; }
 	int getlevel() { return level; }
 	int GetDirect();
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom);

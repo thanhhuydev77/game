@@ -133,7 +133,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="enumScene.h" />
     <ClInclude Include="src\sample\CSampleKeyHandler.h" />
     <ClInclude Include="src\Scene\SceneExample.h" />
     <ClInclude Include="src\Scene\SceneManager.h" />
@@ -144,7 +143,7 @@
     <ClInclude Include="src\sample\Game.h" />
     <ClInclude Include="src\map\Scene1.h" />
     <ClInclude Include="src\sample\GameObject.h" />
-    <ClInclude Include="src\sample\Goomba.h" />
+    <ClInclude Include="src\sample\Endpoint.h" />
     <ClInclude Include="src\item\Large_heart.h" />
     <ClInclude Include="src\utility\LoadResourceHelper.h" />
     <ClInclude Include="src\map\Map.h" />
@@ -160,7 +159,6 @@
     <ClInclude Include="src\item\Whip_PowerUp.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="enumScene.cpp" />
     <ClCompile Include="src\sample\CSampleKeyHandler.cpp" />
     <ClCompile Include="src\Scene\SceneExample.cpp" />
     <ClCompile Include="src\Scene\SceneManager.cpp" />
@@ -171,7 +169,7 @@
     <ClCompile Include="src\sample\Game.cpp" />
     <ClCompile Include="src\map\Scene1.cpp" />
     <ClCompile Include="src\sample\GameObject.cpp" />
-    <ClCompile Include="src\sample\Goomba.cpp" />
+    <ClCompile Include="src\sample\Endpoint.cpp" />
     <ClCompile Include="src\item\Large_heart.cpp" />
     <ClCompile Include="src\utility\LoadResourceHelper.cpp" />
     <ClCompile Include="src\sample\main.cpp" />

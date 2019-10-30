@@ -170,7 +170,6 @@ void Whip::StartAttack()
 		state = WHIP_STATE_ACTIVE;
 		attack_start = GetTickCount();
 		animations[level - 1]->reset();
-
 	}
 }
 

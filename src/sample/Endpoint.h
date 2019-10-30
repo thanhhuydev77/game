@@ -13,13 +13,11 @@
 #define GOOMBA_ANI_WALKING 0
 #define GOOMBA_ANI_DIE 1
 
-class CGoomba : public CGameObject
+class Endpoint : public CGameObject
 {
+
+public:
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom);
-	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects);
 	virtual void Render();
 
-
-public: 	
-	virtual void SetState(int state);
 };

@@ -1,5 +1,5 @@
 #include "../character/Simon.h"
-#include"../sample/Goomba.h"
+#include"../sample/Endpoint.h"
 #include<fstream>
 #include <vector>
 #include <string>
@@ -208,6 +208,17 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 					si->SetPosition(0 - WHIP_POWER_UP_BBOX_WIDTH, 0);
 					this->sword_turn += 5;
 				}
+
+			}
+			else if (dynamic_cast<Endpoint *>(e->obj))
+			{
+				
+					Endpoint *si = dynamic_cast<Endpoint *>(e->obj);
+
+					/*si->SetState(ITEM_STATE_UNACTIVE);
+					si->SetPosition(0 - WHIP_POWER_UP_BBOX_WIDTH, 0);*/
+					endscene = true;
+				
 
 			}
 		}

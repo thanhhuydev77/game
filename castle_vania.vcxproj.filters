@@ -6,7 +6,6 @@
     <ClInclude Include="src\sample\debug.h" />
     <ClInclude Include="src\sample\Game.h" />
     <ClInclude Include="src\sample\GameObject.h" />
-    <ClInclude Include="src\sample\Goomba.h" />
     <ClInclude Include="src\item\Large_heart.h" />
     <ClInclude Include="src\utility\LoadResourceHelper.h" />
     <ClInclude Include="src\map\Map.h" />
@@ -25,7 +24,7 @@
     <ClInclude Include="src\Scene\SceneManager.h" />
     <ClInclude Include="src\Scene\SceneExample.h" />
     <ClInclude Include="src\sample\CSampleKeyHandler.h" />
-    <ClInclude Include="enumScene.h" />
+    <ClInclude Include="src\sample\Endpoint.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header">
@@ -43,7 +42,6 @@
     <ClCompile Include="src\sample\debug.cpp" />
     <ClCompile Include="src\sample\Game.cpp" />
     <ClCompile Include="src\sample\GameObject.cpp" />
-    <ClCompile Include="src\sample\Goomba.cpp" />
     <ClCompile Include="src\item\Large_heart.cpp" />
     <ClCompile Include="src\utility\LoadResourceHelper.cpp" />
     <ClCompile Include="src\sample\main.cpp" />
@@ -64,7 +62,7 @@
     <ClCompile Include="src\Scene\SceneManager.cpp" />
     <ClCompile Include="src\Scene\SceneExample.cpp" />
     <ClCompile Include="src\sample\CSampleKeyHandler.cpp" />
-    <ClCompile Include="enumScene.cpp" />
+    <ClCompile Include="src\sample\Endpoint.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="content\textures\bbox.png" />

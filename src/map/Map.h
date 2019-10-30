@@ -8,6 +8,7 @@
 #include "../item/Large_heart.h"
 #include "../item/Whip_PowerUp.h"
 #include "../item/SwordItem.h"
+#include "../sample/Endpoint.h"
 class Map
 {
 private:
@@ -40,7 +41,7 @@ public:
 	vector<LPGAMEOBJECT> getBratizersObject();
 	vector<LPGAMEOBJECT> getItemsObject();
 	void loaditems();
-	void loadbricks(int top, int left, int width, int height);
+	void loadinvisibleobjects(int id,int top, int left, int width, int height);
 	Map (string filePath,int idtex);
 	Map* GetMap();
 	int GetWidth();
