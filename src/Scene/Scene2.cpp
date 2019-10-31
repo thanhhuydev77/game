@@ -1,49 +1,53 @@
-#include "Scene1.h"
+#include "Scene2.h"
 #include <windows.h>
 #include <d3d9.h>
 #include <d3dx9.h>
 
-void Scene1::loadmap(string path,int idtex)
+void Scene2::loadmap(string path, int idtex)
 {
-	mmap = new Map(path,idtex);
+	mmap = new Map(path, idtex);
 }
 
-vector<LPGAMEOBJECT> Scene1::getBrickobjects()
+vector<LPGAMEOBJECT> Scene2::getBrickobjects()
 {
 	return mmap->getBricksObject();
 }
 
-vector<LPGAMEOBJECT> Scene1::getBratizerobjects()
+vector<LPGAMEOBJECT> Scene2::getBratizerobjects()
 {
 	return mmap->getBratizersObject();
 }
 
-vector<LPGAMEOBJECT> Scene1::getItemobjects()
+vector<LPGAMEOBJECT> Scene2::getItemobjects()
 {
 	return mmap->getItemsObject();
 }
 
-vector<LPGAMEOBJECT> Scene1::getallobjects()
+vector<LPGAMEOBJECT> Scene2::getallobjects()
 {
 	return mmap->getallObject();
 }
 
-int Scene1::getmapwidth()
+int Scene2::getmapwidth()
 {
 	return mmap->GetWidth();
 }
 
-void Scene1::RenderBackground()
+void Scene2::RenderBackground()
 {
 	mmap->Draw();
 }
 
-Scene1::~Scene1()
+Scene2::~Scene2()
+{
+}
+
+Scene2::Scene2()
 {
 	LoadContent();
 }
 
-void Scene1::Update(DWORD dt)
+void Scene2::Update(DWORD dt)
 {
 	coObjects = this->getBrickobjects();
 	// item falling and stop when on stair
@@ -62,11 +66,6 @@ void Scene1::Update(DWORD dt)
 
 	whip->Update(dt, &BratizerandItemObjects);
 	sword->Update(dt, &BratizerandItemObjects);
-	if (simon->isendscene())
-	{
-		SceneManager::getInstance()->ReplaceScene(NULL);
-
-	}
 #pragma region Update camera to follow simon
 
 	float cx, cy;
@@ -83,12 +82,12 @@ void Scene1::Update(DWORD dt)
 #pragma endregion
 }
 
-void Scene1::LoadContent()
+void Scene2::LoadContent()
 {
 	games = CGame::GetInstance();
 	CTextures * textures = CTextures::GetInstance();
 	textures->loadcontent();
-	this->loadmap("content\\tilemap\\Courtyard.txt", ID_TEX_MAP1);
+	this->loadmap("content\\tilemap\\map2.txt", ID_TEX_MAP2);
 	mapwidth = this->getmapwidth();
 
 	objects = this->getallobjects();
@@ -116,17 +115,17 @@ void Scene1::LoadContent()
 
 }
 
-void Scene1::Draw()
+void Scene2::Draw()
 {
 
-		this->RenderBackground();
-		for (unsigned int i = 0; i < objects.size(); i++)
-			objects[i]->Render();
+	this->RenderBackground();
+	for (unsigned int i = 0; i < objects.size(); i++)
+		objects[i]->Render();
 }
 
-void Scene1::OnKeyDown(int KeyCode)
+void Scene2::OnKeyDown(int KeyCode)
 {
-	
+
 	switch (KeyCode)
 	{
 	case DIK_SPACE:
@@ -157,12 +156,12 @@ void Scene1::OnKeyDown(int KeyCode)
 	}
 }
 
-void Scene1::OnKeyUp(int keyCode)
+void Scene2::OnKeyUp(int keyCode)
 {
 
 }
 
-void Scene1::KeyState(BYTE * states)
+void Scene2::KeyState(BYTE * states)
 {
 	if (games->IsKeyDown(DIK_DOWN) && !simon->iscollecting())
 	{

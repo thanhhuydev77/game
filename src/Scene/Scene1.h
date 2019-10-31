@@ -13,9 +13,10 @@
 #include "../sample/Const_Value.h"
 #include "../weapon/Whip.h"
 #include "../weapon/Sword.h"
-#include "Map.h"
+#include "../map/Map.h"
 #include "../Scene/SceneExample.h"
 #include "../Scene/SceneManager.h"
+#include "Scene2.h"
 using namespace std;
 
 class Scene1 : public Scene
@@ -37,7 +38,7 @@ private:
 
 	
 public:
-	Scene1() {};
+	Scene1();
 	void loadmap(string path, int idtex);
 	vector<LPGAMEOBJECT> getBrickobjects();
 	vector<LPGAMEOBJECT> getBratizerobjects();

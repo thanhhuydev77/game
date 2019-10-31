@@ -27,6 +27,7 @@ public:
 #define ID_TEX_WHIP_POWER_UP	5
 #define	ID_TEX_SWORD			4
 #define ID_TEX_SPARK			3
+#define ID_TEX_MAP2				12
 #pragma endregion
 #pragma region Simon
 

@@ -9,10 +9,11 @@
 #include "Textures.h"
 #include "CSampleKeyHandler.h"
 #include "../Scene/SceneManager.h"
-#include "../map/Scene1.h"
+#include "../Scene/Scene1.h"
 #include"../Scene/SceneExample.h"
-
+#include "../Scene/Scene2.h"
 Scene1 *scene1;
+
 CGame *game;
 SceneManager *scenemanager;
 
@@ -32,7 +33,7 @@ void CSampleKeyHander::OnKeyDown(int KeyCode)
 
 void CSampleKeyHander::OnKeyUp(int KeyCode)
 {
-	DebugOut(L"[INFO] KeyUp: %d\n", KeyCode);
+	//DebugOut(L"[INFO] KeyUp: %d\n", KeyCode);
 	SceneManager::getInstance()->GetCurrentScene()->OnKeyUp(KeyCode);
 }
 
@@ -56,9 +57,8 @@ LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 void LoadResources()
 {
-	//scene1 = new Scene1();
 	scenemanager = SceneManager::getInstance();
-	scenemanager->ReplaceScene(new Scene1());
+	scenemanager->ReplaceScene(new Scene2());
 	scenemanager->GetCurrentScene()->LoadContent();
 }
 

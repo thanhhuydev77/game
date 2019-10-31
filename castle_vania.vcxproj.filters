@@ -20,11 +20,12 @@
     <ClInclude Include="src\item\Whip_PowerUp.h" />
     <ClInclude Include="src\map\tileset.h" />
     <ClInclude Include="src\item\CBratizer.h" />
-    <ClInclude Include="src\map\Scene1.h" />
     <ClInclude Include="src\Scene\SceneManager.h" />
     <ClInclude Include="src\Scene\SceneExample.h" />
     <ClInclude Include="src\sample\CSampleKeyHandler.h" />
     <ClInclude Include="src\sample\Endpoint.h" />
+    <ClInclude Include="src\Scene\Scene1.h" />
+    <ClInclude Include="src\Scene\Scene2.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header">
@@ -58,11 +59,12 @@
     <ClCompile Include="src\map\tileset.cpp" />
     <ClCompile Include="src\sample\Const_Value.cpp" />
     <ClCompile Include="src\item\CBratizer.cpp" />
-    <ClCompile Include="src\map\Scene1.cpp" />
     <ClCompile Include="src\Scene\SceneManager.cpp" />
     <ClCompile Include="src\Scene\SceneExample.cpp" />
     <ClCompile Include="src\sample\CSampleKeyHandler.cpp" />
     <ClCompile Include="src\sample\Endpoint.cpp" />
+    <ClCompile Include="src\Scene\Scene1.cpp" />
+    <ClCompile Include="src\Scene\Scene2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="content\textures\bbox.png" />
