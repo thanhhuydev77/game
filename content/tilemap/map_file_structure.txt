@@ -1,0 +1,15 @@
+name: <mapname>
+tilewidth: <tilewidth>
+tileheight: <tileheight>
+source: <source file bitmap> <height> and <width> of bitmap
+width: <width of matrix>
+height: <height of matrix>
+
+<number of visible object(2)>  items
+<id object1> <id sub object1> <x> <y>
+<id object2> <id sub object2> <x> <y>
+
+<number of invisible object(1)> brick,endpoint,...
+<id object1> <x> <y> <width> <height>
+
+<matrix of map>

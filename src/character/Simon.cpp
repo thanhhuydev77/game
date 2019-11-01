@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include"../item/CBratizer.h"
+Simon* Simon::_instance = NULL;
 Simon::Simon()
 {
 	LoadResourceHelper::Loadspritefromfile("content\\characters\\player\\player_sprites.txt", ID_TEX_SIMON);
@@ -11,6 +12,12 @@ Simon::Simon()
 
 	level = 1;
 	sword_turn = 0;
+}
+
+Simon * Simon::getinstance()
+{
+	if (_instance == NULL) _instance = new Simon();
+	return _instance;
 }
 
 void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)

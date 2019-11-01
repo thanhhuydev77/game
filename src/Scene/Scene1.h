@@ -50,7 +50,7 @@ public:
 
 	// Inherited via SceneExample
 	virtual void Update(DWORD dt) override;
-	virtual void LoadContent() override;
+	virtual void LoadContent(string mapname, int idmap) override;
 	virtual void Draw() override;
 	virtual void OnKeyDown(int keyCode);
 	virtual void OnKeyUp(int keyCode);

@@ -58,8 +58,8 @@ LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 void LoadResources()
 {
 	scenemanager = SceneManager::getInstance();
-	scenemanager->ReplaceScene(new Scene2());
-	scenemanager->GetCurrentScene()->LoadContent();
+	scenemanager->ReplaceScene(new Scene1());
+	scenemanager->GetCurrentScene()->LoadContent(MAP1,ID_TEX_MAP1);
 }
 
 /*

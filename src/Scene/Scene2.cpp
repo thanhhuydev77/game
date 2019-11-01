@@ -44,7 +44,7 @@ Scene2::~Scene2()
 
 Scene2::Scene2()
 {
-	LoadContent();
+	//LoadContent(MAP2,ID_TEX_MAP2);
 }
 
 void Scene2::Update(DWORD dt)
@@ -82,12 +82,12 @@ void Scene2::Update(DWORD dt)
 #pragma endregion
 }
 
-void Scene2::LoadContent()
+void Scene2::LoadContent(string namemap, int idmap)
 {
 	games = CGame::GetInstance();
 	CTextures * textures = CTextures::GetInstance();
 	textures->loadcontent();
-	this->loadmap("content\\tilemap\\map2.txt", ID_TEX_MAP2);
+	this->loadmap(namemap, idmap);
 	mapwidth = this->getmapwidth();
 
 	objects = this->getallobjects();
@@ -104,7 +104,7 @@ void Scene2::LoadContent()
 		BratizerandItemObjects.push_back(this->getItemobjects().at(i));
 	}
 	//init simon with defaul position
-	simon = new Simon();
+	simon = Simon::getinstance();
 	simon->SetPosition(10.0f, 180.0f);
 	objects.push_back(simon);
 	//init sword and whip

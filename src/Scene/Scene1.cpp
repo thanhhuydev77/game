@@ -44,7 +44,7 @@ Scene1::~Scene1()
 
 Scene1::Scene1()
 {
-	LoadContent();
+	//LoadContent();
 }
 
 void Scene1::Update(DWORD dt)
@@ -66,10 +66,18 @@ void Scene1::Update(DWORD dt)
 
 	whip->Update(dt, &BratizerandItemObjects);
 	sword->Update(dt, &BratizerandItemObjects);
-	if (simon->isendscene())
+	if (simon->isendscene1())
 	{
-		SceneManager::getInstance()->ReplaceScene(new Scene2());
-		return;
+		/*SceneManager::getInstance()->ReplaceScene(new Scene2());
+		return;*/
+		this->BratizerandItemObjects.clear();
+		this->BratizerObjects.clear();
+		this->BrickObjects.clear();
+		this->coObjects.clear();
+		this->objects.clear();
+		this->ItemObjects.clear();
+		this->LoadContent(MAP2,ID_TEX_MAP2);
+		simon->setstateendscene1(false);
 	}
 #pragma region Update camera to follow simon
 
@@ -87,12 +95,12 @@ void Scene1::Update(DWORD dt)
 #pragma endregion
 }
 
-void Scene1::LoadContent()
+void Scene1::LoadContent(string mapname,int idmap)
 {
 	games = CGame::GetInstance();
 	CTextures * textures = CTextures::GetInstance();
 	textures->loadcontent();
-	this->loadmap("content\\tilemap\\Courtyard.txt", ID_TEX_MAP1);
+	this->loadmap(mapname,idmap);
 	mapwidth = this->getmapwidth();
 
 	objects = this->getallobjects();
@@ -109,7 +117,7 @@ void Scene1::LoadContent()
 		BratizerandItemObjects.push_back(this->getItemobjects().at(i));
 	}
 	//init simon with defaul position
-	simon = new Simon();
+	simon = Simon::getinstance();
 	simon->SetPosition(10.0f, 180.0f);
 	objects.push_back(simon);
 	//init sword and whip

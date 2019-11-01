@@ -1,5 +1,6 @@
 #pragma once
 #include <Windows.h>
+#include <string>
 using namespace std;
 
 class Scene
@@ -7,7 +8,7 @@ class Scene
 public:
 
 	virtual void Update(DWORD dt) = 0;
-	virtual void LoadContent() = 0;
+	virtual void LoadContent(string mapname, int idmap) = 0;
 	virtual void Draw() = 0;
 
 	virtual void OnKeyDown(int keyCode);

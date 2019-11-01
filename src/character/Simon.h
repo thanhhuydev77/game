@@ -13,6 +13,7 @@
 using namespace std;
 class Simon : public CGameObject
 {
+	static Simon* _instance;
 		bool onstate;
 		bool attacking;
 		bool collecting;
@@ -27,8 +28,10 @@ class Simon : public CGameObject
 		int temp_nx;
 		int sword_turn;
 		bool endscene;
+		Simon();
 public:
-	Simon();
+	
+	static Simon* getinstance();
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *colliable_objects = NULL);
 	virtual void Render();
 	void setswordturndesc() ;
@@ -43,7 +46,8 @@ public:
 	void StartplexJump();
 	void StartCollect();
 	void Upgrate();
-	bool isendscene() { return endscene; }
+	void setstateendscene1(bool signal) { endscene = signal; }
+	bool isendscene1() { return endscene; }
 	int getlevel() { return level; }
 	int GetDirect();
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom);

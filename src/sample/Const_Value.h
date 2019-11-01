@@ -28,6 +28,8 @@ public:
 #define	ID_TEX_SWORD			4
 #define ID_TEX_SPARK			3
 #define ID_TEX_MAP2				12
+#define MAP1					"content\\tilemap\\map1.txt"
+#define MAP2					"content\\tilemap\\map2.txt"
 #pragma endregion
 #pragma region Simon
 
