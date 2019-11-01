@@ -30,7 +30,7 @@ void Map::loaditems()
 	{
 		if (arrobjects[i].id == 1)
 			bra = new CBratizer();
-		bra->SetPosition(arrobjects[i].left, arrobjects[i].top);
+		bra->SetPosition(arrobjects[i].left, arrobjects[i].top+ OFFSET_Y);
 		Bratizerobjects.push_back(bra);
 		objects.push_back(bra);
 		if (arrobjects[i].iditem == 2)
@@ -39,7 +39,7 @@ void Map::loaditems()
 			Largeh = new Whip_PowerUp();
 		else if (arrobjects[i].iditem == 4)
 			Largeh = new SwordItem();
-		Largeh->SetPosition(arrobjects[i].left, arrobjects[i].top);
+		Largeh->SetPosition(arrobjects[i].left, arrobjects[i].top+ OFFSET_Y);
 		itemsobjects.push_back(Largeh);
 		objects.push_back(Largeh);
 	}
@@ -53,13 +53,13 @@ void Map::loadinvisibleobjects(int id,int top, int left, int width, int height)
 		CInvisibleBrick *inbrick;
 		inbrick = new CInvisibleBrick();
 		inbrick->setsize(width, height);
-		inbrick->SetPosition(top, left);
+		inbrick->SetPosition(top, left+OFFSET_Y);
 		Brickobjects.push_back(inbrick);
 		objects.push_back(inbrick);
 		break;
 	case 2:
 		Endpoint *inendpoint = new Endpoint();
-		inendpoint->SetPosition(top, left);
+		inendpoint->SetPosition(top, left+OFFSET_Y);
 		Brickobjects.push_back(inendpoint);
 		objects.push_back(inendpoint);
 		break;
@@ -163,13 +163,14 @@ int Map::GetTileHeight()
 void Map::Draw()
 {
 	int i = 0;
+	
 	int t_width = GetTileWidth();
 	int t_height = GetTileHeight();
 	//ve len man hinh theo ma tran trong mapsprite
 	for (int y = 0; y < maheight; y++)
 		for (int x = 0; x < mawidth; x++)
 		{
-			ts->get((mapsprite->at(i)))->Draw(x*t_width, y*t_height, 255);
+			ts->get((mapsprite->at(i)))->Draw(x*t_width, y*t_height+OFFSET_Y, 255);
 			i++;
 		}
 

@@ -83,12 +83,12 @@ void Scene1::Update(DWORD dt)
 
 	float cx, cy;
 	simon->GetPosition(cx, cy);
-	if (cx >= SCREEN_WIDTH / 2 && cx < mapwidth - SCREEN_WIDTH / 2)
+	if (cx >= SCREEN_WIDTH / 2 && cx < mapwidth - (SCREEN_WIDTH+600) / 2)
 		cx -= SCREEN_WIDTH / 2 - 10.0f;
 	else if (cx < SCREEN_WIDTH / 2)
 		cx = 10.0f;
-	else if (cx >= mapwidth - SCREEN_WIDTH / 2)
-		cx = mapwidth - SCREEN_WIDTH;
+	else if (cx >= mapwidth - (SCREEN_WIDTH+600) / 2)
+		cx = mapwidth - SCREEN_WIDTH - 300;
 
 	cy -= SCREEN_HEIGHT / 2;
 	CGame::GetInstance()->SetCamPos(cx, 0.0f /*cy*/);

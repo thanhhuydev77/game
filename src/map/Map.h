@@ -3,6 +3,7 @@
 #include "tileset.h"
 #include "../item/CBratizer.h"
 #include "Brick.h"
+#include "../sample/Const_Value.h"
 #include "../utility/MathHelper.h"
 #include "../character/Simon.h"
 #include "../item/Large_heart.h"

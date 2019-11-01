@@ -9,8 +9,8 @@ public:
 #define WINDOW_CLASS_NAME	L"CASTLEVANIA"
 #define MAIN_WINDOW_TITLE	L"CASTLEVANIA"
 #define BACKGROUND_COLOR	D3DCOLOR_XRGB(255, 255, 255)
-#define SCREEN_WIDTH		400
-#define SCREEN_HEIGHT		400
+#define SCREEN_WIDTH		200
+#define SCREEN_HEIGHT		200
 #define MAX_FRAME_RATE		120
 #pragma endregion
 #pragma region texture
@@ -30,6 +30,7 @@ public:
 #define ID_TEX_MAP2				12
 #define MAP1					"content\\tilemap\\map1.txt"
 #define MAP2					"content\\tilemap\\map2.txt"
+#define OFFSET_Y		100
 #pragma endregion
 #pragma region Simon
 
