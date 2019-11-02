@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClInclude Include="src\map\Brick.h" />
     <ClInclude Include="src\sample\Const_Value.h" />
     <ClInclude Include="src\sample\debug.h" />
     <ClInclude Include="src\sample\Game.h" />
@@ -26,6 +25,7 @@
     <ClInclude Include="src\sample\Endpoint.h" />
     <ClInclude Include="src\Scene\Scene1.h" />
     <ClInclude Include="src\Scene\Scene2.h" />
+    <ClInclude Include="src\map\Invisibleobject.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header">
@@ -39,7 +39,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\map\Brick.cpp" />
     <ClCompile Include="src\sample\debug.cpp" />
     <ClCompile Include="src\sample\Game.cpp" />
     <ClCompile Include="src\sample\GameObject.cpp" />
@@ -65,6 +64,7 @@
     <ClCompile Include="src\sample\Endpoint.cpp" />
     <ClCompile Include="src\Scene\Scene1.cpp" />
     <ClCompile Include="src\Scene\Scene2.cpp" />
+    <ClCompile Include="src\map\Invisibleobject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="content\textures\bbox.png" />

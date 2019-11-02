@@ -8,7 +8,7 @@
 #include "../sample/GameObject.h"
 #include "../sample/Textures.h"
 #include "../utility/LoadResourceHelper.h"
-#include "../map/Brick.h"
+#include "../map/Invisibleobject.h"
 #include "../character/Simon.h"
 #include "../sample/Const_Value.h"
 #include "../weapon/Whip.h"
@@ -34,16 +34,19 @@ private:
 	vector<LPGAMEOBJECT> coObjects;//all object except simon
 	vector<LPGAMEOBJECT> ItemObjects; //all item object
 	vector<LPGAMEOBJECT> BrickObjects; // all brick 
+	vector<LPGAMEOBJECT> BrickandpointObjects; // all brick and point
 	vector<LPGAMEOBJECT> BratizerandItemObjects; //all bratizers and items
-
+	vector<LPGAMEOBJECT> allStairpoint; // all stair point
 	
 public:
 	Scene1();
 	void loadmap(string path, int idtex);
-	vector<LPGAMEOBJECT> getBrickobjects();
+	vector<LPGAMEOBJECT> getallHidenObjects();
 	vector<LPGAMEOBJECT> getBratizerobjects();
 	vector<LPGAMEOBJECT> getItemobjects();
 	vector<LPGAMEOBJECT> getallobjects();
+	vector<LPGAMEOBJECT> getallBrickandpointObjects();
+	vector<LPGAMEOBJECT> getallallStairpoint();
 	int getmapwidth();
 	void RenderBackground();
 	~Scene1();

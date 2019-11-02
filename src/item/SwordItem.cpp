@@ -32,10 +32,11 @@ void  SwordItem::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			for (UINT i = 0; i < coEventsResult.size(); i++)
 			{
 				LPCOLLISIONEVENT e = coEventsResult[i];
-				if (dynamic_cast<CInvisibleBrick *>(e->obj))
+				if (dynamic_cast<CInvisibleObject *>(e->obj))
 				{
 					// block 
 							// nx*0.4f : need to push out a bit to avoid overlapping next frame
+
 					y += min_ty * dy + ny * 0.1f;
 
 

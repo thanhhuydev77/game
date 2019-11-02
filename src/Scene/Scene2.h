@@ -8,7 +8,7 @@
 #include "../sample/GameObject.h"
 #include "../sample/Textures.h"
 #include "../utility/LoadResourceHelper.h"
-#include "../map/Brick.h"
+#include "../map/Invisibleobject.h"
 #include "../character/Simon.h"
 #include "../sample/Const_Value.h"
 #include "../weapon/Whip.h"

@@ -8,9 +8,9 @@ void Scene1::loadmap(string path,int idtex)
 	mmap = new Map(path,idtex);
 }
 
-vector<LPGAMEOBJECT> Scene1::getBrickobjects()
+vector<LPGAMEOBJECT> Scene1::getallHidenObjects()
 {
-	return mmap->getBricksObject();
+	return mmap->getallHidenObject();
 }
 
 vector<LPGAMEOBJECT> Scene1::getBratizerobjects()
@@ -26,6 +26,16 @@ vector<LPGAMEOBJECT> Scene1::getItemobjects()
 vector<LPGAMEOBJECT> Scene1::getallobjects()
 {
 	return mmap->getallObject();
+}
+
+vector<LPGAMEOBJECT> Scene1::getallBrickandpointObjects()
+{
+	return mmap->getallbrickandpoint();
+}
+
+vector<LPGAMEOBJECT> Scene1::getallallStairpoint()
+{
+	return mmap->getallstairpoint();
 }
 
 int Scene1::getmapwidth()
@@ -49,8 +59,35 @@ Scene1::Scene1()
 
 void Scene1::Update(DWORD dt)
 {
-	coObjects = this->getBrickobjects();
+	coObjects = this->getallBrickandpointObjects();
+#pragma region checkoverlap with stair point --> can climb
+
+
+
+	allStairpoint = getallallStairpoint();
+	for (int i = 0; i < allStairpoint.size(); i++)
+	{
+		if (simon->CheckOverLap(allStairpoint.at(i)))
+		{
+			if (dynamic_cast<CInvisibleObject*>(allStairpoint.at(i))->Gettype() == Const_Value::in_obj_type::stairup)
+			{
+				simon->setcanclimb(true, true);
+				break;
+			}
+			else
+			{
+				simon->setcanclimb(true, false);
+				break;
+			}
+		}
+		simon->setcanclimb(false, true);
+		simon->setcanclimb(false, false);
+	}
+	DebugOut(L"canclimb up: %d\n",simon->iscanclimbup());
+	DebugOut(L"canclimb down: %d\n", simon->iscanclimbdown());
+#pragma endregion
 	// item falling and stop when on stair
+
 	for (unsigned int i = 0; i < ItemObjects.size(); i++)
 		ItemObjects[i]->Update(dt, &BrickObjects);
 	//update bratizers
@@ -63,13 +100,10 @@ void Scene1::Update(DWORD dt)
 			coObjects.push_back(ItemObjects[i]);
 	}
 	simon->Update(dt, &coObjects);
-
 	whip->Update(dt, &BratizerandItemObjects);
 	sword->Update(dt, &BratizerandItemObjects);
-	if (simon->isendscene1())
+	if (simon->isendmap1())
 	{
-		/*SceneManager::getInstance()->ReplaceScene(new Scene2());
-		return;*/
 		this->BratizerandItemObjects.clear();
 		this->BratizerObjects.clear();
 		this->BrickObjects.clear();
@@ -77,8 +111,9 @@ void Scene1::Update(DWORD dt)
 		this->objects.clear();
 		this->ItemObjects.clear();
 		this->LoadContent(MAP2,ID_TEX_MAP2);
-		simon->setstateendscene1(false);
+		simon->setstateendmap1(false);
 	}
+
 #pragma region Update camera to follow simon
 
 	float cx, cy;
@@ -104,10 +139,10 @@ void Scene1::LoadContent(string mapname,int idmap)
 	mapwidth = this->getmapwidth();
 
 	objects = this->getallobjects();
-	BrickObjects = this->getBrickobjects();
+	BrickObjects = this->getallHidenObjects();
 	BratizerObjects = this->getBratizerobjects();
 	ItemObjects = this->getItemobjects();
-	coObjects = this->getBrickobjects();
+	coObjects = this->getallHidenObjects();
 	BratizerandItemObjects = this->getBratizerobjects();
 
 	for (unsigned int i = 0; i < ItemObjects.size(); i++)
@@ -118,7 +153,9 @@ void Scene1::LoadContent(string mapname,int idmap)
 	}
 	//init simon with defaul position
 	simon = Simon::getinstance();
-	simon->SetPosition(10.0f, 180.0f);
+	float x, y;
+	BrickObjects.at(0)->GetPosition(x,y);
+	simon->SetPosition(x,y-SIMON_BIG_BBOX_HEIGHT-1);
 	objects.push_back(simon);
 	//init sword and whip
 	sword = new Sword(simon);
@@ -176,24 +213,32 @@ void Scene1::OnKeyUp(int keyCode)
 
 void Scene1::KeyState(BYTE * states)
 {
-	if (games->IsKeyDown(DIK_DOWN) && !simon->iscollecting())
+	if (games->IsKeyDown(DIK_S) && !simon->iscollecting())
 	{
 		simon->SetState(SIMON_STATE_SIT);
 		whip->SetState(WHIP_STATE_UNACTIVE);
 	}
 	else if (games->IsKeyDown(DIK_RIGHT) && !simon->iscollecting())
 	{
-		if (simon->isOnState())
+		if (simon->isOnStair())
 			simon->SetState(SIMON_STATE_WALKING_RIGHT);
 	}
 	else if (games->IsKeyDown(DIK_LEFT) && !simon->iscollecting())
 	{
-		if (simon->isOnState())
+		if (simon->isOnStair())
 			simon->SetState(SIMON_STATE_WALKING_LEFT);
+	}
+	else if (games->IsKeyDown(DIK_UP) && simon->iscanclimbup())
+	{
+		simon->startclimbup();
+	}
+	else if (games->IsKeyDown(DIK_DOWN) && simon->iscanclimbdown())
+	{
+		simon->startclimbdown();
 	}
 	else
 	{
-		if (simon->isOnState())
+		if (simon->isOnStair())
 			simon->SetState(SIMON_STATE_IDLE);
 	}
 }

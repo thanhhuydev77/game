@@ -25,16 +25,19 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 	CGameObject::Update(dt);
 	if (x < -5)
 		x = 0;
-	
+	if(!climbing)
 	vy += SIMON_GRAVITY * dt;
 	vector<LPCOLLISIONEVENT> coEvents;
+	
 	vector<LPCOLLISIONEVENT> coEventsResult;
-
+	
 	coEvents.clear();
 
 	// turn off collision when die 
 	if (state != SIMON_STATE_DIE)
+	{
 		CalcPotentialCollisions(colliable_objects, coEvents);
+	}
 #pragma region attack
 
 
@@ -47,7 +50,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 	else
 	{
 		nx = temp_nx;
-		if(onstate)
+		if(onstair)
 		dx = 0;
 	}
 
@@ -68,10 +71,10 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 		if (GetTickCount() - jump_start < (SIMON_JUMP_TIME))
 		{
 			//only jump when onstate;
-			if (onstate)
+			if (onstair)
 			{
 				vy = -SIMON_JUMP_SPEED_Y;
-				onstate = false;
+				onstair = false;
 			}
 			else
 			{
@@ -97,11 +100,11 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 		if (GetTickCount() - jumpplus_start < (SIMON_JUMP_TIME))
 		{
 			//only jump when onstate;
-			if (onstate)
+			if (onstair)
 			{
 				vy = -SIMON_JUMP_SPEED_Y;
 				vx =  temp_nx*SIMON_JUMP_SPEED_X;
-				onstate = false;
+				onstair = false;
 			}
 			else
 			{
@@ -123,6 +126,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 	{
 		x += dx;
 		y += dy;
+		//onstate = false;
 	}
 	else
 	{
@@ -164,21 +168,31 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 #pragma endregion
 
 #pragma region check by AABB
-
+		
+		
 		float min_tx, min_ty, nx = 0, ny;
 		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny);
+		
 		for (UINT i = 0; i < coEventsResult.size(); i++)
 		{
 			LPCOLLISIONEVENT e = coEventsResult[i];
-			if (dynamic_cast<CInvisibleBrick *>(e->obj))
+			if (dynamic_cast<CInvisibleObject *>(e->obj))
 			{
 				// block 
-				x += min_tx * dx + nx * 0.1f;		// nx*0.5f : need to push out a bit to avoid overlapping next frame
-				y += min_ty * dy + ny * 0.1f;
+				if (dynamic_cast<CInvisibleObject *>(e->obj)->Gettype() == Const_Value::in_obj_type::Brick)
+				{
+					x += min_tx * dx + nx * 0.1f;		// nx*0.5f : need to push out a bit to avoid overlapping next frame
+					y += min_ty * dy + ny * 0.1f;
 
-				if (nx != 0) vx = 0;
-				if (ny != 0) vy = 0;
-				onstate = true;
+					if (nx != 0) vx = 0;
+					if (ny != 0) vy = 0;
+					onstair = true;
+				}
+				//endmap1
+				else if (dynamic_cast<CInvisibleObject *>(e->obj)->Gettype() == Const_Value::in_obj_type::endmap1)
+				{
+					endmap1 = true;
+				}
 			}
 			else if (dynamic_cast<Large_heart *>(e->obj))
 			{
@@ -217,21 +231,11 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 				}
 
 			}
-			else if (dynamic_cast<Endpoint *>(e->obj))
-			{
-				
-					Endpoint *si = dynamic_cast<Endpoint *>(e->obj);
-
-					/*si->SetState(ITEM_STATE_UNACTIVE);
-					si->SetPosition(0 - WHIP_POWER_UP_BBOX_WIDTH, 0);*/
-					endscene = true;
-				
-
-			}
 		}
 	}
 	// clean up collision events
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
+
 #pragma endregion
 }
 
@@ -243,6 +247,7 @@ void Simon::Render()
 		ani = SIMON_ANI_DIE;
 	else if (vy < 0)
 	{
+
 		ani = SIMON_ANI_JUMP;
 	}
 	else
@@ -268,6 +273,10 @@ void Simon::Render()
 		ani = SIMON_ANI_SIT;
 	if (collecting)
 		ani = SIMON_ANI_COLLECT;
+	if (state == SIMON_STATE_GODOWN)
+		ani = SIMON_ANI_GODOWN;
+	if (state == SIMON_STATE_GOUP)
+		ani = SIMON_ANI_GOUP;
 
 	animations[ani]->Render(x, y, 255, nx);
 	RenderBoundingBox();
@@ -316,7 +325,7 @@ void Simon::StartmonoJump()
 {
 	if (!jumping && !collecting) {
 		jumping = true; jump_start = GetTickCount();
-		onstate = false;
+		onstair = false;
 	}
 }
 
@@ -325,7 +334,7 @@ void Simon::StartplexJump()
 	if (!jumping && !collecting) {
 		jumping = true; jumpplus_start = GetTickCount();
 		temp_nx = nx;
-		onstate = false;
+		onstair = false;
 	}
 	
 }
@@ -339,11 +348,34 @@ void Simon::StartCollect()
 	}
 }
 
+
+void Simon::startclimbdown()
+{
+	if (canclimbdown)
+	{
+		climbing = true;
+		state = SIMON_STATE_GODOWN;
+		x += dx;
+		y += 1.0f;
+	}
+}
+void Simon::startclimbup()
+{
+	if (canclimbup)
+	{
+		climbing = true;
+		state = SIMON_STATE_GOUP;
+		x += dx;
+		y -= 1.0f;
+	}
+}
+
 void Simon::Upgrate()
 {
 	if (level < SIMON_MAX_LEVEL)
 		level++;
 }
+
 
 int Simon::GetDirect()
 {

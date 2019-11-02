@@ -2,16 +2,16 @@
 #include"tileset.h"
 #include <fstream>
 #include <vector>
-#include "Brick.h"
+#include "Invisibleobject.h"
 
 vector<LPGAMEOBJECT> Map::getallObject()
 {
 	return objects;
 }
 
-vector<LPGAMEOBJECT> Map::getBricksObject()
+vector<LPGAMEOBJECT> Map::getallHidenObject()
 {
-	return Brickobjects;
+	return allHidenObject;
 }
 
 vector<LPGAMEOBJECT> Map::getBratizersObject()
@@ -22,6 +22,16 @@ vector<LPGAMEOBJECT> Map::getBratizersObject()
 vector<LPGAMEOBJECT> Map::getItemsObject()
 {
 	return itemsobjects;
+}
+
+vector<LPGAMEOBJECT> Map::getallbrickandpoint()
+{
+	return allbrickandpoint;
+}
+
+vector<LPGAMEOBJECT> Map::getallstairpoint()
+{
+	return allstairpoint;
 }
 
 void Map::loaditems()
@@ -47,26 +57,34 @@ void Map::loaditems()
 
 void Map::loadinvisibleobjects(int id,int top, int left, int width, int height)
 {
-	switch (id)
-	{
-	case 0:
-		CInvisibleBrick *inbrick;
-		inbrick = new CInvisibleBrick();
-		inbrick->setsize(width, height);
-		inbrick->SetPosition(top, left+OFFSET_Y);
-		Brickobjects.push_back(inbrick);
-		objects.push_back(inbrick);
-		break;
-	case 2:
-		Endpoint *inendpoint = new Endpoint();
-		inendpoint->SetPosition(top, left+OFFSET_Y);
-		Brickobjects.push_back(inendpoint);
-		objects.push_back(inendpoint);
-		break;
-	}
 	
-	
-	
+		CInvisibleObject *in_obj;
+		in_obj = new CInvisibleObject();
+		switch (id)
+		{
+		case 0:
+			in_obj->Settype(Const_Value::in_obj_type::Brick);
+			allbrickandpoint.push_back(in_obj);
+			break;
+		case 2:
+			in_obj->Settype(Const_Value::in_obj_type::endmap1);
+			allbrickandpoint.push_back(in_obj);
+			break;
+		case 3:
+			in_obj->Settype(Const_Value::in_obj_type::stairup);
+			allstairpoint.push_back(in_obj);
+			break;
+		case 4:
+			in_obj->Settype(Const_Value::in_obj_type::stairdown);
+			allstairpoint.push_back(in_obj);
+			break;
+		default:
+			in_obj->Settype(Const_Value::in_obj_type::Brick);
+		}
+		in_obj->setsize(width, height);
+		in_obj->SetPosition(top, left+OFFSET_Y);
+		allHidenObject.push_back(in_obj);
+		objects.push_back(in_obj);
 }
 
 Map::Map(string filePath, int idtex)

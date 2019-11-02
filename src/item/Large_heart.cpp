@@ -31,7 +31,7 @@ void Large_heart::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			for (UINT i = 0; i < coEventsResult.size(); i++)
 			{
 				LPCOLLISIONEVENT e = coEventsResult[i];
-				if (dynamic_cast<CInvisibleBrick *>(e->obj))
+				if (dynamic_cast<CInvisibleObject *>(e->obj))
 				{
 					y += min_ty * dy + ny * 0.1f;
 					if (ny != 0) vy = 0;

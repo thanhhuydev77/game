@@ -10,7 +10,7 @@ void Scene2::loadmap(string path, int idtex)
 
 vector<LPGAMEOBJECT> Scene2::getBrickobjects()
 {
-	return mmap->getBricksObject();
+	return mmap->getallHidenObject();
 }
 
 vector<LPGAMEOBJECT> Scene2::getBratizerobjects()
@@ -170,17 +170,17 @@ void Scene2::KeyState(BYTE * states)
 	}
 	else if (games->IsKeyDown(DIK_RIGHT) && !simon->iscollecting())
 	{
-		if (simon->isOnState())
+		if (simon->isOnStair())
 			simon->SetState(SIMON_STATE_WALKING_RIGHT);
 	}
 	else if (games->IsKeyDown(DIK_LEFT) && !simon->iscollecting())
 	{
-		if (simon->isOnState())
+		if (simon->isOnStair())
 			simon->SetState(SIMON_STATE_WALKING_LEFT);
 	}
 	else
 	{
-		if (simon->isOnState())
+		if (simon->isOnStair())
 			simon->SetState(SIMON_STATE_IDLE);
 	}
 }

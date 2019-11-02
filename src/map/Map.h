@@ -2,7 +2,7 @@
 #include <vector>
 #include "tileset.h"
 #include "../item/CBratizer.h"
-#include "Brick.h"
+#include "Invisibleobject.h"
 #include "../sample/Const_Value.h"
 #include "../utility/MathHelper.h"
 #include "../character/Simon.h"
@@ -22,7 +22,7 @@ private:
 	};
 	vector<saveobject> arrobjects;
 	TileSet *ts;
-	CInvisibleBrick *br;
+	CInvisibleObject *inobj;
 	CBratizer *bra;
 	CGameObject *Largeh;
 	std::vector<int> *mapsprite;
@@ -32,15 +32,20 @@ private:
 	int tileheight;
 	int offset;
 	vector<LPGAMEOBJECT> objects;
-	vector<LPGAMEOBJECT> Brickobjects;
+	vector<LPGAMEOBJECT> allHidenObject;
 	vector<LPGAMEOBJECT> Bratizerobjects;
 	vector<LPGAMEOBJECT> itemsobjects;
+	vector<LPGAMEOBJECT> allbrickandpoint;
+	vector<LPGAMEOBJECT> allstairpoint;
+
 public:
 	Map();
 	vector<LPGAMEOBJECT> getallObject();
-	vector<LPGAMEOBJECT> getBricksObject();
+	vector<LPGAMEOBJECT> getallHidenObject();
 	vector<LPGAMEOBJECT> getBratizersObject();
 	vector<LPGAMEOBJECT> getItemsObject();
+	vector<LPGAMEOBJECT> getallbrickandpoint();
+	vector<LPGAMEOBJECT> getallstairpoint();
 	void loaditems();
 	void loadinvisibleobjects(int id,int top, int left, int width, int height);
 	Map (string filePath,int idtex);

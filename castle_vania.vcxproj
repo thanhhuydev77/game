@@ -137,7 +137,7 @@
     <ClInclude Include="src\sample\CSampleKeyHandler.h" />
     <ClInclude Include="src\Scene\SceneExample.h" />
     <ClInclude Include="src\Scene\SceneManager.h" />
-    <ClInclude Include="src\map\Brick.h" />
+    <ClInclude Include="src\map\Invisibleobject.h" />
     <ClInclude Include="src\item\CBratizer.h" />
     <ClInclude Include="src\sample\Const_Value.h" />
     <ClInclude Include="src\sample\debug.h" />
@@ -164,7 +164,7 @@
     <ClCompile Include="src\sample\CSampleKeyHandler.cpp" />
     <ClCompile Include="src\Scene\SceneExample.cpp" />
     <ClCompile Include="src\Scene\SceneManager.cpp" />
-    <ClCompile Include="src\map\Brick.cpp" />
+    <ClCompile Include="src\map\Invisibleobject.cpp" />
     <ClCompile Include="src\item\CBratizer.cpp" />
     <ClCompile Include="src\sample\Const_Value.cpp" />
     <ClCompile Include="src\sample\debug.cpp" />

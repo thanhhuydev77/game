@@ -76,7 +76,7 @@ public:
 #pragma endregion
 #pragma region backgroundobject
 
-
+static enum in_obj_type { Brick, endmap1, stairup, stairdown };
 #define BRATIZER_STATE_ACTIVE		1
 #define BRATIZER_STATE_UNACTIVE		0
 #define BRATIZER_BBOX_WIDTH			32

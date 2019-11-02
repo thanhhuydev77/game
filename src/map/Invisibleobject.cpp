@@ -1,18 +1,18 @@
-#include "Brick.h"
+#include "Invisibleobject.h"
 #include"../utility/LoadResourceHelper.h"
 #include "../sample/Textures.h"
 #include "../sample/Const_Value.h"
 
-CInvisibleBrick::CInvisibleBrick()
+CInvisibleObject::CInvisibleObject()
 {
 }
 
-void CInvisibleBrick::Render()
+void CInvisibleObject::Render()
 {
 	RenderBoundingBox();
 }
 
-void CInvisibleBrick::GetBoundingBox(float &l, float &t, float &r, float &b)
+void CInvisibleObject::GetBoundingBox(float &l, float &t, float &r, float &b)
 {
 	l = x;
 	t = y;
