@@ -55,11 +55,12 @@ void Map::loaditems()
 	}
 }
 
-void Map::loadinvisibleobjects(int id,int top, int left, int width, int height)
+void Map::loadinvisibleobjects(int id,int direct,int top, int left, int width, int height)
 {
 	
 		CInvisibleObject *in_obj;
 		in_obj = new CInvisibleObject();
+		in_obj->setDirect(direct);
 		switch (id)
 		{
 		case 0:
@@ -105,6 +106,7 @@ Map::Map(string filePath, int idtex)
 	int maheight;
 	int numobjecthasbrick;
 	int numobject;
+
 	{
 		infile >> trashname >> mapname >> trashname >> tileWidth >> trashname >> tileHeight >> trashname >> imagesource >> imageWidth >> imageHeight >> trashname >> mawidth >> trashname >> maheight;// >>numobjecthasbrick;
 		this->mawidth = mawidth;
@@ -131,9 +133,9 @@ Map::Map(string filePath, int idtex)
 		infile >> numofobjects;
 		for (int i = 0; i < numofobjects; i++)
 		{
-			int id,top, left, width, height;
-			infile >>id>> top >> left >> width >> height;
-			loadinvisibleobjects(id,top, left, width, height);
+			int id,direct,top, left, width, height;
+			infile >>id>>direct>> top >> left >> width >> height;
+			loadinvisibleobjects(id,direct,top, left, width, height);
 
 		}
 		for (int i = 0; i < maheight*mawidth; i++)

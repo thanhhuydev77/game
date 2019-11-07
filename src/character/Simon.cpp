@@ -22,128 +22,166 @@ Simon * Simon::getinstance()
 
 void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 {
-	CGameObject::Update(dt);
+	CGameObject::Update(dt, colliable_objects);
 	if (x < -5)
 		x = 0;
-	if(!climbing)
-	vy += SIMON_GRAVITY * dt;
-	vector<LPCOLLISIONEVENT> coEvents;
-	
-	vector<LPCOLLISIONEVENT> coEventsResult;
-	
-	coEvents.clear();
-
-	// turn off collision when die 
-	if (state != SIMON_STATE_DIE)
+	if (!climbing)
 	{
-		CalcPotentialCollisions(colliable_objects, coEvents);
+		vy += SIMON_GRAVITY * dt;
 	}
+	else {
+		vy = 0;
+	}
+
+	vector<LPCOLLISIONEVENT> coEvents;
+
+	vector<LPCOLLISIONEVENT> coEventsResult;
+
+	coEvents.clear();
+	if (autoclimbing || autowalking)
+	{
+		if (autoclimbing)
+		{
+
+		}
+		else if (autowalking)
+		{
+
+			//walking to left
+			if (temp_nx == -1 && x - targetX  > 0)
+			{
+				SetState(SIMON_STATE_WALKING_LEFT);
+				x += dt * vx;
+			}
+			//walking to right
+			else if (temp_nx == 1 && x - targetX < 0)
+			{
+				SetState(SIMON_STATE_WALKING_RIGHT);
+				x += dt * vx;
+			}
+			//end of auto
+			else
+			{
+				autowalking = false;
+				nx = last_nx;
+			}
+
+		}
+	}
+	else
+	{
+		// turn off collision when die 
+		if (state != SIMON_STATE_DIE)
+		{
+			CalcPotentialCollisions(colliable_objects, coEvents);
+		}
 #pragma region attack
 
 
-	if (GetTickCount() - attack_start > SIMON_ATTACK_TIME)
-	{
-		attack_start = 0;
-		attacking = false;
-	}
-	// no moving when attacking
-	else
-	{
-		nx = temp_nx;
-		if(onstair)
-		dx = 0;
-	}
+		if (GetTickCount() - attack_start > SIMON_ATTACK_TIME)
+		{
+			attack_start = 0;
+			attacking = false;
+		}
+		// no moving when attacking
+		else
+		{
+			nx = temp_nx;
+			if (onGround)
+				dx = 0;
+		}
 
 #pragma endregion
 #pragma region mono jump
 
 
-	// fell down
-	if (GetTickCount() - jump_start > SIMON_JUMP_TIME)
-	{
-		jump_start = 0;
-		jumping = false;
-
-	}
-	else
-	{
-		//jumping up
-		if (GetTickCount() - jump_start < (SIMON_JUMP_TIME))
+		// fell down
+		if (GetTickCount() - jump_start > SIMON_JUMP_TIME)
 		{
-			//only jump when onstate;
-			if (onstair)
+			jump_start = 0;
+			jumping = false;
+
+		}
+		else
+		{
+			//jumping up
+			if (GetTickCount() - jump_start < (SIMON_JUMP_TIME))
 			{
-				vy = -SIMON_JUMP_SPEED_Y;
-				onstair = false;
-			}
-			else
-			{
-				vx = 0;
+				//only jump when onstate;
+				if (onGround)
+				{
+					vy = -SIMON_JUMP_SPEED_Y;
+					onGround = false;
+				}
+				else
+				{
+					vx = 0;
+				}
 			}
 		}
-	}
 
 #pragma endregion
 #pragma region plex jump
 
 
-	//jump and has ->
-	if (GetTickCount() - jumpplus_start > SIMON_JUMP_TIME)
-	{
-
-		jumpplus_start = 0;
-		jumping = false;
-	}
-	else 
-	{
-		//jumping up
-		if (GetTickCount() - jumpplus_start < (SIMON_JUMP_TIME))
+		//jump and has ->
+		if (GetTickCount() - jumpplus_start > SIMON_JUMP_TIME)
 		{
-			//only jump when onstate;
-			if (onstair)
+
+			jumpplus_start = 0;
+			jumping = false;
+		}
+		else
+		{
+			//jumping up
+			if (GetTickCount() - jumpplus_start < (SIMON_JUMP_TIME))
 			{
-				vy = -SIMON_JUMP_SPEED_Y;
-				vx =  temp_nx*SIMON_JUMP_SPEED_X;
-				onstair = false;
-			}
-			else
-			{
-				nx = temp_nx;
+				//only jump when onstate;
+				if (onGround)
+				{
+					vy = -SIMON_JUMP_SPEED_Y;
+					vx = temp_nx * SIMON_JUMP_SPEED_X;
+					onGround = false;
+				}
+				else
+				{
+					nx = temp_nx;
+				}
 			}
 		}
-	}
 
 #pragma endregion
 #pragma region collect
-	if (GetTickCount() - collect_start > SIMON_TIME_COLLECT)
-	{
-		collecting = false;
-		collect_start = 0;
-	}
+		if (GetTickCount() - collect_start > SIMON_TIME_COLLECT)
+		{
+			collecting = false;
+			collect_start = 0;
+		}
 #pragma endregion
 
-	if (coEvents.size() == 0)
-	{
-		x += dx;
-		y += dy;
-		//onstate = false;
-	}
-	else
-	{
-#pragma region check overlap for item
-		for (UINT i = 0; i < colliable_objects->size(); i++)
+
+		if (coEvents.size() == 0)
 		{
-			CGameObject *object = colliable_objects->at(i);
-			if (dynamic_cast<Large_heart*>(object) && object->state == ITEM_STATE_ACTIVE && CheckOverLap(object))
+			x += dx;
+			y += dy;
+			//onstate = false;
+		}
+		else
+		{
+#pragma region check overlap for item
+			for (UINT i = 0; i < colliable_objects->size(); i++)
 			{
-				if (GetTickCount() - overlap_time > SIMON_ATTACK_TIME+150)
+				CGameObject *object = colliable_objects->at(i);
+				if (dynamic_cast<Large_heart*>(object) && object->state == ITEM_STATE_ACTIVE && CheckOverLap(object))
 				{
-					Large_heart *lh = dynamic_cast<Large_heart *>(object);
-					lh->SetState(ITEM_STATE_UNACTIVE);
-					lh->SetPosition(0 - LARGE_HEART_BBOX_WIDTH, 0);
+					if (GetTickCount() - overlap_time > SIMON_ATTACK_TIME + 150)
+					{
+						Large_heart *lh = dynamic_cast<Large_heart *>(object);
+						lh->SetState(ITEM_STATE_UNACTIVE);
+						lh->SetPosition(0 - LARGE_HEART_BBOX_WIDTH, 0);
+					}
 				}
-			}
-			else if (dynamic_cast<Whip_PowerUp*>(object) && object->state == ITEM_STATE_ACTIVE && CheckOverLap(object))
+				else if (dynamic_cast<Whip_PowerUp*>(object) && object->state == ITEM_STATE_ACTIVE && CheckOverLap(object))
 				{
 					if (GetTickCount() - overlap_time > SIMON_ATTACK_TIME + 150)
 					{
@@ -154,88 +192,88 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 						this->Upgrate();
 					}
 				}
-			else if (dynamic_cast<SwordItem*>(object) && object->state == ITEM_STATE_ACTIVE && CheckOverLap(object))
+				else if (dynamic_cast<SwordItem*>(object) && object->state == ITEM_STATE_ACTIVE && CheckOverLap(object))
+				{
+					if (GetTickCount() - overlap_time > SIMON_ATTACK_TIME + 150)
 					{
-						if (GetTickCount() - overlap_time > SIMON_ATTACK_TIME + 150)
-						{
-							SwordItem *lh = dynamic_cast<SwordItem *>(object);
-							lh->SetState(ITEM_STATE_UNACTIVE);
-							lh->SetPosition(0 - WHIP_POWER_UP_BBOX_WIDTH, 0);
-							this->sword_turn += 5;
-						}
+						SwordItem *lh = dynamic_cast<SwordItem *>(object);
+						lh->SetState(ITEM_STATE_UNACTIVE);
+						lh->SetPosition(0 - WHIP_POWER_UP_BBOX_WIDTH, 0);
+						this->sword_turn += 5;
 					}
-		}
+				}
+			}
 #pragma endregion
 
 #pragma region check by AABB
-		
-		
-		float min_tx, min_ty, nx = 0, ny;
-		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny);
-		
-		for (UINT i = 0; i < coEventsResult.size(); i++)
-		{
-			LPCOLLISIONEVENT e = coEventsResult[i];
-			if (dynamic_cast<CInvisibleObject *>(e->obj))
+
+
+			float min_tx, min_ty, nx = 0, ny;
+			FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny);
+
+			for (UINT i = 0; i < coEventsResult.size(); i++)
 			{
-				// block 
-				if (dynamic_cast<CInvisibleObject *>(e->obj)->Gettype() == Const_Value::in_obj_type::Brick)
+				LPCOLLISIONEVENT e = coEventsResult[i];
+				if (dynamic_cast<CInvisibleObject *>(e->obj))
 				{
-					x += min_tx * dx + nx * 0.1f;		// nx*0.5f : need to push out a bit to avoid overlapping next frame
-					y += min_ty * dy + ny * 0.1f;
+					// block 
+					if (dynamic_cast<CInvisibleObject *>(e->obj)->Gettype() == Const_Value::in_obj_type::Brick)
+					{
+						x += min_tx * dx + nx * 0.1f;		// nx*0.5f : need to push out a bit to avoid overlapping next frame
+						y += min_ty * dy + ny * 0.1f;
 
-					if (nx != 0) vx = 0;
-					if (ny != 0) vy = 0;
-					onstair = true;
+						if (nx != 0) vx = 0;
+						if (ny != 0) vy = 0;
+						onGround = true;
+					}
+					//endmap1
+					else if (dynamic_cast<CInvisibleObject *>(e->obj)->Gettype() == Const_Value::in_obj_type::endmap1)
+					{
+						endmap1 = true;
+					}
 				}
-				//endmap1
-				else if (dynamic_cast<CInvisibleObject *>(e->obj)->Gettype() == Const_Value::in_obj_type::endmap1)
+				else if (dynamic_cast<Large_heart *>(e->obj))
 				{
-					endmap1 = true;
+					if ((e->obj)->GetState() == ITEM_STATE_ACTIVE)
+					{
+						Large_heart *lh = dynamic_cast<Large_heart *>(e->obj);
+
+						lh->SetState(ITEM_STATE_UNACTIVE);
+						lh->SetPosition(0 - LARGE_HEART_BBOX_WIDTH, 0);
+						//this->them mau
+					}
+
 				}
-			}
-			else if (dynamic_cast<Large_heart *>(e->obj))
-			{
-				if ((e->obj)->GetState() == ITEM_STATE_ACTIVE)
+				else if (dynamic_cast<Whip_PowerUp *>(e->obj))
 				{
-					Large_heart *lh = dynamic_cast<Large_heart *>(e->obj);
+					if ((e->obj)->GetState() == ITEM_STATE_ACTIVE)
+					{
+						Whip_PowerUp *wp = dynamic_cast<Whip_PowerUp *>(e->obj);
 
-					lh->SetState(ITEM_STATE_UNACTIVE);
-					lh->SetPosition(0 - LARGE_HEART_BBOX_WIDTH, 0);
-					//this->them mau
+						wp->SetState(ITEM_STATE_UNACTIVE);
+						wp->SetPosition(0 - WHIP_POWER_UP_BBOX_WIDTH, 0);
+						this->StartCollect();
+						this->Upgrate();
+					}
+
 				}
-				
-			}
-			else if (dynamic_cast<Whip_PowerUp *>(e->obj))
-			{
-				if ((e->obj)->GetState() == ITEM_STATE_ACTIVE)
+				else if (dynamic_cast<SwordItem *>(e->obj))
 				{
-					Whip_PowerUp *wp = dynamic_cast<Whip_PowerUp *>(e->obj);
+					if ((e->obj)->GetState() == ITEM_STATE_ACTIVE)
+					{
+						SwordItem *si = dynamic_cast<SwordItem *>(e->obj);
 
-					wp->SetState(ITEM_STATE_UNACTIVE);
-					wp->SetPosition(0 - WHIP_POWER_UP_BBOX_WIDTH, 0);
-					this->StartCollect();
-					this->Upgrate();
+						si->SetState(ITEM_STATE_UNACTIVE);
+						si->SetPosition(0 - WHIP_POWER_UP_BBOX_WIDTH, 0);
+						this->sword_turn += 5;
+					}
+
 				}
-				
-			}
-			else if (dynamic_cast<SwordItem *>(e->obj))
-			{
-				if ((e->obj)->GetState() == ITEM_STATE_ACTIVE)
-				{
-					SwordItem *si = dynamic_cast<SwordItem *>(e->obj);
-
-					si->SetState(ITEM_STATE_UNACTIVE);
-					si->SetPosition(0 - WHIP_POWER_UP_BBOX_WIDTH, 0);
-					this->sword_turn += 5;
-				}
-
 			}
 		}
+		// clean up collision events
+		for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 	}
-	// clean up collision events
-	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
-
 #pragma endregion
 }
 
@@ -258,7 +296,11 @@ void Simon::Render()
 			{
 				ani = SIMON_ANI_ATTACK;
 			}
+			else if (state == SIMON_STATE_STANDING_ONSTAIR)
+			
+				animations[SIMON_ANI_GOUP]->GetFrame(1)->GetSprite()->Draw(x, y, 255, nx);
 			else
+
 				ani = SIMON_ANI_IDLE;
 		}
 		else
@@ -277,8 +319,12 @@ void Simon::Render()
 		ani = SIMON_ANI_GODOWN;
 	if (state == SIMON_STATE_GOUP)
 		ani = SIMON_ANI_GOUP;
-
-	animations[ani]->Render(x, y, 255, nx);
+	if (state == SIMON_STATE_STANDING_ONSTAIR)
+	{
+		animations[SIMON_ANI_GOUP]->GetFrame(1)->GetSprite()->Draw(x, y, 255, nx);
+	}
+	else
+		animations[ani]->Render(x, y, 255, nx);
 	RenderBoundingBox();
 }
 
@@ -309,12 +355,19 @@ void Simon::SetState(int state)
 	}
 }
 
+void Simon::setcanclimb(bool icanclimb, bool up)
+{
+	if (up)
+		canclimbup = icanclimb;
+	else
+		canclimbdown = icanclimb;
+}
 void Simon::StartAttack()
 {
 	if (!attacking && !collecting) {
 		attacking = true;
 		attack_start = GetTickCount();
-		
+
 		animations[SIMON_ANI_ATTACK]->reset();
 		overlap_time = GetTickCount();
 		temp_nx = nx;
@@ -325,7 +378,7 @@ void Simon::StartmonoJump()
 {
 	if (!jumping && !collecting) {
 		jumping = true; jump_start = GetTickCount();
-		onstair = false;
+		onGround = false;
 	}
 }
 
@@ -334,20 +387,19 @@ void Simon::StartplexJump()
 	if (!jumping && !collecting) {
 		jumping = true; jumpplus_start = GetTickCount();
 		temp_nx = nx;
-		onstair = false;
+		onGround = false;
 	}
-	
+
 }
 
 void Simon::StartCollect()
 {
 	if (!collecting) {
 		state = SIMON_STATE_COLLECT;
-		collecting = true; 
+		collecting = true;
 		collect_start = GetTickCount();
 	}
 }
-
 
 void Simon::startclimbdown()
 {
@@ -355,17 +407,55 @@ void Simon::startclimbdown()
 	{
 		climbing = true;
 		state = SIMON_STATE_GODOWN;
-		x += dx;
+		x += 1.0f;
 		y += 1.0f;
 	}
 }
+
+void Simon::startAutowalk(int lastdirect, float targetX)
+{
+	
+	// according to current locate to determine nx when walking
+	this->targetX = targetX;
+	//stair direct is left
+	temp_nx = (x> targetX) ? -1 : 1;
+	
+	nx = temp_nx;
+	autowalking = true;
+	this->last_nx = lastdirect;
+}
+
+void Simon::startAutoClimb(int lastdirect, float targetX, float targetY)
+{
+	state = SIMON_STATE_GOUP;
+	climbing = true;
+	//climb to left
+	while (x + SIMON_SMALL_BBOX_WIDTH != targetX)
+	{
+		//walking to left
+		if (nx == -1)
+		{
+			if (y <= targetY)
+				break;
+		}
+		//walking to right
+		else
+		{
+			if (y <= targetY)
+				break;
+		}
+		startclimbup();
+	}
+	nx = lastdirect;
+}
+
 void Simon::startclimbup()
 {
 	if (canclimbup)
 	{
 		climbing = true;
 		state = SIMON_STATE_GOUP;
-		x += dx;
+		x += 1.0f;
 		y -= 1.0f;
 	}
 }
@@ -384,10 +474,10 @@ int Simon::GetDirect()
 
 void Simon::GetBoundingBox(float & left, float & top, float & right, float & bottom)
 {
-	
-	left = x+(SIMON_BIG_BBOX_WIDTH - SIMON_SMALL_BBOX_WIDTH)/2;
+
+	left = x + (SIMON_BIG_BBOX_WIDTH - SIMON_SMALL_BBOX_WIDTH) / 2;
 	top = y;
-	right = left + SIMON_SMALL_BBOX_WIDTH ;
+	right = left + SIMON_SMALL_BBOX_WIDTH;
 	bottom = top + SIMON_SMALL_BBOX_HEIGHT;
 
 

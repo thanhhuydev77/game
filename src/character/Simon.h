@@ -10,11 +10,15 @@
 #include "../item/Large_heart.h"
 #include "../item/Whip_PowerUp.h"
 #include "../item/SwordItem.h"
+#include "../sample/debug.h"
 using namespace std;
 class Simon : public CGameObject
 {
 	static Simon* _instance;
-		bool onstair;
+		bool onGround;
+		bool standingonstair;
+		bool autowalking;
+		bool autoclimbing;
 		bool attacking;
 		bool collecting;
 		bool jumping;
@@ -31,6 +35,9 @@ class Simon : public CGameObject
 		int temp_nx;
 		int sword_turn;
 		bool endmap1;
+		int last_nx;
+		float targetX;
+		float targetY;
 		Simon();
 public:
 	
@@ -40,13 +47,15 @@ public:
 	void setswordturndesc() ;
 	bool isattacking() { return attacking; }
 	int getswordturn() { return sword_turn; }
-	bool isOnStair() { return onstair; };
+	bool isOnStair() { return onGround; };
 	bool iscollecting() { return collecting; }
+	void setclimbing(bool is) { climbing = is; if(!is) canclimbdown = canclimbup = false;
+	}
+	bool isclimbing() { return climbing; }
 	bool iscanclimbup() { return canclimbup; }
 	bool iscanclimbdown() { return canclimbdown; }
 	void SetState(int state);
-	void setcanclimb(bool icanclimb, bool up) { if (up)canclimbup = icanclimb; else canclimbdown = icanclimb; }
-
+	void setcanclimb(bool icanclimb, bool up);
 
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount(); }
 	void StartAttack();
@@ -55,7 +64,8 @@ public:
 	void StartCollect();
 	void startclimbup();
 	void startclimbdown();
-
+	void startAutowalk(int lastdirect,float targetX);
+	void startAutoClimb(int lastdirect, float targetX,float targetY);
 	void Upgrate();
 	void setstateendmap1(bool signal) { endmap1 = signal; }
 	bool isendmap1() { return endmap1; }

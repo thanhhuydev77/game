@@ -10,6 +10,6 @@ height: <height of matrix>
 <id object2> <id sub object2> <x> <y>
 
 <number of invisible object(1)> brick,endpoint,...
-<id object1> <x> <y> <width> <height>
+<id object1> <direct(1:right 0:left)> <x> <y> <width> <height>
 
 <matrix of map>

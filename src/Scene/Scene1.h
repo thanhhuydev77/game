@@ -28,7 +28,7 @@ private:
 	Whip  *whip;
 	Map * mmap;
 	int mapwidth;
-
+	CInvisibleObject* typestairstart ;
 	vector<LPGAMEOBJECT> objects;  //all object
 	vector<LPGAMEOBJECT> BratizerObjects; //all bratizer
 	vector<LPGAMEOBJECT> coObjects;//all object except simon

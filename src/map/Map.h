@@ -47,7 +47,7 @@ public:
 	vector<LPGAMEOBJECT> getallbrickandpoint();
 	vector<LPGAMEOBJECT> getallstairpoint();
 	void loaditems();
-	void loadinvisibleobjects(int id,int top, int left, int width, int height);
+	void loadinvisibleobjects(int id,int direct,int top, int left, int width, int height);
 	Map (string filePath,int idtex);
 	Map* GetMap();
 	int GetWidth();
