@@ -94,7 +94,7 @@ void Scene1::Update(DWORD dt)
 			}
 			else if (dynamic_cast<CInvisibleObject*>(allStairpoint.at(i))->Gettype() == typestairstart->Gettype())
 			{
-				simon->setclimbing(false);
+				//simon->setclimbing(false);
 				DebugOut(L"type stair meeting: %d\n", dynamic_cast<CInvisibleObject*>(allStairpoint.at(i))->Gettype());
 				break;
 			}
@@ -108,11 +108,11 @@ void Scene1::Update(DWORD dt)
 			typestairstart->Settype(Const_Value::in_obj_type::Brick);
 		}
 	}
-	DebugOut(L"canclimb up: %d\n", simon->iscanclimbup());
+	/*DebugOut(L"canclimb up: %d\n", simon->iscanclimbup());
 	DebugOut(L"canclimb down: %d\n", simon->iscanclimbdown());
 	DebugOut(L"climbing: %d\n", simon->isclimbing());
 	DebugOut(L"type stair start: %d\n", typestairstart->Gettype());
-	DebugOut(L"type stair start direct: %d\n", typestairstart->getDirect());
+	DebugOut(L"type stair start direct: %d\n", typestairstart->getDirect());*/
 
 #pragma endregion
 	// item falling and stop when on stair
@@ -266,13 +266,20 @@ void Scene1::KeyState(BYTE * states)
 			typestairstart->GetBoundingBox(l, t, r, b);
 			//climb to left
 			if (typestairstart->getDirect() == -1)
-				simon->startAutowalk(typestairstart->getDirect(),l+(r-l)/2- (SIMON_BIG_BBOX_WIDTH- SIMON_SMALL_BBOX_WIDTH)/2);
-				//simon->startAutoClimb(typestairstart->getDirect(), l - SIMON_SMALL_BBOX_WIDTH, t - SIMON_SMALL_BBOX_HEIGHT + 0.5);  
+			{
+				simon->startAutowalk(typestairstart->getDirect(), l - (SIMON_BIG_BBOX_WIDTH - SIMON_SMALL_BBOX_WIDTH) / 2);
+				simon->startAutoClimb(typestairstart->getDirect(), l, t);
+			}
 			else
-				simon->startAutowalk(typestairstart->getDirect(),r - (r - l) / 2 -SIMON_SMALL_BBOX_WIDTH- (SIMON_BIG_BBOX_WIDTH - SIMON_SMALL_BBOX_WIDTH) / 2);
-				//simon->startAutoClimb(typestairstart->getDirect(),r,t - SIMON_SMALL_BBOX_HEIGHT + 0.5);  
+			{
+				simon->startAutowalk(typestairstart->getDirect(), r - SIMON_SMALL_BBOX_WIDTH - (SIMON_BIG_BBOX_WIDTH - SIMON_SMALL_BBOX_WIDTH) / 2);
+				simon->startAutoClimb(typestairstart->getDirect(),r,t);  
+			}
 
-
+		}
+		else
+		{
+			simon->startclimbup();
 		}
 	}
 	else if (games->IsKeyDown(DIK_DOWN) && simon->iscanclimbdown())

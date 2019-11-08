@@ -38,6 +38,7 @@ class Simon : public CGameObject
 		int last_nx;
 		float targetX;
 		float targetY;
+		bool canclimb;
 		Simon();
 public:
 	

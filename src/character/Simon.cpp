@@ -40,15 +40,13 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 	coEvents.clear();
 	if (autoclimbing || autowalking)
 	{
-		if (autoclimbing)
-		{
+		//start autoclimb when not auto walk
 
-		}
-		else if (autowalking)
+		if (autowalking)
 		{
 
 			//walking to left
-			if (temp_nx == -1 && x - targetX  > 0)
+			if (temp_nx == -1 && x - targetX > 0)
 			{
 				SetState(SIMON_STATE_WALKING_LEFT);
 				x += dt * vx;
@@ -65,8 +63,24 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 				autowalking = false;
 				nx = last_nx;
 			}
-
 		}
+		else
+			if (autoclimbing && !autowalking)
+			{
+				
+				if (y + SIMON_BIG_BBOX_HEIGHT > targetY)
+				{
+					if (!climbing)
+						x += 15;
+					startclimbup();
+				}
+				else
+				{
+					autoclimbing = false;
+					nx = last_nx;
+				}
+			}
+
 	}
 	else
 	{
@@ -274,6 +288,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 		// clean up collision events
 		for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 	}
+	DebugOut(L"autowalking: %d\n", autowalking);
 #pragma endregion
 }
 
@@ -297,7 +312,7 @@ void Simon::Render()
 				ani = SIMON_ANI_ATTACK;
 			}
 			else if (state == SIMON_STATE_STANDING_ONSTAIR)
-			
+
 				animations[SIMON_ANI_GOUP]->GetFrame(1)->GetSprite()->Draw(x, y, 255, nx);
 			else
 
@@ -414,39 +429,24 @@ void Simon::startclimbdown()
 
 void Simon::startAutowalk(int lastdirect, float targetX)
 {
-	
-	// according to current locate to determine nx when walking
-	this->targetX = targetX;
-	//stair direct is left
-	temp_nx = (x> targetX) ? -1 : 1;
-	
-	nx = temp_nx;
-	autowalking = true;
-	this->last_nx = lastdirect;
+		// according to current locate to determine nx when walking
+		this->targetX = targetX;
+		//stair direct is left
+		temp_nx = (x > targetX) ? -1 : 1;
+		nx = temp_nx;
+		canclimb = false;
+		autowalking = true;
+		this->last_nx = lastdirect;
 }
 
 void Simon::startAutoClimb(int lastdirect, float targetX, float targetY)
 {
-	state = SIMON_STATE_GOUP;
-	climbing = true;
-	//climb to left
-	while (x + SIMON_SMALL_BBOX_WIDTH != targetX)
-	{
-		//walking to left
-		if (nx == -1)
-		{
-			if (y <= targetY)
-				break;
-		}
-		//walking to right
-		else
-		{
-			if (y <= targetY)
-				break;
-		}
-		startclimbup();
-	}
-	nx = lastdirect;
+		autoclimbing = true;
+		//this->targetX = targetX;
+		this->targetY = targetY;
+		//nx = lastdirect;
+		//climb to left
+		//this->last_nx = lastdirect;
 }
 
 void Simon::startclimbup()
@@ -455,7 +455,7 @@ void Simon::startclimbup()
 	{
 		climbing = true;
 		state = SIMON_STATE_GOUP;
-		x += 1.0f;
+		x += nx * 1.0f;
 		y -= 1.0f;
 	}
 }
