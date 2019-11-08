@@ -33,12 +33,14 @@ class Simon : public CGameObject
 		DWORD jump_start;
 		DWORD jumpplus_start;
 		int temp_nx;
+		int climb_direct;
 		int sword_turn;
 		bool endmap1;
 		int last_nx;
 		float targetX;
 		float targetY;
 		bool canclimb;
+		int dofirst;
 		Simon();
 public:
 	
@@ -57,7 +59,7 @@ public:
 	bool iscanclimbdown() { return canclimbdown; }
 	void SetState(int state);
 	void setcanclimb(bool icanclimb, bool up);
-
+	bool inAutoMode() { return (autoclimbing || autowalking); }
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount(); }
 	void StartAttack();
 	void StartmonoJump();
@@ -72,6 +74,7 @@ public:
 	bool isendmap1() { return endmap1; }
 	int getlevel() { return level; }
 	int GetDirect();
+	int getx() { return x; }
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom);
 };
 
