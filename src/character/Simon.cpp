@@ -78,7 +78,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 
 			}
 			//climb down
-			else if (y < targetY && temp_ny == 1)
+			else if (y + SIMON_BIG_BBOX_HEIGHT < targetY && temp_ny == 1)
 			{
 				startclimbdown();
 			}

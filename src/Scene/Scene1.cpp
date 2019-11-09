@@ -105,7 +105,7 @@ void Scene1::Update(DWORD dt)
 				//meeting stairup
 				else if (typestairstart->Gettype() == Const_Value::in_obj_type::stairdown)
 				{
-					simon->startAutoClimb(-typestairstart->getDirect(),b - SIMON_BIG_BBOX_HEIGHT);
+					simon->startAutoClimb(-typestairstart->getDirect(),b);
 					simon->setTempny(3);
 					int optionx = (typestairstart->getDirect() == -1) ? 0 : 20;
 					simon->startAutowalk(typestairstart->getDirect(), l - SIMON_SMALL_BBOX_WIDTH + optionx);
@@ -119,7 +119,7 @@ void Scene1::Update(DWORD dt)
 				if (typestairstart->Gettype() == Const_Value::in_obj_type::stairup)
 				{
 
-					simon->startAutoClimb(typestairstart->getDirect(), b - SIMON_BIG_BBOX_HEIGHT);
+					simon->startAutoClimb(typestairstart->getDirect(), b);
 					simon->setTempny(3);
 					int optionx = (typestairstart->getDirect() == 1) ? 0 : 20;
 					simon->startAutowalk(-typestairstart->getDirect(), l - SIMON_SMALL_BBOX_WIDTH + optionx);
@@ -286,7 +286,6 @@ void Scene1::OnKeyDown(int KeyCode)
 	case DIK_UP:
 		if (simon->iscanclimbup() && !simon->isattacking())
 		{
-
 			if (!simon->isclimbing())
 			{
 				float l, t, r, b;
@@ -296,13 +295,13 @@ void Scene1::OnKeyDown(int KeyCode)
 				if (typestairstart->getDirect() == -1)
 				{
 					simon->startAutowalk(-1, l - (SIMON_BIG_BBOX_WIDTH - SIMON_SMALL_BBOX_WIDTH) / 2);
-					simon->startAutoClimb(-1, t+14);
+					simon->startAutoClimb(-1, b);
 				}
 				//climb to right
 				else
 				{
 					simon->startAutowalk(1, r - SIMON_SMALL_BBOX_WIDTH - (SIMON_BIG_BBOX_WIDTH - SIMON_SMALL_BBOX_WIDTH) / 2);
-					simon->startAutoClimb(1, t);
+					simon->startAutoClimb(1,b);
 				}
 
 			}
@@ -321,13 +320,13 @@ void Scene1::OnKeyDown(int KeyCode)
 				if (typestairstart->getDirect() == -1)
 				{
 					simon->startAutowalk(-1,l - (SIMON_BIG_BBOX_WIDTH - SIMON_SMALL_BBOX_WIDTH) / 2);
-					simon->startAutoClimb(1,t+3);
+					simon->startAutoClimb(1,b+16);
 				}
 				//climb down to right
 				else
 				{
 					simon->startAutowalk(1,l - (SIMON_BIG_BBOX_WIDTH - SIMON_SMALL_BBOX_WIDTH) / 2);
-					simon->startAutoClimb(-1, t+13);
+					simon->startAutoClimb(-1,b+16);
 				}
 
 			}
