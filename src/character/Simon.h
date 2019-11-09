@@ -33,17 +33,24 @@ class Simon : public CGameObject
 		DWORD jump_start;
 		DWORD jumpplus_start;
 		int temp_nx;
+		int temp_ny;
 		int climb_direct;
 		int sword_turn;
 		bool endmap1;
 		int last_nx;
+		int climbbing_distance = 0;
+		float orginX;
+		float orginY;
+
+		float tempx;
+		float tempy;
 		float targetX;
 		float targetY;
 		bool canclimb;
 		int dofirst;
 		Simon();
 public:
-	
+	void setclimbingdistance(int cd) { climbbing_distance = cd; }
 	static Simon* getinstance();
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *colliable_objects = NULL);
 	virtual void Render();
@@ -68,12 +75,14 @@ public:
 	void startclimbup();
 	void startclimbdown();
 	void startAutowalk(int lastdirect,float targetX);
-	void startAutoClimb(int lastdirect, float targetX,float targetY);
+	void startAutoClimb(int lastdirect,float targetY);
 	void Upgrate();
 	void setstateendmap1(bool signal) { endmap1 = signal; }
 	bool isendmap1() { return endmap1; }
 	int getlevel() { return level; }
 	int GetDirect();
+	void setTempnx(int temp) { temp_nx = temp; }
+	void setTempny(int temp) { if (temp == 2) temp_ny = -1; else if (temp == 3) temp_ny = 1; }
 	int getx() { return x; }
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom);
 };

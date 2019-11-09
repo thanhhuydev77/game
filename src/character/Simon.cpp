@@ -23,6 +23,7 @@ Simon * Simon::getinstance()
 void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 {
 	CGameObject::Update(dt);
+	
 	if (x < -5)
 		x = 0;
 	if (!climbing)
@@ -33,7 +34,6 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 		vy = 0;
 	}
 
-	
 	if (autoclimbing || autowalking)
 	{
 		//start autoclimb when not auto walk
@@ -56,34 +56,44 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 			//end of auto
 			else
 			{
+				orginX = x;
+				orginY = y;
 				autowalking = false;
 				nx = last_nx;
 				dofirst = 2;
 				climbing = false;
-				if (canclimbup)
-					x += 16;
-				else
-					x -= 14;
+				/*if (canclimbup)
+					x += nx*15;
+				else if(canclimbdown)
+					x -= nx*15;*/
 			}
 		}
 		else if (autoclimbing && dofirst == 2)
 		{
-
-			if (y + SIMON_BIG_BBOX_HEIGHT > targetY)
+			//climb up
+			
+			if (y + SIMON_BIG_BBOX_HEIGHT > targetY && temp_ny == -1)
 			{
 				startclimbup();
+
+			}
+			//climb down
+			else if (y < targetY && temp_ny == 1)
+			{
+				startclimbdown();
 			}
 			else
 			{
 				autoclimbing = false;
-				nx = last_nx;
 				dofirst = 1;
+				//nx = temp_nx;
 			}
 		}
 
 	}
-	else if(!climbing)
+	else if (!climbing)
 	{
+		
 		{
 			vector<LPCOLLISIONEVENT> coEvents;
 
@@ -95,89 +105,6 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 			{
 				CalcPotentialCollisions(colliable_objects, coEvents);
 			}
-#pragma region attack
-
-
-			if (GetTickCount() - attack_start > SIMON_ATTACK_TIME)
-			{
-				attack_start = 0;
-				attacking = false;
-			}
-			// no moving when attacking
-			else
-			{
-				nx = temp_nx;
-				if (onGround)
-					dx = 0;
-			}
-
-#pragma endregion
-#pragma region mono jump
-
-
-			// fell down
-			if (GetTickCount() - jump_start > SIMON_JUMP_TIME)
-			{
-				jump_start = 0;
-				jumping = false;
-
-			}
-			else
-			{
-				//jumping up
-				if (GetTickCount() - jump_start < (SIMON_JUMP_TIME))
-				{
-					//only jump when onstate;
-					if (onGround)
-					{
-						vy = -SIMON_JUMP_SPEED_Y;
-						onGround = false;
-					}
-					else
-					{
-						vx = 0;
-					}
-				}
-			}
-
-#pragma endregion
-#pragma region plex jump
-
-
-			//jump and has ->
-			if (GetTickCount() - jumpplus_start > SIMON_JUMP_TIME)
-			{
-
-				jumpplus_start = 0;
-				jumping = false;
-			}
-			else
-			{
-				//jumping up
-				if (GetTickCount() - jumpplus_start < (SIMON_JUMP_TIME))
-				{
-					//only jump when onstate;
-					if (onGround)
-					{
-						vy = -SIMON_JUMP_SPEED_Y;
-						vx = temp_nx * SIMON_JUMP_SPEED_X;
-						onGround = false;
-					}
-					else
-					{
-						nx = temp_nx;
-					}
-				}
-			}
-
-#pragma endregion
-#pragma region collect
-			if (GetTickCount() - collect_start > SIMON_TIME_COLLECT)
-			{
-				collecting = false;
-				collect_start = 0;
-			}
-#pragma endregion
 
 
 			if (coEvents.size() == 0)
@@ -294,12 +221,100 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 			// clean up collision events
 			for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 		}
-		
+
 #pragma endregion
 	}
-	DebugOut(L"autowalking: %d--", autowalking);
-	DebugOut(L"autoclimbing: %d\n", autoclimbing);
+	
+#pragma region attack
 
+
+	if (GetTickCount() - attack_start > SIMON_ATTACK_TIME)
+	{
+		attack_start = 0;
+		attacking = false;
+	}
+	// no moving when attacking
+	else
+	{
+		nx = temp_nx;
+		if (onGround)
+			dx = 0;
+	}
+
+#pragma endregion
+#pragma region mono jump
+
+
+	// fell down
+	if (GetTickCount() - jump_start > SIMON_JUMP_TIME)
+	{
+		jump_start = 0;
+		jumping = false;
+
+	}
+	else
+	{
+		//jumping up
+		if (GetTickCount() - jump_start < (SIMON_JUMP_TIME))
+		{
+			//only jump when onstate;
+			if (onGround)
+			{
+				vy = -SIMON_JUMP_SPEED_Y;
+				onGround = false;
+			}
+			else
+			{
+				vx = 0;
+			}
+		}
+	}
+
+#pragma endregion
+#pragma region plex jump
+
+
+	//jump and has ->
+	if (GetTickCount() - jumpplus_start > SIMON_JUMP_TIME)
+	{
+
+		jumpplus_start = 0;
+		jumping = false;
+	}
+	else
+	{
+		//jumping up
+		if (GetTickCount() - jumpplus_start < (SIMON_JUMP_TIME))
+		{
+			//only jump when onstate;
+			if (onGround)
+			{
+				vy = -SIMON_JUMP_SPEED_Y;
+				vx = temp_nx * SIMON_JUMP_SPEED_X;
+				onGround = false;
+			}
+			else
+			{
+				nx = temp_nx;
+			}
+		}
+	}
+
+#pragma endregion
+#pragma region collect
+	if (GetTickCount() - collect_start > SIMON_TIME_COLLECT)
+	{
+		collecting = false;
+		collect_start = 0;
+	}
+#pragma endregion
+
+	
+	/*DebugOut(L"autowalking: %d--", autowalking);
+	DebugOut(L"autoclimbing: %d--", autoclimbing);
+	DebugOut(L"temp ny: %d\n", temp_ny);
+	DebugOut(L"temp nx: %d\n", temp_nx);*/
+	DebugOut(L"tam x = %d . tam y = %d . x = %d . y=%d \n", (int)tempx, (int)tempy, (int)x, (int)y);
 }
 
 void Simon::Render()
@@ -317,13 +332,18 @@ void Simon::Render()
 	{
 		if (vx == 0)
 		{
-			if (state == SIMON_STATE_ATTACK)
+			if (state == SIMON_STATE_ATTACK )
 			{
 				ani = SIMON_ANI_ATTACK;
 			}
-			else if (state == SIMON_STATE_STANDING_ONSTAIR)
-
-				animations[SIMON_ANI_GOUP]->GetFrame(1)->GetSprite()->Draw(x, y, 255, nx);
+			
+			else if (state == SIMON_STATE_STANDING_ONSTAIR &&!attacking)
+			{
+				if (nx == climb_direct)
+					animations[SIMON_ANI_GOUP]->GetFrame(1)->GetSprite()->Draw(x, y, 255, nx);
+				else
+					animations[SIMON_ANI_GODOWN]->GetFrame(1)->GetSprite()->Draw(x, y, 255, nx);
+			}
 			else
 
 				ani = SIMON_ANI_IDLE;
@@ -332,6 +352,11 @@ void Simon::Render()
 			ani = SIMON_ANI_WALKING;
 	}
 	if (attacking) {
+		if (climbing && nx == climb_direct)
+			ani = SIMON_ANI_GOUP_ATTACK;
+		else if(climbing && nx != climb_direct)
+			ani = SIMON_ANI_GODOWN_ATTACK;
+		else
 		ani = SIMON_ANI_ATTACK;
 	}
 	/*if (jumping)
@@ -344,9 +369,16 @@ void Simon::Render()
 		ani = SIMON_ANI_GODOWN;
 	if (state == SIMON_STATE_GOUP)
 		ani = SIMON_ANI_GOUP;
-	if (state == SIMON_STATE_STANDING_ONSTAIR)
+	/*if (state == SIMON_STATE_GODOWN_ATTACK)
+		ani = SIMON_ANI_GODOWN_ATTACK;
+	if (state == SIMON_STATE_GOUP_ATTACK)
+		ani = SIMON_ANI_GOUP_ATTACK;*/
+	if (state == SIMON_STATE_STANDING_ONSTAIR &&!attacking)
 	{
-		animations[SIMON_ANI_GOUP]->GetFrame(1)->GetSprite()->Draw(x, y, 255, nx);
+		 if (nx == climb_direct)
+			animations[SIMON_ANI_GOUP]->GetFrame(1)->GetSprite()->Draw(x, y, 255, nx);
+		else
+			animations[SIMON_ANI_GODOWN]->GetFrame(1)->GetSprite()->Draw(x, y, 255, nx);
 	}
 	else
 		animations[ani]->Render(x, y, 255, nx);
@@ -395,6 +427,8 @@ void Simon::StartAttack()
 		attack_start = GetTickCount();
 
 		animations[SIMON_ANI_ATTACK]->reset();
+		animations[SIMON_ANI_GOUP_ATTACK]->reset();
+		animations[SIMON_ANI_GODOWN_ATTACK]->reset();
 		overlap_time = GetTickCount();
 		temp_nx = nx;
 	}
@@ -427,17 +461,6 @@ void Simon::StartCollect()
 	}
 }
 
-void Simon::startclimbdown()
-{
-	if (canclimbdown)
-	{
-		climbing = true;
-		state = SIMON_STATE_GODOWN;
-		x += 1.0f;
-		y += 1.0f;
-	}
-}
-
 void Simon::startAutowalk(int lastdirect, float targetX)
 {
 	if (!autoclimbing)
@@ -452,28 +475,54 @@ void Simon::startAutowalk(int lastdirect, float targetX)
 	this->last_nx = lastdirect;
 }
 
-void Simon::startAutoClimb(int lastdirect, float targetX, float targetY)
+void Simon::startAutoClimb(int lastdirect, float targetY)
 {
 	if (!autowalking)
 		dofirst = 2;
-
+	tempx = x;
+	tempy = y;
 	autoclimbing = true;
 	//this->targetX = targetX;
+	//temp_ny = (y + SIMON_BIG_BBOX_HEIGHT > targetY) ? -1 : 1;
 	this->targetY = targetY;
 	climb_direct = lastdirect;
 	nx = lastdirect;
+
 	//climb to left
 	//this->last_nx = lastdirect;
 }
 
-void Simon::startclimbup()
+void Simon::startclimbdown()
 {
-	if (canclimbup)
+	if (canclimbdown && !attacking)
 	{
 		climbing = true;
+		nx = -climb_direct;
+		state = SIMON_STATE_GODOWN;
+		x -= climb_direct * 1.0f;
+		y += 1.0f;
+		/*if ((int)(tempy - y) % 4 == 0)
+		{
+			x = tempx;
+			y = tempy;
+		}*/
+	}
+}
+
+void Simon::startclimbup()
+{
+	if (canclimbup  && !attacking)
+	{
+		climbing = true;
+		nx = climb_direct;
 		state = SIMON_STATE_GOUP;
-		x +=climb_direct * 1.0f;
+		x += climb_direct * 1.0f;
 		y -= 1.0f;
+		/*if ((int)(y - tempy) % 4 == 0)
+		{
+			x = tempx;
+			y = tempy;
+		}*/
 	}
 }
 

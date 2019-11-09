@@ -95,22 +95,56 @@ void Scene1::Update(DWORD dt)
 			{
 				//meetting stairdown
 				if (typestairstart->Gettype() == Const_Value::in_obj_type::stairup)
-					simon->startAutoClimb(typestairstart->getDirect(), l, b + 4.0f);
-				int optionx = (typestairstart->getDirect() == -1) ?0 :5 ;
-				simon->startAutowalk(typestairstart->getDirect(), r -SIMON_SMALL_BBOX_WIDTH + optionx );
-				//simon->setclimbing(false);
-
-				//DebugOut(L"type stair meeting: %d\n", dynamic_cast<CInvisibleObject*>(allStairpoint.at(i))->Gettype());
+				{
+					simon->startAutoClimb(typestairstart->getDirect(), b + 4.0f);
+					simon->setTempny(2);
+					int optionx = (typestairstart->getDirect() == -1) ? 0 : 20;
+					simon->startAutowalk(typestairstart->getDirect(), l - SIMON_SMALL_BBOX_WIDTH + optionx);
+					simon->setTempnx(typestairstart->getDirect());
+				}
+				//meeting stairup
+				else if (typestairstart->Gettype() == Const_Value::in_obj_type::stairdown)
+				{
+					simon->startAutoClimb(-typestairstart->getDirect(),b - SIMON_BIG_BBOX_HEIGHT);
+					simon->setTempny(3);
+					int optionx = (typestairstart->getDirect() == -1) ? 0 : 20;
+					simon->startAutowalk(typestairstart->getDirect(), l - SIMON_SMALL_BBOX_WIDTH + optionx);
+					simon->setTempnx(typestairstart->getDirect());
+				}
 				break;
 			}
-			else if (dynamic_cast<CInvisibleObject*>(allStairpoint.at(i))->Gettype() == typestairstart->Gettype())
+			else if (dynamic_cast<CInvisibleObject*>(allStairpoint.at(i))->Gettype() == typestairstart->Gettype() &&simon->GetDirect() != dynamic_cast<CInvisibleObject*>(allStairpoint.at(i))->getDirect())
 			{
-				//simon->setclimbing(false);
-				//DebugOut(L"type stair meeting: %d\n", dynamic_cast<CInvisibleObject*>(allStairpoint.at(i))->Gettype());
+				//meetting stairup
+				if (typestairstart->Gettype() == Const_Value::in_obj_type::stairup)
+				{
+
+					simon->startAutoClimb(typestairstart->getDirect(), b - SIMON_BIG_BBOX_HEIGHT);
+					simon->setTempny(3);
+					int optionx = (typestairstart->getDirect() == 1) ? 0 : 20;
+					simon->startAutowalk(-typestairstart->getDirect(), l - SIMON_SMALL_BBOX_WIDTH + optionx);
+					simon->setTempnx(-typestairstart->getDirect());
+					
+				}
+				//meeting stairdown
+				else if (typestairstart->Gettype() == Const_Value::in_obj_type::stairdown)
+				{
+					simon->startAutoClimb(-typestairstart->getDirect(), b + 4.0f);
+					simon->setTempny(2);
+					int optionx = (typestairstart->getDirect() == 1) ? 0 : 20;
+					simon->startAutowalk(-typestairstart->getDirect(), l - SIMON_SMALL_BBOX_WIDTH + optionx);
+					simon->setTempnx(typestairstart->getDirect());
+				}
 				break;
 			}
 		}
 		// climbing
+		else if (simon->isclimbing())
+		{
+			simon->setcanclimb(true, false);
+			simon->setcanclimb(true, true);
+		}
+		//walking 
 		else if (!simon->isclimbing() && !simon->CheckOverLap(allStairpoint.at(i)))
 		{
 			simon->setcanclimb(false, true);
@@ -126,8 +160,8 @@ void Scene1::Update(DWORD dt)
 	DebugOut(L"type stair start: %d --", typestairstart->Gettype());
 	DebugOut(L"type stair start direct: %d --", typestairstart->getDirect());
 	DebugOut(L"simon direct: %d --", simon->GetDirect());
-	int x = simon->getx();
-	DebugOut(L"simon x: %d --",x);
+	DebugOut(L"simon istattacking: %d --", simon->isattacking());
+
 #pragma endregion
 	// item falling and stop when on stair
 
@@ -230,14 +264,15 @@ void Scene1::OnKeyDown(int KeyCode)
 			simon->StartmonoJump();
 		break;
 	case DIK_A:
-
-		if (games->IsKeyDown(DIK_UP) && simon->getswordturn() >= 1 && !simon->isclimbing())
+		//using knife
+		if (games->IsKeyDown(DIK_UP) && simon->getswordturn() >= 1)
 		{
 			simon->StartAttack();
 			simon->setswordturndesc();
 			sword->StartAttack();
 		}
-		else if (!simon->isclimbing())
+		//using whip 
+		else 
 		{
 			//animation with whip
 			if (!simon->iscollecting())
@@ -249,28 +284,53 @@ void Scene1::OnKeyDown(int KeyCode)
 		break;
 
 	case DIK_UP:
-		if (simon->iscanclimbup())
+		if (simon->iscanclimbup() && !simon->isattacking())
 		{
 
 			if (!simon->isclimbing())
 			{
 				float l, t, r, b;
 				typestairstart->GetBoundingBox(l, t, r, b);
+				simon->setTempny(2);
 				//climb to left
 				if (typestairstart->getDirect() == -1)
 				{
-					simon->startAutowalk(typestairstart->getDirect(), l - (SIMON_BIG_BBOX_WIDTH - SIMON_SMALL_BBOX_WIDTH) / 2);
-					simon->startAutoClimb(typestairstart->getDirect(), l, t);
+					simon->startAutowalk(-1, l - (SIMON_BIG_BBOX_WIDTH - SIMON_SMALL_BBOX_WIDTH) / 2);
+					simon->startAutoClimb(-1, t+14);
 				}
+				//climb to right
 				else
 				{
-					simon->startAutowalk(typestairstart->getDirect(), r - SIMON_SMALL_BBOX_WIDTH - (SIMON_BIG_BBOX_WIDTH - SIMON_SMALL_BBOX_WIDTH) / 2);
-					simon->startAutoClimb(typestairstart->getDirect(), r, t);
+					simon->startAutowalk(1, r - SIMON_SMALL_BBOX_WIDTH - (SIMON_BIG_BBOX_WIDTH - SIMON_SMALL_BBOX_WIDTH) / 2);
+					simon->startAutoClimb(1, t);
 				}
 
 			}
+		}
+		break;
+	case DIK_DOWN:
+		if (simon->iscanclimbdown())
+		{
 
+			if (!simon->isclimbing())
+			{
+				float l, t, r, b;
+				typestairstart->GetBoundingBox(l, t, r, b);
+				simon->setTempny(3);
+				//climb down to left
+				if (typestairstart->getDirect() == -1)
+				{
+					simon->startAutowalk(-1,l - (SIMON_BIG_BBOX_WIDTH - SIMON_SMALL_BBOX_WIDTH) / 2);
+					simon->startAutoClimb(1,t+3);
+				}
+				//climb down to right
+				else
+				{
+					simon->startAutowalk(1,l - (SIMON_BIG_BBOX_WIDTH - SIMON_SMALL_BBOX_WIDTH) / 2);
+					simon->startAutoClimb(-1, t+13);
+				}
 
+			}
 		}
 		break;
 	}
@@ -287,70 +347,74 @@ void Scene1::KeyState(BYTE * states)
 	{
 		return;
 	}
-		//sitting
-		if (games->IsKeyDown(DIK_S) && !simon->iscollecting() && !simon->isclimbing())
-		{
-			simon->SetState(SIMON_STATE_SIT);
-			whip->SetState(WHIP_STATE_UNACTIVE);
-		}
-		//walk to right
-		else if (games->IsKeyDown(DIK_RIGHT) && !simon->iscollecting() && !simon->isclimbing())
-		{
-			if (simon->isOnStair())
-				simon->SetState(SIMON_STATE_WALKING_RIGHT);
-		}
-		//walk to left 
-		else if (games->IsKeyDown(DIK_LEFT) && !simon->iscollecting() && !simon->isclimbing())
-		{
-			if (simon->isOnStair())
-				simon->SetState(SIMON_STATE_WALKING_LEFT);
-		}
-		//go up
-		else if (games->IsKeyDown(DIK_UP) && !simon->iscollecting() && simon->isclimbing())
-		{
-			simon->startclimbup();
-		}
-		//else if (games->IsKeyDown(DIK_UP) && simon->iscanclimbup())
-		//{
-		//	{
-		//		if (!simon->isclimbing() )
-		//		{
-		//			float l, t, r, b;
-		//			typestairstart->GetBoundingBox(l, t, r, b);
-		//			//climb to left
-		//			if (typestairstart->getDirect() == -1)
-		//			{
-		//				simon->startAutowalk(typestairstart->getDirect(), l - (SIMON_BIG_BBOX_WIDTH - SIMON_SMALL_BBOX_WIDTH) / 2);
-		//				simon->startAutoClimb(typestairstart->getDirect(), l, t);
-		//			}
-		//			else
-		//			{
-		//				simon->startAutowalk(typestairstart->getDirect(), r - SIMON_SMALL_BBOX_WIDTH - (SIMON_BIG_BBOX_WIDTH - SIMON_SMALL_BBOX_WIDTH) / 2);
-		//				simon->startAutoClimb(typestairstart->getDirect(), r, t);
-		//			}
+	//sitting
+	if (games->IsKeyDown(DIK_S) && !simon->iscollecting() && !simon->isclimbing())
+	{
+		simon->SetState(SIMON_STATE_SIT);
+		whip->SetState(WHIP_STATE_UNACTIVE);
+	}
+	//walk to right
+	else if (games->IsKeyDown(DIK_RIGHT) && !simon->iscollecting() && !simon->isclimbing())
+	{
+		if (simon->isOnStair())
+			simon->SetState(SIMON_STATE_WALKING_RIGHT);
+	}
+	//walk to left 
+	else if (games->IsKeyDown(DIK_LEFT) && !simon->iscollecting() && !simon->isclimbing())
+	{
+		if (simon->isOnStair())
+			simon->SetState(SIMON_STATE_WALKING_LEFT);
+	}
+	//go up
+	else if (games->IsKeyDown(DIK_UP) && !simon->iscollecting() && simon->isclimbing())
+	{
+		simon->startclimbup();
+	}
+	else if (games->IsKeyDown(DIK_DOWN) && !simon->iscollecting() && simon->isclimbing())
+	{
+		simon->startclimbdown();
+	}
+	//else if (games->IsKeyDown(DIK_UP) && simon->iscanclimbup())
+	//{
+	//	{
+	//		if (!simon->isclimbing() )
+	//		{
+	//			float l, t, r, b;
+	//			typestairstart->GetBoundingBox(l, t, r, b);
+	//			//climb to left
+	//			if (typestairstart->getDirect() == -1)
+	//			{
+	//				simon->startAutowalk(typestairstart->getDirect(), l - (SIMON_BIG_BBOX_WIDTH - SIMON_SMALL_BBOX_WIDTH) / 2);
+	//				simon->startAutoClimb(typestairstart->getDirect(), l, t);
+	//			}
+	//			else
+	//			{
+	//				simon->startAutowalk(typestairstart->getDirect(), r - SIMON_SMALL_BBOX_WIDTH - (SIMON_BIG_BBOX_WIDTH - SIMON_SMALL_BBOX_WIDTH) / 2);
+	//				simon->startAutoClimb(typestairstart->getDirect(), r, t);
+	//			}
 
-		//		}
-		//		else if(!simon->inAutoMode())
-		//		{
-		//			simon->startclimbup();
-		//		}
-		//	}
-		//}
-		////go down
-		//else if (games->IsKeyDown(DIK_DOWN) && simon->iscanclimbdown())
-		//{
-		//	simon->startclimbdown();
-		//}
-		//something else
+	//		}
+	//		else if(!simon->inAutoMode())
+	//		{
+	//			simon->startclimbup();
+	//		}
+	//	}
+	//}
+	////go down
+	//else if (games->IsKeyDown(DIK_DOWN) && simon->iscanclimbdown())
+	//{
+	//	simon->startclimbdown();
+	//}
+	//something else
+	else
+	{
+		//idle
+		if (!simon->isclimbing())
+			simon->SetState(SIMON_STATE_IDLE);
 		else
-		{
-			//idle
-			if (!simon->isclimbing())
-				simon->SetState(SIMON_STATE_IDLE);
-			else
-				//standing on stair
-				simon->SetState(SIMON_STATE_STANDING_ONSTAIR);
+			//standing on stair
+			simon->SetState(SIMON_STATE_STANDING_ONSTAIR);
 
-		}
-	
+	}
+
 }
