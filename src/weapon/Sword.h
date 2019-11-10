@@ -3,9 +3,9 @@
 #include "../utility/LoadResourceHelper.h"
 #include "../sample/Sprites.h"
 #include "../sample/Const_Value.h"
-#include "../item/CBratizer.h"
+#include "../item/BoundItem.h"
 #include <vector>
-#include "../item/Large_heart.h"
+#include "../item/SmallItem.h"
 using namespace std;
 
 class Sword : public CGameObject

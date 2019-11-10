@@ -14,7 +14,7 @@ void  SwordItem::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if (state == ITEM_STATE_ACTIVE)
 	{
 		CGameObject::Update(dt);
-		vy += WHIP_POWER_UP_GRAVITY * dt;
+		vy += ITEM_GRAVITY * dt;
 		vector<LPCOLLISIONEVENT> coEvents;
 		vector<LPCOLLISIONEVENT> coEventsResult;
 

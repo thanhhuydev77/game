@@ -3,7 +3,7 @@
 #include<fstream>
 #include <vector>
 #include <string>
-#include"../item/CBratizer.h"
+#include"../item/BoundItem.h"
 Simon* Simon::_instance = NULL;
 Simon::Simon()
 {
@@ -23,7 +23,7 @@ Simon * Simon::getinstance()
 void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 {
 	CGameObject::Update(dt);
-	
+
 	if (x < -5)
 		x = 0;
 	if (!climbing)
@@ -71,7 +71,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 		else if (autoclimbing && dofirst == 2)
 		{
 			//climb up
-			
+
 			if (y + SIMON_BIG_BBOX_HEIGHT > targetY && temp_ny == -1)
 			{
 				startclimbup();
@@ -93,7 +93,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 	}
 	else if (!climbing)
 	{
-		
+
 		{
 			vector<LPCOLLISIONEVENT> coEvents;
 
@@ -119,34 +119,38 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 				for (UINT i = 0; i < colliable_objects->size(); i++)
 				{
 					CGameObject *object = colliable_objects->at(i);
-					if (dynamic_cast<Large_heart*>(object) && object->state == ITEM_STATE_ACTIVE && CheckOverLap(object))
+					if (dynamic_cast<SmallItem*>(object) && object->state == ITEM_STATE_ACTIVE && CheckOverLap(object))
 					{
 						if (GetTickCount() - overlap_time > SIMON_ATTACK_TIME + 150)
 						{
-							Large_heart *lh = dynamic_cast<Large_heart *>(object);
-							lh->SetState(ITEM_STATE_UNACTIVE);
-							lh->SetPosition(0 - LARGE_HEART_BBOX_WIDTH, 0);
-						}
-					}
-					else if (dynamic_cast<Whip_PowerUp*>(object) && object->state == ITEM_STATE_ACTIVE && CheckOverLap(object))
-					{
-						if (GetTickCount() - overlap_time > SIMON_ATTACK_TIME + 150)
-						{
-							Whip_PowerUp *lh = dynamic_cast<Whip_PowerUp *>(object);
-							lh->SetState(ITEM_STATE_UNACTIVE);
-							lh->SetPosition(0 - WHIP_POWER_UP_BBOX_WIDTH, 0);
-							this->StartCollect();
-							this->Upgrate();
-						}
-					}
-					else if (dynamic_cast<SwordItem*>(object) && object->state == ITEM_STATE_ACTIVE && CheckOverLap(object))
-					{
-						if (GetTickCount() - overlap_time > SIMON_ATTACK_TIME + 150)
-						{
-							SwordItem *lh = dynamic_cast<SwordItem *>(object);
-							lh->SetState(ITEM_STATE_UNACTIVE);
-							lh->SetPosition(0 - WHIP_POWER_UP_BBOX_WIDTH, 0);
-							this->sword_turn += 5;
+							SmallItem *lh = dynamic_cast<SmallItem *>(object);
+							switch (lh->getType())
+							{
+
+							case 0: //small heart
+								lh->SetState(ITEM_STATE_UNACTIVE);
+								lh->SetPosition(0 - SMALL_HEART_BBOX_WIDTH, 0);
+								break;
+							case 1: //large heart
+								lh->SetState(ITEM_STATE_UNACTIVE);
+								lh->SetPosition(0 - LARGE_HEART_BBOX_WIDTH, 0);
+								break;
+							case 2: // whip power up
+								lh->SetState(ITEM_STATE_UNACTIVE);
+								lh->SetPosition(0 - WHIP_POWER_UP_BBOX_WIDTH, 0);
+								this->StartCollect();
+								this->Upgrate();
+								break;
+							case 3: // holy water
+								break;
+							case 4: //sword
+								lh->SetState(ITEM_STATE_UNACTIVE);
+								lh->SetPosition(0 - WHIP_POWER_UP_BBOX_WIDTH, 0);
+								this->sword_turn += 5;
+								break;
+							default:
+								break;
+							}
 						}
 					}
 				}
@@ -161,58 +165,58 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 				for (UINT i = 0; i < coEventsResult.size(); i++)
 				{
 					LPCOLLISIONEVENT e = coEventsResult[i];
+
 					if (dynamic_cast<CInvisibleObject *>(e->obj))
 					{
-						// block 
-						if (dynamic_cast<CInvisibleObject *>(e->obj)->Gettype() == Const_Value::in_obj_type::Brick)
+						switch (dynamic_cast<CInvisibleObject *>(e->obj)->Gettype())
 						{
+						case Const_Value::in_obj_type::Brick:
 							x += min_tx * dx + nx * 0.1f;		// nx*0.5f : need to push out a bit to avoid overlapping next frame
 							y += min_ty * dy + ny * 0.1f;
 
 							if (nx != 0) vx = 0;
 							if (ny != 0) vy = 0;
 							onGround = true;
-						}
-						//endmap1
-						else if (dynamic_cast<CInvisibleObject *>(e->obj)->Gettype() == Const_Value::in_obj_type::endmap1)
-						{
+							break;
+						case Const_Value::in_obj_type::endmap1:
 							endmap1 = true;
+							break;
+						default:
+							break;
 						}
 					}
-					else if (dynamic_cast<Large_heart *>(e->obj))
+					else if (dynamic_cast<SmallItem *>(e->obj))
 					{
 						if ((e->obj)->GetState() == ITEM_STATE_ACTIVE)
 						{
-							Large_heart *lh = dynamic_cast<Large_heart *>(e->obj);
+							SmallItem *lh = dynamic_cast<SmallItem *>(e->obj);
+							switch (lh->getType())
+							{
 
-							lh->SetState(ITEM_STATE_UNACTIVE);
-							lh->SetPosition(0 - LARGE_HEART_BBOX_WIDTH, 0);
-							//this->them mau
-						}
-
-					}
-					else if (dynamic_cast<Whip_PowerUp *>(e->obj))
-					{
-						if ((e->obj)->GetState() == ITEM_STATE_ACTIVE)
-						{
-							Whip_PowerUp *wp = dynamic_cast<Whip_PowerUp *>(e->obj);
-
-							wp->SetState(ITEM_STATE_UNACTIVE);
-							wp->SetPosition(0 - WHIP_POWER_UP_BBOX_WIDTH, 0);
-							this->StartCollect();
-							this->Upgrate();
-						}
-
-					}
-					else if (dynamic_cast<SwordItem *>(e->obj))
-					{
-						if ((e->obj)->GetState() == ITEM_STATE_ACTIVE)
-						{
-							SwordItem *si = dynamic_cast<SwordItem *>(e->obj);
-
-							si->SetState(ITEM_STATE_UNACTIVE);
-							si->SetPosition(0 - WHIP_POWER_UP_BBOX_WIDTH, 0);
-							this->sword_turn += 5;
+							case 0: //small heart
+								lh->SetState(ITEM_STATE_UNACTIVE);
+								lh->SetPosition(0 - SMALL_HEART_BBOX_WIDTH, 0);
+								break;
+							case 1: //large heart
+								lh->SetState(ITEM_STATE_UNACTIVE);
+								lh->SetPosition(0 - LARGE_HEART_BBOX_WIDTH, 0);
+								break;
+							case 2: // whip power up
+								lh->SetState(ITEM_STATE_UNACTIVE);
+								lh->SetPosition(0 - WHIP_POWER_UP_BBOX_WIDTH, 0);
+								this->StartCollect();
+								this->Upgrate();
+								break;
+							case 3: // holy water
+								break;
+							case 4: //sword
+								lh->SetState(ITEM_STATE_UNACTIVE);
+								lh->SetPosition(0 - WHIP_POWER_UP_BBOX_WIDTH, 0);
+								this->sword_turn += 5;
+								break;
+							default:
+								break;
+							}
 						}
 
 					}
@@ -224,7 +228,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 
 #pragma endregion
 	}
-	
+
 #pragma region attack
 
 
@@ -309,12 +313,6 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 	}
 #pragma endregion
 
-	
-	/*DebugOut(L"autowalking: %d--", autowalking);
-	DebugOut(L"autoclimbing: %d--", autoclimbing);
-	DebugOut(L"temp ny: %d\n", temp_ny);
-	DebugOut(L"temp nx: %d\n", temp_nx);*/
-	DebugOut(L"tam x = %d . tam y = %d . x = %d . y=%d \n", (int)tempx, (int)tempy, (int)x, (int)y);
 }
 
 void Simon::Render()
@@ -332,12 +330,12 @@ void Simon::Render()
 	{
 		if (vx == 0)
 		{
-			if (state == SIMON_STATE_ATTACK )
+			if (state == SIMON_STATE_ATTACK)
 			{
 				ani = SIMON_ANI_ATTACK;
 			}
-			
-			else if (state == SIMON_STATE_STANDING_ONSTAIR &&!attacking)
+
+			else if (state == SIMON_STATE_STANDING_ONSTAIR && !attacking)
 			{
 				if (nx == climb_direct)
 					animations[SIMON_ANI_GOUP]->GetFrame(1)->GetSprite()->Draw(x, y, 255, nx);
@@ -354,10 +352,10 @@ void Simon::Render()
 	if (attacking) {
 		if (climbing && nx == climb_direct)
 			ani = SIMON_ANI_GOUP_ATTACK;
-		else if(climbing && nx != climb_direct)
+		else if (climbing && nx != climb_direct)
 			ani = SIMON_ANI_GODOWN_ATTACK;
 		else
-		ani = SIMON_ANI_ATTACK;
+			ani = SIMON_ANI_ATTACK;
 	}
 	/*if (jumping)
 		ani = SIMON_ANI_JUMP;*/
@@ -373,9 +371,9 @@ void Simon::Render()
 		ani = SIMON_ANI_GODOWN_ATTACK;
 	if (state == SIMON_STATE_GOUP_ATTACK)
 		ani = SIMON_ANI_GOUP_ATTACK;*/
-	if (state == SIMON_STATE_STANDING_ONSTAIR &&!attacking)
+	if (state == SIMON_STATE_STANDING_ONSTAIR && !attacking)
 	{
-		 if (nx == climb_direct)
+		if (nx == climb_direct)
 			animations[SIMON_ANI_GOUP]->GetFrame(1)->GetSprite()->Draw(x, y, 255, nx);
 		else
 			animations[SIMON_ANI_GODOWN]->GetFrame(1)->GetSprite()->Draw(x, y, 255, nx);
@@ -388,6 +386,15 @@ void Simon::Render()
 void Simon::setswordturndesc()
 {
 	if (sword_turn >= 1) sword_turn--; else sword_turn = 0;
+}
+
+void Simon::reset()
+{
+	animations[SIMON_ANI_ATTACK]->reset();
+	animations[SIMON_ANI_GOUP_ATTACK]->reset();
+	animations[SIMON_ANI_GODOWN_ATTACK]->reset();
+	attack_start = 0;
+	attacking = false;
 }
 
 void Simon::SetState(int state)
@@ -423,12 +430,11 @@ void Simon::setcanclimb(bool icanclimb, bool up)
 void Simon::StartAttack()
 {
 	if (!attacking && !collecting) {
+		reset();
 		attacking = true;
 		attack_start = GetTickCount();
 
-		animations[SIMON_ANI_ATTACK]->reset();
-		animations[SIMON_ANI_GOUP_ATTACK]->reset();
-		animations[SIMON_ANI_GODOWN_ATTACK]->reset();
+
 		overlap_time = GetTickCount();
 		temp_nx = nx;
 	}
@@ -511,7 +517,7 @@ void Simon::startclimbdown()
 
 void Simon::startclimbup()
 {
-	if (canclimbup  && !attacking)
+	if (canclimbup && !attacking)
 	{
 		climbing = true;
 		nx = climb_direct;

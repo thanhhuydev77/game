@@ -28,6 +28,8 @@ public:
 #define	ID_TEX_SWORD			4
 #define ID_TEX_SPARK			3
 #define ID_TEX_MAP2				12
+#define ID_TEX_ITEM				13
+#define ID_TEX_BITEM			14
 #define MAP1					"content\\tilemap\\map1.txt"
 #define MAP2					"content\\tilemap\\map2.txt"
 #define OFFSET_Y		100
@@ -82,10 +84,14 @@ public:
 #pragma region backgroundobject
 
 static enum in_obj_type { Brick, endmap1, stairup, stairdown };
+static enum small_item_type {smallheart, largeheart,whippowerup,holywater,sword};
+static enum bound_item_type { Bratizer, candle};
 #define BRATIZER_STATE_ACTIVE		1
 #define BRATIZER_STATE_UNACTIVE		0
 #define BRATIZER_BBOX_WIDTH			32
 #define BRATIZER_BBOX_HEIGHT		64
+#define CANDLE_BBOX_WIDTH			16
+#define CANDLE_BBOX_HEIGHT			28
 #define BRATIZER_STATE_DISAPPEAR	2
 #define BRATIZER_ANI_DISAPPEAR		1
 #define ENDPOINT_BBOX_WIDTH			32
@@ -117,12 +123,15 @@ static enum in_obj_type { Brick, endmap1, stairup, stairdown };
 
 #define ITEM_STATE_ACTIVE			1
 #define ITEM_STATE_UNACTIVE			0
+#define ITEM_GRAVITY			0.001f
+#define SMALL_HEART_BBOX_WIDTH		16
+#define SMALL_HEART_BBOX_HEIGHT		16
 #define LARGE_HEART_BBOX_WIDTH		24
 #define LARGE_HEART_BBOX_HEIGHT		20
-#define LARGE_HEART_GRAVITY			0.001f
 #define WHIP_POWER_UP_BBOX_WIDTH	32
 #define WHIP_POWER_UP_BBOX_HEIGHT	32
-#define WHIP_POWER_UP_GRAVITY		0.001f
+#define HOLYWATER_BBOX_WIDTH		32
+#define HOLYWATER_BBOX_HEIGHT		32
 #pragma endregion
 };
 

@@ -4,10 +4,10 @@
 #include <string>
 #include "../sample/Endpoint.h"
 #include "../sample/Const_Value.h"
-#include "../item/CBratizer.h"
+#include "../item/BoundItem.h"
 #include "../map/Invisibleobject.h"
 #include "../weapon/Whip.h"
-#include "../item/Large_heart.h"
+#include "../item/SmallItem.h"
 #include "../item/Whip_PowerUp.h"
 #include "../item/SwordItem.h"
 #include "../sample/debug.h"
@@ -61,6 +61,7 @@ public:
 	bool iscollecting() { return collecting; }
 	void setclimbing(bool is) { climbing = is; if(!is) canclimbdown = canclimbup = false;
 	}
+	void reset();
 	bool isclimbing() { return climbing; }
 	bool iscanclimbup() { return canclimbup; }
 	bool iscanclimbdown() { return canclimbdown; }

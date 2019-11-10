@@ -38,54 +38,54 @@ void Map::loaditems()
 {
 	for (int i = 0; i < arrobjects.size(); i++)
 	{
-		if (arrobjects[i].id == 1)
-			bra = new CBratizer();
-		bra->SetPosition(arrobjects[i].left, arrobjects[i].top+ OFFSET_Y);
+		bra = new BoundItem();
+		bra->setType(arrobjects[i].id);
+		bra->SetPosition(arrobjects[i].left, arrobjects[i].top + OFFSET_Y);
 		Bratizerobjects.push_back(bra);
 		objects.push_back(bra);
-		if (arrobjects[i].iditem == 2)
-			Largeh = new Large_heart();
-		else if (arrobjects[i].iditem == 3)
-			Largeh = new Whip_PowerUp();
-		else if (arrobjects[i].iditem == 4)
-			Largeh = new SwordItem();
-		Largeh->SetPosition(arrobjects[i].left, arrobjects[i].top+ OFFSET_Y);
-		itemsobjects.push_back(Largeh);
-		objects.push_back(Largeh);
+
+
+		smallitem = new SmallItem();
+		smallitem->setType(arrobjects[i].iditem);
+		smallitem->SetPosition(arrobjects[i].left, arrobjects[i].top + OFFSET_Y);
+		itemsobjects.push_back(smallitem);
+		objects.push_back(smallitem);
+		bra->setSubItem(smallitem);
+
 	}
 }
 
-void Map::loadinvisibleobjects(int id,int direct,int top, int left, int width, int height)
+void Map::loadinvisibleobjects(int id, int direct, int top, int left, int width, int height)
 {
-	
-		CInvisibleObject *in_obj;
-		in_obj = new CInvisibleObject();
-		in_obj->setDirect(direct);
-		switch (id)
-		{
-		case 0:
-			in_obj->Settype(Const_Value::in_obj_type::Brick);
-			allbrickandpoint.push_back(in_obj);
-			break;
-		case 2:
-			in_obj->Settype(Const_Value::in_obj_type::endmap1);
-			allbrickandpoint.push_back(in_obj);
-			break;
-		case 3:
-			in_obj->Settype(Const_Value::in_obj_type::stairup);
-			allstairpoint.push_back(in_obj);
-			break;
-		case 4:
-			in_obj->Settype(Const_Value::in_obj_type::stairdown);
-			allstairpoint.push_back(in_obj);
-			break;
-		default:
-			in_obj->Settype(Const_Value::in_obj_type::Brick);
-		}
-		in_obj->setsize(width, height);
-		in_obj->SetPosition(top, left+OFFSET_Y);
-		allHidenObject.push_back(in_obj);
-		objects.push_back(in_obj);
+
+	CInvisibleObject *in_obj;
+	in_obj = new CInvisibleObject();
+	in_obj->setDirect(direct);
+	switch (id)
+	{
+	case 0:
+		in_obj->Settype(Const_Value::in_obj_type::Brick);
+		allbrickandpoint.push_back(in_obj);
+		break;
+	case 2:
+		in_obj->Settype(Const_Value::in_obj_type::endmap1);
+		allbrickandpoint.push_back(in_obj);
+		break;
+	case 3:
+		in_obj->Settype(Const_Value::in_obj_type::stairup);
+		allstairpoint.push_back(in_obj);
+		break;
+	case 4:
+		in_obj->Settype(Const_Value::in_obj_type::stairdown);
+		allstairpoint.push_back(in_obj);
+		break;
+	default:
+		in_obj->Settype(Const_Value::in_obj_type::Brick);
+	}
+	in_obj->setsize(width, height);
+	in_obj->SetPosition(top, left + OFFSET_Y);
+	allHidenObject.push_back(in_obj);
+	objects.push_back(in_obj);
 }
 
 Map::Map(string filePath, int idtex)
@@ -133,9 +133,9 @@ Map::Map(string filePath, int idtex)
 		infile >> numofobjects;
 		for (int i = 0; i < numofobjects; i++)
 		{
-			int id,direct,top, left, width, height;
-			infile >>id>>direct>> top >> left >> width >> height;
-			loadinvisibleobjects(id,direct,top, left, width, height);
+			int id, direct, top, left, width, height;
+			infile >> id >> direct >> top >> left >> width >> height;
+			loadinvisibleobjects(id, direct, top, left, width, height);
 
 		}
 		for (int i = 0; i < maheight*mawidth; i++)
@@ -183,14 +183,14 @@ int Map::GetTileHeight()
 void Map::Draw()
 {
 	int i = 0;
-	
+
 	int t_width = GetTileWidth();
 	int t_height = GetTileHeight();
 	//ve len man hinh theo ma tran trong mapsprite
 	for (int y = 0; y < maheight; y++)
 		for (int x = 0; x < mawidth; x++)
 		{
-			ts->get((mapsprite->at(i)))->Draw(x*t_width, y*t_height+OFFSET_Y, 255);
+			ts->get((mapsprite->at(i)))->Draw(x*t_width, y*t_height + OFFSET_Y, 255);
 			i++;
 		}
 

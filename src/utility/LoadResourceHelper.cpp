@@ -78,8 +78,9 @@ void LoadResourceHelper::loadtextures(string path)
 {
 	//string sourcepath = "content\\textures\\";
 	CTextures * textures = CTextures::GetInstance();
-	const string texture_name_collection[] = { "ID_TEX_MARIO","ID_TEX_ENEMY","ID_TEX_MISC","ID_TEX_SIMON","ID_TEX_WHIP","ID_TEX_MAP1","ID_TEX_BBOX","ID_TEX_BRATIZER","ID_TEX_LARGE_HEART","ID_TEX_WHIP_POWER_UP","ID_TEX_SWORD","ID_TEX_SPARK","ID_TEX_MAP2" };
-	const int texture_collection[] = { ID_TEX_MARIO,ID_TEX_ENEMY,ID_TEX_MISC,ID_TEX_SIMON,ID_TEX_WHIP,ID_TEX_MAP1,ID_TEX_BBOX,ID_TEX_BRATIZER,ID_TEX_LARGE_HEART,ID_TEX_WHIP_POWER_UP,ID_TEX_SWORD,ID_TEX_SPARK,ID_TEX_MAP2 };
+	const string texture_name_collection[] = { "ID_TEX_MARIO","ID_TEX_ENEMY","ID_TEX_MISC","ID_TEX_SIMON","ID_TEX_WHIP","ID_TEX_MAP1","ID_TEX_BBOX","ID_TEX_BRATIZER","ID_TEX_LARGE_HEART","ID_TEX_WHIP_POWER_UP","ID_TEX_SWORD","ID_TEX_MAP2","ID_TEX_ITEM","ID_TEX_BITEM"};
+	const int texture_collection[] = { ID_TEX_MARIO,ID_TEX_ENEMY,ID_TEX_MISC,ID_TEX_SIMON,ID_TEX_WHIP,ID_TEX_MAP1,ID_TEX_BBOX,ID_TEX_BRATIZER,ID_TEX_LARGE_HEART,ID_TEX_WHIP_POWER_UP,ID_TEX_SWORD,ID_TEX_MAP2,ID_TEX_ITEM,ID_TEX_BITEM};
+	int numberofname = 14;
 	string idtex;
 	string pathimage;
 	int trans_r;
@@ -93,13 +94,14 @@ void LoadResourceHelper::loadtextures(string path)
 	while (!infile.eof())
 	{
 		infile >> idtex >> pathimage >> trans_r >> trans_g >> trans_b;
-		for (unsigned int i = 0; i <= texture_name_collection->size(); i++)
+		for (unsigned int i = 0; i <= numberofname; i++)
 		{
 			if (idtex == texture_name_collection[i])
 			{
 				wstring stemp = s2ws(pathimage);
 				LPCWSTR image = stemp.c_str();
 				textures->Add(texture_collection[i],image, D3DCOLOR_XRGB(trans_r, trans_g, trans_b));
+				break;
 			}
 		}
 		

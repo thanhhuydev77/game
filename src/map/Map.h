@@ -1,12 +1,12 @@
 #pragma once
 #include <vector>
 #include "tileset.h"
-#include "../item/CBratizer.h"
+#include "../item/BoundItem.h"
 #include "Invisibleobject.h"
 #include "../sample/Const_Value.h"
 #include "../utility/MathHelper.h"
 #include "../character/Simon.h"
-#include "../item/Large_heart.h"
+#include "../item/SmallItem.h"
 #include "../item/Whip_PowerUp.h"
 #include "../item/SwordItem.h"
 #include "../sample/Endpoint.h"
@@ -23,8 +23,8 @@ private:
 	vector<saveobject> arrobjects;
 	TileSet *ts;
 	CInvisibleObject *inobj;
-	CBratizer *bra;
-	CGameObject *Largeh;
+	BoundItem *bra;
+	SmallItem *smallitem;
 	std::vector<int> *mapsprite;
 	int mawidth;
 	int maheight;

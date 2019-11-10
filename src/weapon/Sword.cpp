@@ -89,21 +89,21 @@ void Sword::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		vector<LPGAMEOBJECT> item;
 		for (UINT i = 0; i < coObjects->size(); i++)
 		{
-			if (dynamic_cast<CBratizer *>(coObjects->at(i)))
+			if (dynamic_cast<BoundItem *>(coObjects->at(i)))
 				bra.push_back(coObjects->at(i));
 			else
 				item.push_back(coObjects->at(i));
 		}
 		for (UINT i = 0; i < bra.size(); i++)
 		{
-			CBratizer *bratizer = dynamic_cast<CBratizer *>(bra[i]);
+			BoundItem *bratizer = dynamic_cast<BoundItem *>(bra[i]);
 			if (CheckOverLap(bratizer) && bratizer->GetState() == BRATIZER_STATE_ACTIVE)
 			{
 				bratizer->SetState(BRATIZER_STATE_UNACTIVE);
 				bratizer->SetPosition(-BRATIZER_BBOX_WIDTH, 0);
 				this->state = SWORD_STATE_UNACTIVE;
 				this->attacking = false;
-				if (dynamic_cast<Large_heart *>(item[i]))
+				if (dynamic_cast<SmallItem *>(item[i]))
 					item[i]->SetState(ITEM_STATE_ACTIVE);
 				else
 					item[i]->SetState(ITEM_STATE_ACTIVE);

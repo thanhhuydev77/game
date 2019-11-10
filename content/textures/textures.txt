@@ -5,9 +5,10 @@ ID_TEX_BBOX		content\\textures\\bbox.png 		255 255 255
 ID_TEX_SIMON		content\\textures\\simon.png 		255 255 255
 ID_TEX_MAP1		content\\textures\\Courtyard.bmp 	255 255 255
 ID_TEX_BRATIZER		content\\textures\\Brazier.png  	255 255 255
-ID_TEX_WHIP		content\\textures\\Whip.png			255 255 255
-ID_TEX_LARGE_HEART	content\\textures\\Large_Heart.png  255 255 255
-ID_TEX_WHIP_POWER_UP 	content\\textures\\Whip_Powerup.png 255 255 255
+ID_TEX_WHIP		content\\textures\\Whip.png		255 255 255
+ID_TEX_LARGE_HEART	content\\textures\\Large_Heart.png  	255 255 255
+ID_TEX_WHIP_POWER_UP 	content\\textures\\Whip_Powerup.png 	255 255 255
 ID_TEX_SWORD		content\\textures\\Dagger.png		255 255 255
-ID_TEX_SPARK		content\\textures\\Spark.png		255 255 255
 ID_TEX_MAP2		content\\textures\\map2.bmp		255 255 255
+ID_TEX_ITEM		content\\textures\\All_small_item.png	255 255 255
+ID_TEX_BITEM		content\\textures\\All_bound_item.png	255 255 255

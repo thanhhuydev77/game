@@ -59,7 +59,7 @@ void LoadResources()
 {
 	scenemanager = SceneManager::getInstance();
 	scenemanager->ReplaceScene(new Scene1());
-	scenemanager->GetCurrentScene()->LoadContent(MAP2,ID_TEX_MAP2);
+	scenemanager->GetCurrentScene()->LoadContent(MAP1,ID_TEX_MAP1);
 }
 
 /*

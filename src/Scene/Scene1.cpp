@@ -328,7 +328,6 @@ void Scene1::OnKeyDown(int KeyCode)
 					simon->startAutowalk(1,l - (SIMON_BIG_BBOX_WIDTH - SIMON_SMALL_BBOX_WIDTH) / 2);
 					simon->startAutoClimb(-1,b+16);
 				}
-
 			}
 		}
 		break;
@@ -349,17 +348,25 @@ void Scene1::KeyState(BYTE * states)
 	//sitting
 	if (games->IsKeyDown(DIK_S) && !simon->iscollecting() && !simon->isclimbing())
 	{
-		simon->SetState(SIMON_STATE_SIT);
-		whip->SetState(WHIP_STATE_UNACTIVE);
+		if (!games->IsKeyDown(DIK_A))
+		{
+			simon->SetState(SIMON_STATE_SIT);
+			whip->SetState(WHIP_STATE_UNACTIVE);
+			simon->reset();
+		}
+		else
+		{
+			
+		}
 	}
 	//walk to right
-	else if (games->IsKeyDown(DIK_RIGHT) && !simon->iscollecting() && !simon->isclimbing())
+	else if (games->IsKeyDown(DIK_RIGHT) && !simon->iscollecting() && !simon->isclimbing() && !simon->isattacking())
 	{
 		if (simon->isOnStair())
 			simon->SetState(SIMON_STATE_WALKING_RIGHT);
 	}
 	//walk to left 
-	else if (games->IsKeyDown(DIK_LEFT) && !simon->iscollecting() && !simon->isclimbing())
+	else if (games->IsKeyDown(DIK_LEFT) && !simon->iscollecting() && !simon->isclimbing() && !simon->isattacking())
 	{
 		if (simon->isOnStair())
 			simon->SetState(SIMON_STATE_WALKING_LEFT);
