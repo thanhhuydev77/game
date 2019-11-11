@@ -21,7 +21,8 @@ class Simon : public CGameObject
 		bool autoclimbing;
 		bool attacking;
 		bool collecting;
-		bool jumping;
+		bool jumpingmono;
+		bool jumpingplex;
 		bool climbing;
 		int untouchable;
 		bool canclimbup;
@@ -41,7 +42,7 @@ class Simon : public CGameObject
 		int climbbing_distance = 0;
 		float orginX;
 		float orginY;
-
+		int temp_state;
 		float tempx;
 		float tempy;
 		float targetX;
@@ -57,10 +58,11 @@ public:
 	void setswordturndesc() ;
 	bool isattacking() { return attacking; }
 	int getswordturn() { return sword_turn; }
-	bool isOnStair() { return onGround; };
 	bool iscollecting() { return collecting; }
 	void setclimbing(bool is) { climbing = is; if(!is) canclimbdown = canclimbup = false;
 	}
+	bool isJumping() { return (jumpingmono || jumpingplex); }
+	bool isOnGround() { return onGround; }
 	void reset();
 	bool isclimbing() { return climbing; }
 	bool iscanclimbup() { return canclimbup; }
@@ -74,6 +76,7 @@ public:
 	void StartplexJump();
 	void StartCollect();
 	void startclimbup();
+	void startFalling();
 	void startclimbdown();
 	void startAutowalk(int lastdirect,float targetX);
 	void startAutoClimb(int lastdirect,float targetY);

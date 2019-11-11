@@ -154,13 +154,13 @@ void Scene1::Update(DWORD dt)
 		}
 	}
 
-	DebugOut(L"canclimb up: %d --", simon->iscanclimbup());
+	/*DebugOut(L"canclimb up: %d --", simon->iscanclimbup());
 	DebugOut(L"canclimb down: %d --", simon->iscanclimbdown());
 	DebugOut(L"climbing: %d --", simon->isclimbing());
 	DebugOut(L"type stair start: %d --", typestairstart->Gettype());
 	DebugOut(L"type stair start direct: %d --", typestairstart->getDirect());
-	DebugOut(L"simon direct: %d --", simon->GetDirect());
-	DebugOut(L"simon istattacking: %d --", simon->isattacking());
+	DebugOut(L"simon direct: %d --", simon->GetDirect());*/
+	/*DebugOut(L"simon istattacking: %d --", simon->isattacking());*/
 
 #pragma endregion
 	// item falling and stop when on stair
@@ -331,6 +331,7 @@ void Scene1::OnKeyDown(int KeyCode)
 			}
 		}
 		break;
+		
 	}
 }
 
@@ -348,27 +349,20 @@ void Scene1::KeyState(BYTE * states)
 	//sitting
 	if (games->IsKeyDown(DIK_S) && !simon->iscollecting() && !simon->isclimbing())
 	{
-		if (!games->IsKeyDown(DIK_A))
-		{
 			simon->SetState(SIMON_STATE_SIT);
-			whip->SetState(WHIP_STATE_UNACTIVE);
-			simon->reset();
-		}
-		else
-		{
-			
-		}
+			//whip->SetState(WHIP_STATE_UNACTIVE);
+			//simon->reset();
 	}
 	//walk to right
 	else if (games->IsKeyDown(DIK_RIGHT) && !simon->iscollecting() && !simon->isclimbing() && !simon->isattacking())
 	{
-		if (simon->isOnStair())
+		if (simon->isOnGround())
 			simon->SetState(SIMON_STATE_WALKING_RIGHT);
 	}
 	//walk to left 
 	else if (games->IsKeyDown(DIK_LEFT) && !simon->iscollecting() && !simon->isclimbing() && !simon->isattacking())
 	{
-		if (simon->isOnStair())
+		if (simon->isOnGround())
 			simon->SetState(SIMON_STATE_WALKING_LEFT);
 	}
 	//go up

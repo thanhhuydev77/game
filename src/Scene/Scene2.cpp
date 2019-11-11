@@ -170,17 +170,17 @@ void Scene2::KeyState(BYTE * states)
 	}
 	else if (games->IsKeyDown(DIK_RIGHT) && !simon->iscollecting())
 	{
-		if (simon->isOnStair())
+		if (simon->isOnGround())
 			simon->SetState(SIMON_STATE_WALKING_RIGHT);
 	}
 	else if (games->IsKeyDown(DIK_LEFT) && !simon->iscollecting())
 	{
-		if (simon->isOnStair())
+		if (simon->isOnGround())
 			simon->SetState(SIMON_STATE_WALKING_LEFT);
 	}
 	else
 	{
-		if (simon->isOnStair())
+		if (simon->isOnGround())
 			simon->SetState(SIMON_STATE_IDLE);
 	}
 }

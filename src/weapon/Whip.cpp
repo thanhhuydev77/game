@@ -41,8 +41,9 @@ void Whip::UpdatePositionRelateToObject(DWORD dt)
 	//level 1,2
 	if (level != 3)
 
-	{	//right
-	//simon.nx == 1
+	{	
+		//right
+		//simon.nx == 1
 		if (owner->GetDirect() == 1)
 		{
 			switch (frame)
@@ -59,7 +60,7 @@ void Whip::UpdatePositionRelateToObject(DWORD dt)
 				break;
 			case 2:
 				if (GetTickCount() - attack_start <= t3)
-					newposition = { x2 + 12,y2 - 46 };
+					newposition = { x2 + 12,y1 + 16 };
 
 				break;
 			}
@@ -80,7 +81,7 @@ void Whip::UpdatePositionRelateToObject(DWORD dt)
 			case 2:
 				if (GetTickCount() - attack_start <= t3)
 					/*if (level != 3)*/
-					newposition = { x1 - WHIP_F3_BBOX_WIDTH -11,y2 - 46 };
+					newposition = { x1 - WHIP_F3_BBOX_WIDTH -11,y1 + 16 };
 				/*else
 					newposition = { x1 - WHIP_F3_HLV_BBOX_WIDTH + 12 , y1 + 33 - WHIP_F3_BBOX_HEIGHT };*/
 				break;
@@ -115,7 +116,7 @@ void Whip::UpdatePositionRelateToObject(DWORD dt)
 				case 10:
 				case 11:
 					if (GetTickCount() - attack_start <= t3)
-						newposition = { x2 + 12,y2 - 46 };
+						newposition = { x2 + 12,y1 + 16 };
 					break;
 				}
 			}
@@ -146,7 +147,7 @@ void Whip::UpdatePositionRelateToObject(DWORD dt)
 						/*if (level != 3)
 							newposition = { x1 - WHIP_F3_BBOX_WIDTH + 10 , y1 + 29 - WHIP_F3_BBOX_HEIGHT };
 						else*/
-						newposition = { x1 - WHIP_F3_HLV_BBOX_WIDTH - 11,y2 - 46 };
+						newposition = { x1 - WHIP_F3_HLV_BBOX_WIDTH - 11,y1 + 16 };
 					break;
 
 				}

@@ -93,7 +93,86 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 	}
 	else if (!climbing)
 	{
+#pragma region mono jump
 
+
+		// fell down
+		if (GetTickCount() - jump_start > SIMON_JUMP_TIME)
+		{
+			jump_start = 0;
+			jumpingmono = false;
+			//onGround = true;
+		}
+		else
+		{
+			//jumping up
+			if (GetTickCount() - jump_start < (SIMON_JUMP_TIME / 2))
+			{
+				state = temp_state;
+				//only jump when onstate;
+				if (onGround)
+				{
+					vy = -SIMON_JUMP_SPEED_Y;
+					onGround = false;
+				}
+				else
+				{
+					vx = 0;
+				}
+			}
+			else {
+				state = temp_state;
+			}
+		}
+
+#pragma endregion
+#pragma region plex jump
+
+
+		//jump and has ->
+		if (GetTickCount() - jumpplus_start > SIMON_JUMP_TIME)
+		{
+
+			jumpplus_start = 0;
+			jumpingplex = false;
+			//onGround = true;
+		}
+		else
+		{
+			//jumping up
+			state = temp_state;
+			if (GetTickCount() - jumpplus_start < (SIMON_JUMP_TIME / 2))
+			{
+				//only jump when onstate;
+
+				DebugOut(L"time up: %d--", GetTickCount() - jumpplus_start);
+				vx = temp_nx * SIMON_JUMP_SPEED_X;
+				if (onGround)
+				{
+					vy = -SIMON_JUMP_SPEED_Y;
+					onGround = false;
+				}
+				else
+				{
+					nx = temp_nx;
+				}
+			}
+			else if (GetTickCount() - jumpplus_start >= (SIMON_JUMP_TIME / 2))
+			{
+				nx = temp_nx;
+				vx = temp_nx * SIMON_JUMP_SPEED_X;
+				x += vx;
+			}
+		}
+
+#pragma endregion
+#pragma region collect
+		if (GetTickCount() - collect_start > SIMON_TIME_COLLECT)
+		{
+			collecting = false;
+			collect_start = 0;
+		}
+#pragma endregion
 		{
 			vector<LPCOLLISIONEVENT> coEvents;
 
@@ -112,6 +191,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 				x += dx;
 				y += dy;
 				//onstate = false;
+				//onGround = false;
 			}
 			else
 			{
@@ -241,78 +321,17 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 	else
 	{
 		nx = temp_nx;
+		state = temp_state;
 		if (onGround)
 			dx = 0;
 	}
 
 #pragma endregion
-#pragma region mono jump
 
-
-	// fell down
-	if (GetTickCount() - jump_start > SIMON_JUMP_TIME)
-	{
-		jump_start = 0;
-		jumping = false;
-
-	}
-	else
-	{
-		//jumping up
-		if (GetTickCount() - jump_start < (SIMON_JUMP_TIME))
-		{
-			//only jump when onstate;
-			if (onGround)
-			{
-				vy = -SIMON_JUMP_SPEED_Y;
-				onGround = false;
-			}
-			else
-			{
-				vx = 0;
-			}
-		}
-	}
-
-#pragma endregion
-#pragma region plex jump
-
-
-	//jump and has ->
-	if (GetTickCount() - jumpplus_start > SIMON_JUMP_TIME)
-	{
-
-		jumpplus_start = 0;
-		jumping = false;
-	}
-	else
-	{
-		//jumping up
-		if (GetTickCount() - jumpplus_start < (SIMON_JUMP_TIME))
-		{
-			//only jump when onstate;
-			if (onGround)
-			{
-				vy = -SIMON_JUMP_SPEED_Y;
-				vx = temp_nx * SIMON_JUMP_SPEED_X;
-				onGround = false;
-			}
-			else
-			{
-				nx = temp_nx;
-			}
-		}
-	}
-
-#pragma endregion
-#pragma region collect
-	if (GetTickCount() - collect_start > SIMON_TIME_COLLECT)
-	{
-		collecting = false;
-		collect_start = 0;
-	}
-#pragma endregion
-
+	DebugOut(L"\n Onground: %d--", onGround);
+	DebugOut(L"jumping: %d,%d --", jumpingmono, jumpingplex);
+	DebugOut(L"vx=%f,dx = %f --",vx,dx);
+	DebugOut(L"state: %d +", state);
 }
 
 void Simon::Render()
@@ -323,7 +342,6 @@ void Simon::Render()
 		ani = SIMON_ANI_DIE;
 	else if (vy < 0)
 	{
-
 		ani = SIMON_ANI_JUMP;
 	}
 	else
@@ -349,28 +367,50 @@ void Simon::Render()
 		else
 			ani = SIMON_ANI_WALKING;
 	}
-	if (attacking) {
+	if (jumpingmono || jumpingplex)
+	{
+		if (attacking)
+			ani = SIMON_ANI_SIT_ATTACK;
+		else
+			ani = SIMON_ANI_JUMP;
+	}
+	if (attacking)
+	{
+		if (jumpingmono || jumpingplex || state == SIMON_STATE_SIT)
+			ani = SIMON_ANI_SIT_ATTACK;
+		else
+		{
+			if (climbing && nx == climb_direct)
+				ani = SIMON_ANI_GOUP_ATTACK;
+			else if (climbing && nx != climb_direct)
+				ani = SIMON_ANI_GODOWN_ATTACK;
+			else
+				ani = SIMON_ANI_ATTACK;
+		}
+	}
+	/*if (attacking) {
 		if (climbing && nx == climb_direct)
 			ani = SIMON_ANI_GOUP_ATTACK;
 		else if (climbing && nx != climb_direct)
 			ani = SIMON_ANI_GODOWN_ATTACK;
 		else
 			ani = SIMON_ANI_ATTACK;
-	}
+	}*/
 	/*if (jumping)
 		ani = SIMON_ANI_JUMP;*/
 	if (state == SIMON_STATE_SIT)
-		ani = SIMON_ANI_SIT;
+	{
+		if (attacking)
+			ani = SIMON_ANI_SIT_ATTACK;
+		else
+			ani = SIMON_ANI_SIT;
+	}
 	if (collecting)
 		ani = SIMON_ANI_COLLECT;
 	if (state == SIMON_STATE_GODOWN)
 		ani = SIMON_ANI_GODOWN;
 	if (state == SIMON_STATE_GOUP)
 		ani = SIMON_ANI_GOUP;
-	/*if (state == SIMON_STATE_GODOWN_ATTACK)
-		ani = SIMON_ANI_GODOWN_ATTACK;
-	if (state == SIMON_STATE_GOUP_ATTACK)
-		ani = SIMON_ANI_GOUP_ATTACK;*/
 	if (state == SIMON_STATE_STANDING_ONSTAIR && !attacking)
 	{
 		if (nx == climb_direct)
@@ -381,6 +421,7 @@ void Simon::Render()
 	else
 		animations[ani]->Render(x, y, 255, nx);
 	RenderBoundingBox();
+
 }
 
 void Simon::setswordturndesc()
@@ -393,6 +434,7 @@ void Simon::reset()
 	animations[SIMON_ANI_ATTACK]->reset();
 	animations[SIMON_ANI_GOUP_ATTACK]->reset();
 	animations[SIMON_ANI_GODOWN_ATTACK]->reset();
+	animations[SIMON_ANI_SIT_ATTACK]->reset();
 	attack_start = 0;
 	attacking = false;
 }
@@ -433,27 +475,30 @@ void Simon::StartAttack()
 		reset();
 		attacking = true;
 		attack_start = GetTickCount();
-
-
+		temp_state = state;
 		overlap_time = GetTickCount();
 		temp_nx = nx;
 	}
+	
 }
 
 void Simon::StartmonoJump()
 {
-	if (!jumping && !collecting) {
-		jumping = true; jump_start = GetTickCount();
-		onGround = false;
+	if (!jumpingmono && !jumpingplex && !collecting) {
+		jumpingmono = true; jump_start = GetTickCount();
+		//onGround = false;
+		temp_state = SIMON_STATE_JUMP;
 	}
 }
 
 void Simon::StartplexJump()
 {
-	if (!jumping && !collecting) {
-		jumping = true; jumpplus_start = GetTickCount();
+	if (!jumpingmono && !jumpingplex && !collecting) {
+
+		jumpingplex = true; jumpplus_start = GetTickCount();
 		temp_nx = nx;
-		onGround = false;
+		//onGround = false;
+		temp_state = SIMON_STATE_JUMP;
 	}
 
 }
@@ -532,6 +577,10 @@ void Simon::startclimbup()
 	}
 }
 
+void Simon::startFalling()
+{
+}
+
 void Simon::Upgrate()
 {
 	if (level < SIMON_MAX_LEVEL)
@@ -547,10 +596,21 @@ int Simon::GetDirect()
 void Simon::GetBoundingBox(float & left, float & top, float & right, float & bottom)
 {
 
-	left = x + (SIMON_BIG_BBOX_WIDTH - SIMON_SMALL_BBOX_WIDTH) / 2;
-	top = y;
-	right = left + SIMON_SMALL_BBOX_WIDTH;
-	bottom = top + SIMON_SMALL_BBOX_HEIGHT;
+	if (state == SIMON_STATE_SIT || jumpingmono||jumpingplex)
+	{
+		left = x + (SIMON_BIG_BBOX_WIDTH - SIMON_SMALL_BBOX_WIDTH) / 2;
+		top = y + SIMON_SPACING_ONTOP;
 
+		right = left + SIMON_SMALL_BBOX_WIDTH;
+		bottom = top + SIMON_SMALL_SIT_BBOX_HEIGHT;
+	}
+	else
+	{
+		left = x + (SIMON_BIG_BBOX_WIDTH - SIMON_SMALL_BBOX_WIDTH) / 2;
+		top = y;
+
+		right = left + SIMON_SMALL_BBOX_WIDTH;
+		bottom = top + SIMON_SMALL_BBOX_HEIGHT;
+	}
 
 }

@@ -27,7 +27,8 @@ void BoundItem::Render()
 				animations[2]->Render(x , y, 255);
 		else
 		animations[Type]->Render(x, y, 255);
-	}RenderBoundingBox();
+		RenderBoundingBox();
+	}
 }
 
 void BoundItem::start_disappear()
