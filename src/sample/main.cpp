@@ -9,10 +9,10 @@
 #include "Textures.h"
 #include "CSampleKeyHandler.h"
 #include "../Scene/SceneManager.h"
-#include "../Scene/Scene1.h"
+#include "../Scene/SceneGame.h"
 #include"../Scene/SceneExample.h"
 #include "../Scene/Scene2.h"
-Scene1 *scene1;
+SceneGame *scene1;
 
 CGame *game;
 SceneManager *scenemanager;
@@ -58,8 +58,8 @@ LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 void LoadResources()
 {
 	scenemanager = SceneManager::getInstance();
-	scenemanager->ReplaceScene(new Scene1());
-	scenemanager->GetCurrentScene()->LoadContent(MAP1,ID_TEX_MAP1);
+	scenemanager->ReplaceScene(new SceneGame());
+	scenemanager->GetCurrentScene()->LoadContent(MAP2,ID_TEX_MAP2);
 }
 
 /*

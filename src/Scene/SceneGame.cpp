@@ -1,63 +1,63 @@
-#include "Scene1.h"
+#include "SceneGame.h"
 #include <windows.h>
 #include <d3d9.h>
 #include <d3dx9.h>
 
-void Scene1::loadmap(string path, int idtex)
+void SceneGame::loadmap(string path, int idtex)
 {
 	mmap = new Map(path, idtex);
 }
 
-vector<LPGAMEOBJECT> Scene1::getallHidenObjects()
+vector<LPGAMEOBJECT> SceneGame::getallHidenObjects()
 {
 	return mmap->getallHidenObject();
 }
 
-vector<LPGAMEOBJECT> Scene1::getBratizerobjects()
+vector<LPGAMEOBJECT> SceneGame::getBratizerobjects()
 {
 	return mmap->getBratizersObject();
 }
 
-vector<LPGAMEOBJECT> Scene1::getItemobjects()
+vector<LPGAMEOBJECT> SceneGame::getItemobjects()
 {
 	return mmap->getItemsObject();
 }
 
-vector<LPGAMEOBJECT> Scene1::getallobjects()
+vector<LPGAMEOBJECT> SceneGame::getallobjects()
 {
 	return mmap->getallObject();
 }
 
-vector<LPGAMEOBJECT> Scene1::getallBrickandpointObjects()
+vector<LPGAMEOBJECT> SceneGame::getallBrickandpointObjects()
 {
 	return mmap->getallbrickandpoint();
 }
 
-vector<LPGAMEOBJECT> Scene1::getallallStairpoint()
+vector<LPGAMEOBJECT> SceneGame::getallallStairpoint()
 {
 	return mmap->getallstairpoint();
 }
 
-int Scene1::getmapwidth()
+int SceneGame::getmapwidth()
 {
 	return mmap->GetWidth();
 }
 
-void Scene1::RenderBackground()
+void SceneGame::RenderBackground()
 {
 	mmap->Draw();
 }
 
-Scene1::~Scene1()
+SceneGame::~SceneGame()
 {
 }
 
-Scene1::Scene1()
+SceneGame::SceneGame()
 {
 	//LoadContent();
 }
 
-void Scene1::Update(DWORD dt)
+void SceneGame::Update(DWORD dt)
 {
 	coObjects = this->getallBrickandpointObjects();
 #pragma region checkoverlap with stair point --> can climb
@@ -207,7 +207,7 @@ void Scene1::Update(DWORD dt)
 #pragma endregion
 }
 
-void Scene1::LoadContent(string mapname, int idmap)
+void SceneGame::LoadContent(string mapname, int idmap)
 {
 	games = CGame::GetInstance();
 	CTextures * textures = CTextures::GetInstance();
@@ -242,7 +242,7 @@ void Scene1::LoadContent(string mapname, int idmap)
 
 }
 
-void Scene1::Draw()
+void SceneGame::Draw()
 {
 
 	this->RenderBackground();
@@ -250,7 +250,7 @@ void Scene1::Draw()
 		objects[i]->Render();
 }
 
-void Scene1::OnKeyDown(int KeyCode)
+void SceneGame::OnKeyDown(int KeyCode)
 {
 
 	switch (KeyCode)
@@ -335,12 +335,12 @@ void Scene1::OnKeyDown(int KeyCode)
 	}
 }
 
-void Scene1::OnKeyUp(int keyCode)
+void SceneGame::OnKeyUp(int keyCode)
 {
 
 }
 
-void Scene1::KeyState(BYTE * states)
+void SceneGame::KeyState(BYTE * states)
 {
 	if (simon->inAutoMode())
 	{

@@ -19,7 +19,7 @@
 #include "Scene2.h"
 using namespace std;
 
-class Scene1 : public Scene
+class SceneGame : public Scene
 {
 private:
 	Sword *sword;
@@ -39,7 +39,7 @@ private:
 	vector<LPGAMEOBJECT> allStairpoint; // all stair point
 	
 public:
-	Scene1();
+	SceneGame();
 	void loadmap(string path, int idtex);
 	vector<LPGAMEOBJECT> getallHidenObjects();
 	vector<LPGAMEOBJECT> getBratizerobjects();
@@ -49,7 +49,7 @@ public:
 	vector<LPGAMEOBJECT> getallallStairpoint();
 	int getmapwidth();
 	void RenderBackground();
-	~Scene1();
+	~SceneGame();
 
 	// Inherited via SceneExample
 	virtual void Update(DWORD dt) override;

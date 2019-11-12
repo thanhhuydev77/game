@@ -142,7 +142,7 @@
     <ClInclude Include="src\sample\Const_Value.h" />
     <ClInclude Include="src\sample\debug.h" />
     <ClInclude Include="src\sample\Game.h" />
-    <ClInclude Include="src\Scene\Scene1.h" />
+    <ClInclude Include="src\Scene\SceneGame.h" />
     <ClInclude Include="src\sample\GameObject.h" />
     <ClInclude Include="src\sample\Endpoint.h" />
     <ClInclude Include="src\item\SmallItem.h" />
@@ -169,7 +169,7 @@
     <ClCompile Include="src\sample\Const_Value.cpp" />
     <ClCompile Include="src\sample\debug.cpp" />
     <ClCompile Include="src\sample\Game.cpp" />
-    <ClCompile Include="src\Scene\Scene1.cpp" />
+    <ClCompile Include="src\Scene\SceneGame.cpp" />
     <ClCompile Include="src\sample\GameObject.cpp" />
     <ClCompile Include="src\sample\Endpoint.cpp" />
     <ClCompile Include="src\item\SmallItem.cpp" />

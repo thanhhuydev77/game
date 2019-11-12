@@ -33,6 +33,7 @@ class Simon : public CGameObject
 		DWORD attack_start;
 		DWORD jump_start;
 		DWORD jumpplus_start;
+		float temp_vx;
 		int temp_nx;
 		int temp_ny;
 		int climb_direct;
@@ -63,7 +64,7 @@ public:
 	}
 	bool isJumping() { return (jumpingmono || jumpingplex); }
 	bool isOnGround() { return onGround; }
-	void reset();
+	void resetAnimation();
 	bool isclimbing() { return climbing; }
 	bool iscanclimbup() { return canclimbup; }
 	bool iscanclimbdown() { return canclimbdown; }
@@ -72,6 +73,7 @@ public:
 	bool inAutoMode() { return (autoclimbing || autowalking); }
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount(); }
 	void StartAttack();
+	void resetToDefault();
 	void StartmonoJump();
 	void StartplexJump();
 	void StartCollect();

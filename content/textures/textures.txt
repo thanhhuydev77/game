@@ -12,3 +12,4 @@ ID_TEX_SWORD		content\\textures\\Dagger.png		255 255 255
 ID_TEX_MAP2		content\\textures\\map2.bmp		255 255 255
 ID_TEX_ITEM		content\\textures\\All_small_item.png	255 255 255
 ID_TEX_BITEM		content\\textures\\All_bound_item.png	255 255 255
+ID_TEX_MAP3		content\\textures\\map3.bmp		255 255 255

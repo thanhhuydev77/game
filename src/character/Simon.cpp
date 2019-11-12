@@ -147,10 +147,13 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 
 				DebugOut(L"time up: %d--", GetTickCount() - jumpplus_start);
 				vx = temp_nx * SIMON_JUMP_SPEED_X;
+				temp_vx = vx;
+				dx =temp_vx*dt;
 				if (onGround)
 				{
 					vy = -SIMON_JUMP_SPEED_Y;
 					onGround = false;
+					dx = 0;
 				}
 				else
 				{
@@ -160,8 +163,12 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 			else if (GetTickCount() - jumpplus_start >= (SIMON_JUMP_TIME / 2))
 			{
 				nx = temp_nx;
-				vx = temp_nx * SIMON_JUMP_SPEED_X;
-				x += vx;
+				dx = temp_vx*dt;
+				if (onGround)
+				{
+					resetToDefault();
+					//dx = 0;
+				}
 			}
 		}
 
@@ -191,7 +198,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 				x += dx;
 				y += dy;
 				//onstate = false;
-				//onGround = false;
+				onGround = false;
 			}
 			else
 			{
@@ -254,9 +261,26 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 							x += min_tx * dx + nx * 0.1f;		// nx*0.5f : need to push out a bit to avoid overlapping next frame
 							y += min_ty * dy + ny * 0.1f;
 
-							if (nx != 0) vx = 0;
-							if (ny != 0) vy = 0;
-							onGround = true;
+							if (nx != 0)
+							{
+								resetToDefault();
+								vx = 0;
+							}
+							if (ny != 0)
+							{
+								if (ny > 0)
+								{
+									y += SIMON_SPACING_ONTOP+1.0f;
+									resetToDefault();
+									vy = 0;
+								}
+								else
+								{
+									vy = 0;
+									onGround = true;
+								}
+							}
+							
 							break;
 						case Const_Value::in_obj_type::endmap1:
 							endmap1 = true;
@@ -429,7 +453,7 @@ void Simon::setswordturndesc()
 	if (sword_turn >= 1) sword_turn--; else sword_turn = 0;
 }
 
-void Simon::reset()
+void Simon::resetAnimation()
 {
 	animations[SIMON_ANI_ATTACK]->reset();
 	animations[SIMON_ANI_GOUP_ATTACK]->reset();
@@ -472,7 +496,7 @@ void Simon::setcanclimb(bool icanclimb, bool up)
 void Simon::StartAttack()
 {
 	if (!attacking && !collecting) {
-		reset();
+		resetAnimation();
 		attacking = true;
 		attack_start = GetTickCount();
 		temp_state = state;
@@ -480,6 +504,15 @@ void Simon::StartAttack()
 		temp_nx = nx;
 	}
 	
+}
+
+void Simon::resetToDefault()
+{
+	jump_start = 0;
+	jumpingmono = false;
+	jumpplus_start = 0;
+	jumpingplex = false;
+	state = SIMON_STATE_IDLE;
 }
 
 void Simon::StartmonoJump()

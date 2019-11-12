@@ -28,10 +28,13 @@ public:
 #define	ID_TEX_SWORD			4
 #define ID_TEX_SPARK			3
 #define ID_TEX_MAP2				12
+#define ID_TEX_MAP3				15
 #define ID_TEX_ITEM				13
 #define ID_TEX_BITEM			14
 #define MAP1					"content\\tilemap\\map1.txt"
 #define MAP2					"content\\tilemap\\map2.txt"
+#define MAP3					"content\\tilemap\\map3.txt"
+
 #define OFFSET_Y		100
 #pragma endregion
 #pragma region Simon
@@ -39,8 +42,8 @@ public:
 #define SIMON_TIME_ATTACK_OFF		40
 #define SIMON_TIME_COLLECT			1000
 #define SIMON_WALKING_SPEED			0.09f 
-#define SIMON_JUMP_SPEED_Y			0.24f
-#define SIMON_JUMP_SPEED_X			0.07f
+#define SIMON_JUMP_SPEED_Y			0.26f
+#define SIMON_JUMP_SPEED_X			0.08f
 #define SIMON_JUMP_DEFLECT_SPEED	0.2f
 #define SIMON_GRAVITY				0.0005f
 #define SIMON_DIE_DEFLECT_SPEED		0.5f
@@ -80,7 +83,7 @@ public:
 #define	SIMON_SMALL_SIT_BBOX_HEIGHT	46
 #define	SIMON_SMALL_BBOX_HEIGHT		62
 #define SIMON_ATTACK_TIME			400
-#define SIMON_JUMP_TIME				1200
+#define SIMON_JUMP_TIME				1000
 #define SIMON_UNTOUCHABLE_TIME		3000
 #pragma endregion
 #pragma region backgroundobject
