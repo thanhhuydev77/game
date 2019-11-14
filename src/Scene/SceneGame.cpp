@@ -70,20 +70,64 @@ void SceneGame::Update(DWORD dt)
 		if (simon->CheckOverLap(allStairpoint.at(i)) && !simon->isclimbing())
 		{
 			//stair up
-			if (dynamic_cast<CInvisibleObject*>(allStairpoint.at(i))->Gettype() == Const_Value::in_obj_type::stairup)
+			int type = dynamic_cast<CInvisibleObject*>(allStairpoint.at(i))->Gettype();
+			if (type == Const_Value::in_obj_type::stairup)
 			{
 				simon->setcanclimb(true, true);
 				simon->setcanclimb(false, false);
 				typestairstart = dynamic_cast<CInvisibleObject*>(allStairpoint.at(i));
 				break;
 			}
-			else // stair down
+			else if(type == Const_Value::in_obj_type::stairdown) // stair down
 			{
 				simon->setcanclimb(true, false);
 				simon->setcanclimb(false, true);
 				typestairstart = dynamic_cast<CInvisibleObject*>(allStairpoint.at(i));
 				break;
 			}
+			else if (type == Const_Value::in_obj_type::endmap1) // stair down
+			{
+				this->BratizerandItemObjects.clear();
+				this->BratizerObjects.clear();
+				this->BrickObjects.clear();
+				this->coObjects.clear();
+				this->objects.clear();
+				this->ItemObjects.clear();
+				this->LoadContent(MAP2, ID_TEX_MAP2);
+				//simon->setstateendmap1(false);
+				break;
+			}
+			else if (type == Const_Value::in_obj_type::map2to3_p1)
+			{
+				float x, y;
+				simon->GetPosition(x, y);
+				this->BratizerandItemObjects.clear();
+				this->BratizerObjects.clear();
+				this->BrickObjects.clear();
+				this->coObjects.clear();
+				this->objects.clear();
+				this->ItemObjects.clear();
+				this->LoadContent(MAP3, ID_TEX_MAP3);
+				simon->SetPosition(x, 0.0f);
+				//simon->setstateendmap1(false);
+				break;
+			}
+			else if (type == Const_Value::in_obj_type::map2to3_p1)
+			{
+				float x, y;
+				simon->GetPosition(x, y);
+				this->BratizerandItemObjects.clear();
+				this->BratizerObjects.clear();
+				this->BrickObjects.clear();
+				this->coObjects.clear();
+				this->objects.clear();
+				this->ItemObjects.clear();
+				this->LoadContent(MAP3, ID_TEX_MAP3);
+				simon->SetPosition(x, 0.0f);
+				//simon->setstateendmap1(false);
+				break;
+			}
+
 		}
 		//climbing and meet a stair point
 		else if (simon->isclimbing() && simon->CheckOverLap(allStairpoint.at(i)))
@@ -91,25 +135,87 @@ void SceneGame::Update(DWORD dt)
 			//get location of stair
 			float l, t, r, b;
 			allStairpoint.at(i)->GetBoundingBox(l, t, r, b);
+			CInvisibleObject *stair = dynamic_cast<CInvisibleObject*>(allStairpoint.at(i));
+			int type = dynamic_cast<CInvisibleObject*>(allStairpoint.at(i))->Gettype();
 			if (dynamic_cast<CInvisibleObject*>(allStairpoint.at(i))->Gettype() != typestairstart->Gettype())
 			{
 				//meetting stairdown
-				if (typestairstart->Gettype() == Const_Value::in_obj_type::stairup)
+				if (type == Const_Value::in_obj_type::stairdown)
 				{
-					simon->startAutoClimb(typestairstart->getDirect(), b + 4.0f);
+					simon->startAutoClimb(-stair->getDirect(), b);
 					simon->setTempny(2);
-					int optionx = (typestairstart->getDirect() == -1) ? 0 : 20;
-					simon->startAutowalk(typestairstart->getDirect(), l - SIMON_SMALL_BBOX_WIDTH + optionx);
-					simon->setTempnx(typestairstart->getDirect());
+					int optionx = (stair->getDirect() == 1) ? 0 : 20;
+					simon->startAutowalk(-stair->getDirect(), l - SIMON_SMALL_BBOX_WIDTH + optionx);
+					simon->setTempnx(-stair->getDirect());
 				}
 				//meeting stairup
-				else if (typestairstart->Gettype() == Const_Value::in_obj_type::stairdown)
+				else if (type == Const_Value::in_obj_type::stairup)
 				{
-					simon->startAutoClimb(-typestairstart->getDirect(),b);
+					simon->startAutoClimb(stair->getDirect(),b);
 					simon->setTempny(3);
-					int optionx = (typestairstart->getDirect() == -1) ? 0 : 20;
-					simon->startAutowalk(typestairstart->getDirect(), l - SIMON_SMALL_BBOX_WIDTH + optionx);
-					simon->setTempnx(typestairstart->getDirect());
+					int optionx = (stair->getDirect() == 1) ? 0 : 20;
+					simon->startAutowalk(-stair->getDirect(), l - SIMON_SMALL_BBOX_WIDTH + optionx);
+					simon->setTempnx(-stair->getDirect());
+				}
+				else if (type == Const_Value::in_obj_type::map2to3_p1)
+				{
+					float x, y;
+					simon->GetPosition(x, y);
+					this->BratizerandItemObjects.clear();
+					this->BratizerObjects.clear();
+					this->BrickObjects.clear();
+					this->coObjects.clear();
+					this->objects.clear();
+					this->ItemObjects.clear();
+					this->LoadContent(MAP3, ID_TEX_MAP3);
+					//simon->SetPosition(x, 0.0f);
+					//simon->setstateendmap1(false);
+					simon->SetPosition(127.0f,OFFSET_Y+0.0f);
+					break;
+				}
+				else if (type == Const_Value::in_obj_type::map2to3_p2)
+				{
+					
+					this->BratizerandItemObjects.clear();
+					this->BratizerObjects.clear();
+					this->BrickObjects.clear();
+					this->coObjects.clear();
+					this->objects.clear();
+					this->ItemObjects.clear();
+					this->LoadContent(MAP3, ID_TEX_MAP3);
+					simon->SetPosition(770.0f, OFFSET_Y + 0.0f);
+					//simon->setstateendmap1(false);
+					break;
+				}
+				else if (type == Const_Value::in_obj_type::map3to2_p1)
+				{
+					float x, y;
+					simon->GetPosition(x, y);
+					this->BratizerandItemObjects.clear();
+					this->BratizerObjects.clear();
+					this->BrickObjects.clear();
+					this->coObjects.clear();
+					this->objects.clear();
+					this->ItemObjects.clear();
+					this->LoadContent(MAP2, ID_TEX_MAP2);
+					//simon->SetPosition(x, 0.0f);
+					//simon->setstateendmap1(false);
+					simon->SetPosition(3176.0f, OFFSET_Y + 290.0f);
+					break;
+				}
+				else if (type == Const_Value::in_obj_type::map3to2_p2)
+				{
+
+					this->BratizerandItemObjects.clear();
+					this->BratizerObjects.clear();
+					this->BrickObjects.clear();
+					this->coObjects.clear();
+					this->objects.clear();
+					this->ItemObjects.clear();
+					this->LoadContent(MAP2, ID_TEX_MAP2);
+					simon->SetPosition(3822.0f, OFFSET_Y + 290.0f);
+					//simon->setstateendmap1(false);
+					break;
 				}
 				break;
 			}
@@ -179,6 +285,17 @@ void SceneGame::Update(DWORD dt)
 	simon->Update(dt, &coObjects);
 	whip->Update(dt, &BratizerandItemObjects);
 	sword->Update(dt, &BratizerandItemObjects);
+	if (simon->isendmap1())
+	{
+		this->BratizerandItemObjects.clear();
+		this->BratizerObjects.clear();
+		this->BrickObjects.clear();
+		this->coObjects.clear();
+		this->objects.clear();
+		this->ItemObjects.clear();
+		this->LoadContent(MAP2, ID_TEX_MAP2);
+		simon->setstateendmap1(false);
+	}
 	if (simon->isendmap1())
 	{
 		this->BratizerandItemObjects.clear();

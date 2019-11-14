@@ -37,7 +37,11 @@ class Simon : public CGameObject
 		int temp_nx;
 		int temp_ny;
 		int climb_direct;
+
 		int sword_turn;
+		int money;
+		int axe_turn;
+
 		bool endmap1;
 		int last_nx;
 		int climbbing_distance = 0;
@@ -62,6 +66,7 @@ public:
 	bool iscollecting() { return collecting; }
 	void setclimbing(bool is) { climbing = is; if(!is) canclimbdown = canclimbup = false;
 	}
+	void collisionwithSmallItem(CGameObject *si);
 	bool isJumping() { return (jumpingmono || jumpingplex); }
 	bool isOnGround() { return onGround; }
 	void resetAnimation();

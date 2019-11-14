@@ -44,8 +44,10 @@ void SmallItem::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void SmallItem::Render()
 {
 	if (state == ITEM_STATE_ACTIVE)
+	{
 		animations[Type]->Render(x, y, 255);
-	RenderBoundingBox();
+		RenderBoundingBox();
+	}
 }
 
 void SmallItem::GetBoundingBox(float & l, float & t, float & r, float & b)
@@ -65,13 +67,23 @@ void SmallItem::GetBoundingBox(float & l, float & t, float & r, float & b)
 		width = WHIP_POWER_UP_BBOX_WIDTH;
 		height = WHIP_POWER_UP_BBOX_HEIGHT;
 		break;
-	case 4:
+	case 3:
 		width = HOLYWATER_BBOX_WIDTH;
 		height = HOLYWATER_BBOX_HEIGHT;
 		break;
-	case 5:
+	case 4:
 		width = SWORD_BBOX_WIDTH;
 		height = SWORD_BBOX_HEIGHT;
+		break;
+	case 5:
+		width = AXE_BBOX_WIDTH;
+		height = AXE_BBOX_HEIGHT;
+		break;
+	case 6:
+	case 7:
+	case 8:
+		width = MONEYBAG_BBOX_WIDTH;
+		height = MONEYBAG_BBOX_HEIGHT;
 		break;
 	default:
 		width = SMALL_HEART_BBOX_WIDTH;

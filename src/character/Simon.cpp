@@ -210,34 +210,8 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 					{
 						if (GetTickCount() - overlap_time > SIMON_ATTACK_TIME + 150)
 						{
-							SmallItem *lh = dynamic_cast<SmallItem *>(object);
-							switch (lh->getType())
-							{
-
-							case 0: //small heart
-								lh->SetState(ITEM_STATE_UNACTIVE);
-								lh->SetPosition(0 - SMALL_HEART_BBOX_WIDTH, 0);
-								break;
-							case 1: //large heart
-								lh->SetState(ITEM_STATE_UNACTIVE);
-								lh->SetPosition(0 - LARGE_HEART_BBOX_WIDTH, 0);
-								break;
-							case 2: // whip power up
-								lh->SetState(ITEM_STATE_UNACTIVE);
-								lh->SetPosition(0 - WHIP_POWER_UP_BBOX_WIDTH, 0);
-								this->StartCollect();
-								this->Upgrate();
-								break;
-							case 3: // holy water
-								break;
-							case 4: //sword
-								lh->SetState(ITEM_STATE_UNACTIVE);
-								lh->SetPosition(0 - WHIP_POWER_UP_BBOX_WIDTH, 0);
-								this->sword_turn += 5;
-								break;
-							default:
-								break;
-							}
+							//SmallItem *lh = dynamic_cast<SmallItem *>(object);
+							collisionwithSmallItem(object);
 						}
 					}
 				}
@@ -270,8 +244,9 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 							{
 								if (ny > 0)
 								{
-									y += SIMON_SPACING_ONTOP+1.0f;
-									resetToDefault();
+									//y += SIMON_SPACING_ONTOP+1.0f;
+									//resetToDefault();
+									//resetAnimation();
 									vy = 0;
 								}
 								else
@@ -293,34 +268,8 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 					{
 						if ((e->obj)->GetState() == ITEM_STATE_ACTIVE)
 						{
-							SmallItem *lh = dynamic_cast<SmallItem *>(e->obj);
-							switch (lh->getType())
-							{
-
-							case 0: //small heart
-								lh->SetState(ITEM_STATE_UNACTIVE);
-								lh->SetPosition(0 - SMALL_HEART_BBOX_WIDTH, 0);
-								break;
-							case 1: //large heart
-								lh->SetState(ITEM_STATE_UNACTIVE);
-								lh->SetPosition(0 - LARGE_HEART_BBOX_WIDTH, 0);
-								break;
-							case 2: // whip power up
-								lh->SetState(ITEM_STATE_UNACTIVE);
-								lh->SetPosition(0 - WHIP_POWER_UP_BBOX_WIDTH, 0);
-								this->StartCollect();
-								this->Upgrate();
-								break;
-							case 3: // holy water
-								break;
-							case 4: //sword
-								lh->SetState(ITEM_STATE_UNACTIVE);
-								lh->SetPosition(0 - WHIP_POWER_UP_BBOX_WIDTH, 0);
-								this->sword_turn += 5;
-								break;
-							default:
-								break;
-							}
+							//SmallItem *lh = dynamic_cast<SmallItem *>(e->obj);
+							collisionwithSmallItem(e->obj);
 						}
 
 					}
@@ -353,9 +302,9 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 #pragma endregion
 
 	DebugOut(L"\n Onground: %d--", onGround);
-	DebugOut(L"jumping: %d,%d --", jumpingmono, jumpingplex);
-	DebugOut(L"vx=%f,dx = %f --",vx,dx);
-	DebugOut(L"state: %d +", state);
+	DebugOut(L"x : %d, y :%d ", (int)x,(int)y);
+	/*DebugOut(L"vx=%f,dx = %f --",vx,dx);
+	DebugOut(L"state: %d +", state);*/
 }
 
 void Simon::Render()
@@ -453,8 +402,56 @@ void Simon::setswordturndesc()
 	if (sword_turn >= 1) sword_turn--; else sword_turn = 0;
 }
 
+void Simon::collisionwithSmallItem(CGameObject * si)
+{
+	SmallItem *lh = dynamic_cast<SmallItem*>(si);
+	switch (lh->getType())
+	{
+
+	case Const_Value::smallheart: //small heart
+		lh->SetState(ITEM_STATE_UNACTIVE);
+		lh->SetPosition(0 - SMALL_HEART_BBOX_WIDTH, 0);
+		break;
+	case Const_Value::largeheart: //large heart
+		lh->SetState(ITEM_STATE_UNACTIVE);
+		lh->SetPosition(0 - LARGE_HEART_BBOX_WIDTH, 0);
+		break;
+	case Const_Value::whippowerup: // whip power up
+		lh->SetState(ITEM_STATE_UNACTIVE);
+		lh->SetPosition(0 - WHIP_POWER_UP_BBOX_WIDTH, 0);
+		this->StartCollect();
+		this->Upgrate();
+		break;
+	case Const_Value::holywater: // holy water
+		lh->SetState(ITEM_STATE_UNACTIVE);
+		lh->SetPosition(0 - HOLYWATER_BBOX_WIDTH, 0);
+		break;
+	case Const_Value::sword: //sword
+		lh->SetState(ITEM_STATE_UNACTIVE);
+		lh->SetPosition(0 - SWORD_BBOX_WIDTH, 0);
+		this->sword_turn += 5;
+		break;
+	case Const_Value::axe:
+		lh->SetState(ITEM_STATE_UNACTIVE);
+		lh->SetPosition(0 - AXE_BBOX_WIDTH, 0);
+		axe_turn += 5;
+		break;
+	case Const_Value::whitemoneybag:
+	case Const_Value::redmoneybag:
+	case Const_Value::bluemoneybag:
+		lh->SetState(ITEM_STATE_UNACTIVE);
+		lh->SetPosition(0 - MONEYBAG_BBOX_WIDTH, 0);
+		money += 100;
+		break;
+
+	default:
+		break;
+	}
+}
+
 void Simon::resetAnimation()
 {
+	
 	animations[SIMON_ANI_ATTACK]->reset();
 	animations[SIMON_ANI_GOUP_ATTACK]->reset();
 	animations[SIMON_ANI_GODOWN_ATTACK]->reset();
@@ -517,7 +514,7 @@ void Simon::resetToDefault()
 
 void Simon::StartmonoJump()
 {
-	if (!jumpingmono && !jumpingplex && !collecting) {
+	if (!jumpingmono && !jumpingplex && !collecting&&!attacking) {
 		jumpingmono = true; jump_start = GetTickCount();
 		//onGround = false;
 		temp_state = SIMON_STATE_JUMP;
@@ -526,7 +523,8 @@ void Simon::StartmonoJump()
 
 void Simon::StartplexJump()
 {
-	if (!jumpingmono && !jumpingplex && !collecting) {
+	if (!jumpingmono && !jumpingplex && !collecting && !attacking)
+	{
 
 		jumpingplex = true; jumpplus_start = GetTickCount();
 		temp_nx = nx;

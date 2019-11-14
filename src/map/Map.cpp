@@ -61,27 +61,13 @@ void Map::loadinvisibleobjects(int id, int direct, int top, int left, int width,
 	CInvisibleObject *in_obj;
 	in_obj = new CInvisibleObject();
 	in_obj->setDirect(direct);
-	switch (id)
-	{
-	case 0:
-		in_obj->Settype(Const_Value::in_obj_type::Brick);
+	in_obj->Settype(id);
+	
+	if (id == 0)
 		allbrickandpoint.push_back(in_obj);
-		break;
-	case 2:
-		in_obj->Settype(Const_Value::in_obj_type::endmap1);
-		allbrickandpoint.push_back(in_obj);
-		break;
-	case 3:
-		in_obj->Settype(Const_Value::in_obj_type::stairup);
+	else
 		allstairpoint.push_back(in_obj);
-		break;
-	case 4:
-		in_obj->Settype(Const_Value::in_obj_type::stairdown);
-		allstairpoint.push_back(in_obj);
-		break;
-	default:
-		in_obj->Settype(Const_Value::in_obj_type::Brick);
-	}
+
 	in_obj->setsize(width, height);
 	in_obj->SetPosition(top, left + OFFSET_Y);
 	allHidenObject.push_back(in_obj);

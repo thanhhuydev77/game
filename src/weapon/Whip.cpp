@@ -166,7 +166,7 @@ void Whip::Upgrade()
 
 void Whip::StartAttack()
 {
-	if (state != WHIP_STATE_ACTIVE && owner->GetState() != SIMON_STATE_COLLECT)
+	if (state != WHIP_STATE_ACTIVE && owner->GetState() != SIMON_STATE_COLLECT )
 	{
 		state = WHIP_STATE_ACTIVE;
 		attack_start = GetTickCount();
@@ -177,6 +177,11 @@ void Whip::StartAttack()
 void Whip::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
 	UpdatePositionRelateToObject(dt);
+	if (!dynamic_cast<Simon*>(owner)->isattacking())
+	{
+		attack_start = 0;
+		state = WHIP_STATE_UNACTIVE;
+	}
 	if (GetTickCount() - attack_start > SIMON_ATTACK_TIME)
 	{
 		attack_start = 0;
