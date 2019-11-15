@@ -289,17 +289,22 @@ void SceneGame::Update(DWORD dt)
 
 #pragma region Update camera to follow simon
 
-	float cx, cy;
-	simon->GetPosition(cx, cy);
-	if (cx >= SCREEN_WIDTH / 2 && cx < mapwidth - (SCREEN_WIDTH + 600) / 2)
-		cx -= SCREEN_WIDTH / 2 - 10.0f;
-	else if (cx < SCREEN_WIDTH / 2)
-		cx = 10.0f;
-	else if (cx >= mapwidth - (SCREEN_WIDTH + 600) / 2)
-		cx = mapwidth - SCREEN_WIDTH - 300;
+	//float cx, cy;
+	//simon->GetPosition(cx, cy);
 
-	cy -= SCREEN_HEIGHT / 2;
-	CGame::GetInstance()->SetCamPos(cx, 0.0f /*cy*/);
+	//if (cx >= SCREEN_WIDTH / 2 && cx < mapwidth - (SCREEN_WIDTH + 600) / 2)
+	//	cx -= SCREEN_WIDTH / 2 - 10.0f;
+	//else if (cx < SCREEN_WIDTH / 2)
+	//	cx = 10.0f;
+	//else if (cx >= mapwidth - (SCREEN_WIDTH + 600) / 2)
+	//	cx = mapwidth - SCREEN_WIDTH - 300;
+
+	//cy -= SCREEN_HEIGHT / 2;
+	//CGame::GetInstance()->SetCamPos(cx, 0.0f /*cy*/);
+	Camera::getInstance()->FollowtoSimon(simon);
+	//float x1, y1, x2, y2;
+	RECT a = Camera::getInstance()->GetBound();
+	DebugOut(L"left:%d --top:%d --right:%d --bottom:%d \n",a.left,a.top,a.right,a.bottom);
 #pragma endregion
 }
 
@@ -335,7 +340,7 @@ void SceneGame::LoadContent(string mapname, int idmap)
 	objects.push_back(sword);
 	whip = new Whip(simon);
 	objects.push_back(whip);
-
+	Camera::getInstance()->Setsize(mapwidth, SCREEN_HEIGHT);
 }
 
 void SceneGame::Draw()

@@ -16,12 +16,14 @@
 #include "../map/Map.h"
 #include "../Scene/SceneExample.h"
 #include "../Scene/SceneManager.h"
+#include "../camera/Camera.h"
 #include "Scene2.h"
 using namespace std;
 
 class SceneGame : public Scene
 {
 private:
+	Camera *mCamera;
 	Sword *sword;
 	CGame *games;
 	Simon *simon;

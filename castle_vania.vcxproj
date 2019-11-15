@@ -133,6 +133,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\camera\Camera.h" />
     <ClInclude Include="src\Scene\Scene2.h" />
     <ClInclude Include="src\sample\CSampleKeyHandler.h" />
     <ClInclude Include="src\Scene\SceneExample.h" />
@@ -160,6 +161,7 @@
     <ClInclude Include="src\item\Whip_PowerUp.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\camera\Camera.cpp" />
     <ClCompile Include="src\Scene\Scene2.cpp" />
     <ClCompile Include="src\sample\CSampleKeyHandler.cpp" />
     <ClCompile Include="src\Scene\SceneExample.cpp" />

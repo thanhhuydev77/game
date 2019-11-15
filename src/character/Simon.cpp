@@ -24,8 +24,6 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 {
 	CGameObject::Update(dt);
 
-	if (x < -5)
-		x = 0;
 	if (!climbing)
 	{
 		vy += SIMON_GRAVITY * dt;
@@ -145,7 +143,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 			{
 				//only jump when onstate;
 
-				DebugOut(L"time up: %d--", GetTickCount() - jumpplus_start);
+				//DebugOut(L"time up: %d--", GetTickCount() - jumpplus_start);
 				vx = temp_nx * SIMON_JUMP_SPEED_X;
 				temp_vx = vx;
 				dx =temp_vx*dt;
@@ -322,8 +320,8 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 
 #pragma endregion
 
-	DebugOut(L"\n Onground: %d--", onGround);
-	DebugOut(L"x : %d, y :%d ", (int)x,(int)y);
+	/*DebugOut(L"\n Onground: %d--", onGround);
+	DebugOut(L"x : %d, y :%d ", (int)x,(int)y);*/
 	/*DebugOut(L"vx=%f,dx = %f --",vx,dx);
 	DebugOut(L"state: %d +", state);*/
 }
