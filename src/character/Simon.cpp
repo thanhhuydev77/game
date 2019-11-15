@@ -271,6 +271,27 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 							//SmallItem *lh = dynamic_cast<SmallItem *>(e->obj);
 							collisionwithSmallItem(e->obj);
 						}
+					}
+					else if (dynamic_cast<BoundItem *>(e->obj))
+					{
+						x += min_tx * dx + nx * 0.1f;		// nx*0.5f : need to push out a bit to avoid overlapping next frame
+						y += min_ty * dy + ny * 0.1f;
+
+						if (nx != 0)
+						{
+							resetToDefault();
+							vx = 0;
+						}
+						if (ny != 0)
+						{
+							if (ny > 0)
+								vy = 0;
+							else
+							{
+								vy = 0;
+								onGround = true;
+							}
+						}
 
 					}
 				}
@@ -638,10 +659,10 @@ void Simon::GetBoundingBox(float & left, float & top, float & right, float & bot
 	else
 	{
 		left = x + (SIMON_BIG_BBOX_WIDTH - SIMON_SMALL_BBOX_WIDTH) / 2;
-		top = y;
+		top = y +(SIMON_BIG_BBOX_HEIGHT - SIMON_SMALL_BBOX_HEIGHT) / 2;
 
 		right = left + SIMON_SMALL_BBOX_WIDTH;
-		bottom = top + SIMON_SMALL_BBOX_HEIGHT;
+		bottom = top + SIMON_SMALL_BBOX_HEIGHT - +(SIMON_BIG_BBOX_HEIGHT - SIMON_SMALL_BBOX_HEIGHT) / 2;
 	}
 
 }

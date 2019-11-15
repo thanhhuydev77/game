@@ -43,8 +43,10 @@ void Map::loaditems()
 		bra->SetPosition(arrobjects[i].left, arrobjects[i].top + OFFSET_Y);
 		Bratizerobjects.push_back(bra);
 		objects.push_back(bra);
-
-
+		if (bra->getType() == Const_Value::bound_item_type::BreakableBlock || bra->getType() == Const_Value::bound_item_type::breakableBrick)
+		{
+			allbrickandpoint.push_back(bra);
+		}
 		smallitem = new SmallItem();
 		smallitem->setType(arrobjects[i].iditem);
 		smallitem->SetPosition(arrobjects[i].left, arrobjects[i].top + OFFSET_Y);

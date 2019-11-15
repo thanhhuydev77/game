@@ -285,28 +285,7 @@ void SceneGame::Update(DWORD dt)
 	simon->Update(dt, &coObjects);
 	whip->Update(dt, &BratizerandItemObjects);
 	sword->Update(dt, &BratizerandItemObjects);
-	if (simon->isendmap1())
-	{
-		this->BratizerandItemObjects.clear();
-		this->BratizerObjects.clear();
-		this->BrickObjects.clear();
-		this->coObjects.clear();
-		this->objects.clear();
-		this->ItemObjects.clear();
-		this->LoadContent(MAP2, ID_TEX_MAP2);
-		simon->setstateendmap1(false);
-	}
-	if (simon->isendmap1())
-	{
-		this->BratizerandItemObjects.clear();
-		this->BratizerObjects.clear();
-		this->BrickObjects.clear();
-		this->coObjects.clear();
-		this->objects.clear();
-		this->ItemObjects.clear();
-		this->LoadContent(MAP2, ID_TEX_MAP2);
-		simon->setstateendmap1(false);
-	}
+	
 
 #pragma region Update camera to follow simon
 

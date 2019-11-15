@@ -187,27 +187,29 @@ void Whip::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		attack_start = 0;
 		state = WHIP_STATE_UNACTIVE;
 	}
-	vector<LPGAMEOBJECT> bra;
-	vector<LPGAMEOBJECT> item;
-	for (UINT i = 0; i < coObjects->size(); i++)
+	else
 	{
-		if (dynamic_cast<BoundItem *>(coObjects->at(i)))
-			bra.push_back(coObjects->at(i));
-		else
-			item.push_back(coObjects->at(i));
-	}
-	for (UINT i = 0; i < bra.size(); i++)
-	{
-		BoundItem *bratizer = dynamic_cast<BoundItem *>(bra[i]);
-		if (CheckOverLap(bratizer))
+		vector<LPGAMEOBJECT> bra;
+		vector<LPGAMEOBJECT> item;
+		for (UINT i = 0; i < coObjects->size(); i++)
 		{
-			//bratizer->SetState(BRATIZER_STATE_UNACTIVE);
-			bratizer->start_disappear();
-			//bratizer->SetPosition(-BRATIZER_BBOX_WIDTH, 0);
-			//item[i]->SetState(ITEM_STATE_ACTIVE);
+			if (dynamic_cast<BoundItem *>(coObjects->at(i)))
+				bra.push_back(coObjects->at(i));
+			else
+				item.push_back(coObjects->at(i));
+		}
+		for (UINT i = 0; i < bra.size(); i++)
+		{
+			BoundItem *bratizer = dynamic_cast<BoundItem *>(bra[i]);
+			if (CheckOverLap(bratizer))
+			{
+				//bratizer->SetState(BRATIZER_STATE_UNACTIVE);
+				bratizer->start_disappear();
+				//bratizer->SetPosition(-BRATIZER_BBOX_WIDTH, 0);
+				//item[i]->SetState(ITEM_STATE_ACTIVE);
+			}
 		}
 	}
-
 }
 
 void Whip::Render()

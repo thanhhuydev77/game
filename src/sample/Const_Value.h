@@ -88,10 +88,9 @@ public:
 #pragma endregion
 #pragma region backgroundobject
 
-static enum in_obj_type { Brick,endmap1, stairup, stairdown,map2to3_p1, map2to3_p2, map3to2_p1,map3to2_p2
-};
+static enum in_obj_type { Brick,endmap1, stairup, stairdown,map2to3_p1, map2to3_p2, map3to2_p1,map3to2_p2};
 static enum small_item_type {smallheart, largeheart,whippowerup,holywater,sword,axe,redmoneybag,bluemoneybag,whitemoneybag};
-static enum bound_item_type { Bratizer, candle};
+static enum bound_item_type { Bratizer, candle,breakableBrick,BreakableBlock,flame};
 #define BRATIZER_STATE_ACTIVE		1
 #define BRATIZER_STATE_UNACTIVE		0
 #define BRATIZER_BBOX_WIDTH			32
@@ -102,7 +101,10 @@ static enum bound_item_type { Bratizer, candle};
 #define BRATIZER_ANI_DISAPPEAR		1
 #define ENDPOINT_BBOX_WIDTH			32
 #define ENDPOINT_BBOX_HEIGHT		32
-
+#define BRICK_BBOX_WIDTH			32
+#define BRICK_BBOX_HEIGHT			32
+#define BLOCK_BBOX_WIDTH			32
+#define BLOCK_BBOX_HEIGHT			64
 #pragma endregion
 #pragma region whip
 
@@ -138,10 +140,10 @@ static enum bound_item_type { Bratizer, candle};
 #define WHIP_POWER_UP_BBOX_HEIGHT	32
 #define HOLYWATER_BBOX_WIDTH		32
 #define HOLYWATER_BBOX_HEIGHT		32
-#define AXE_BBOX_WIDTH				30
-#define AXE_BBOX_HEIGHT				30
-#define MONEYBAG_BBOX_WIDTH			30
-#define MONEYBAG_BBOX_HEIGHT		30
+#define AXE_BBOX_WIDTH				28
+#define AXE_BBOX_HEIGHT				28
+#define MONEYBAG_BBOX_WIDTH			28
+#define MONEYBAG_BBOX_HEIGHT		28
 #pragma endregion
 };
 

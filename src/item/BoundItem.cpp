@@ -22,9 +22,9 @@ void BoundItem::Render()
 		// animations 2 is flame
 		if (disappearing)
 			if(Type == Const_Value::bound_item_type::Bratizer)
-			animations[2]->Render(x+7, y+7, 255);
+			animations[Const_Value::bound_item_type::flame]->Render(x+7, y+7, 255);
 			else
-				animations[2]->Render(x , y, 255);
+				animations[Const_Value::bound_item_type::flame]->Render(x , y, 255);
 		else
 		animations[Type]->Render(x, y, 255);
 		RenderBoundingBox();
@@ -63,6 +63,15 @@ void BoundItem::GetBoundingBox(float & l, float & t, float & r, float & b)
 	case Const_Value::bound_item_type::candle:
 		width = CANDLE_BBOX_WIDTH;
 		height = CANDLE_BBOX_HEIGHT;
+		break;
+	
+	case Const_Value::bound_item_type::breakableBrick:
+		width = BRICK_BBOX_WIDTH;
+		height = BRICK_BBOX_HEIGHT;
+		break;
+	case Const_Value::bound_item_type::BreakableBlock:
+		width = BLOCK_BBOX_WIDTH;
+		height = BLOCK_BBOX_HEIGHT;
 		break;
 	default:
 		width = BRATIZER_BBOX_WIDTH;

@@ -31,10 +31,14 @@ void SmallItem::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			for (UINT i = 0; i < coEventsResult.size(); i++)
 			{
 				LPCOLLISIONEVENT e = coEventsResult[i];
-				if (dynamic_cast<CInvisibleObject *>(e->obj))
+				if (dynamic_cast<CInvisibleObject *>(e->obj) && dynamic_cast<CInvisibleObject *>(e->obj)->Gettype() == Const_Value::Brick)
 				{
 					y += min_ty * dy + ny * 0.1f;
 					if (ny != 0) vy = 0;
+				}
+				else if (dynamic_cast<CInvisibleObject *>(e->obj))
+				{
+					y += vy*dt;
 				}
 			}
 		}

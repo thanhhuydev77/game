@@ -11,6 +11,7 @@
 #include "../item/Whip_PowerUp.h"
 #include "../item/SwordItem.h"
 #include "../sample/debug.h"
+#include "../item/BoundItem.h"
 using namespace std;
 class Simon : public CGameObject
 {
