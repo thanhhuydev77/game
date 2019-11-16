@@ -1,5 +1,4 @@
 #include "Camera.h"
-
 Camera *Camera::_instance = NULL;
 Camera * Camera::getInstance()
 {
@@ -8,9 +7,17 @@ Camera * Camera::getInstance()
 	return _instance;
 }
 
+void Camera::nextarea()
+{
+	des = camx + 250;
+	start_auto();
+	currentarea++;
+}
+
 Camera::Camera()
 {
 	isfollowSimon = true;
+	currentarea = 0;
 }
 
 void Camera::Setsize(int width, int height)
@@ -21,8 +28,14 @@ void Camera::Setsize(int width, int height)
 	mPosition = D3DXVECTOR3(0, 0, 0);
 }
 
-void Camera::Update(DWORD dt)
+void Camera::Update(DWORD dt, CGameObject *Simon)
 {
+	if (isfollowSimon)
+		FollowtoSimon(Simon);
+	else if (autotransiting)
+	{
+		start_auto();
+	}
 }
 
 
@@ -39,27 +52,36 @@ void Camera::SetPosition(float x, float y)
 void Camera::SetPosition(D3DXVECTOR3 pos)
 {
 	mPosition = pos;
+	camx = pos.x;
+	camy = pos.y;
 	CGame::GetInstance()->SetCamPos(pos.x, pos.y);
 }
 
-void Camera::FollowtoSimon(CGameObject * Simon)
+void Camera::FollowtoSimon(CGameObject * simon)
 {
-	if (isfollowSimon)
+	if (camx < activearea[currentarea] && !dynamic_cast<Simon *>(simon)->inAutoMode())
 	{
-		float cx, cy;
-		Simon->GetPosition(cx, cy);
-		if (cx >= (SCREEN_WIDTH+300)/ 2 && cx < (mWidth - (SCREEN_WIDTH+300)/2))
-			cx -= (SCREEN_WIDTH+300)/2 ;
-		else if (cx < (SCREEN_WIDTH+300) / 2)
-			cx = 0.0f;
-		else if (cx >= mWidth - (SCREEN_WIDTH + 300) / 2)
-			cx = mWidth - (SCREEN_WIDTH + 300);
+		des = activearea[currentarea];
+		start_auto();
+	}
 
+		float cx, cy;
+		simon->GetPosition(cx, cy);
+		//GIUA MAP
+		if (cx >= (CAMERA_WIDTH) / 2 + activearea[currentarea] && cx < (activearea[currentarea + 1] - (CAMERA_WIDTH) / 2))
+			camx =cx - ((CAMERA_WIDTH) / 2);
+		//DAU MAP
+		else if (cx < (CAMERA_WIDTH) / 2 + activearea[currentarea] && camx >= activearea[currentarea] - 20)
+			camx = activearea[currentarea];
+		//CUOI MAP
+		else if (cx >= activearea[currentarea + 1] - (CAMERA_WIDTH) / 2)
+			camx = activearea[currentarea + 1] - (CAMERA_WIDTH)+16;
+		
 		cy -= SCREEN_HEIGHT / 2;
-		camx = cx;
+		//camx = cx;
+		SetPosition(camx, 0.0f);
 		camy = 0;
 		CGame::GetInstance()->SetCamPos(camx, 0.0f /*cy*/);
-	}
 }
 
 D3DXVECTOR3 Camera::GetPosition()
@@ -71,10 +93,10 @@ RECT Camera::GetBound()
 {
 	RECT bound;
 
-	bound.left	 = mPosition.x+camx;
-	bound.right  = bound.left + SCREEN_WIDTH;
-	bound.top	 = mPosition.y+camy;
-	bound.bottom = bound.top + SCREEN_HEIGHT;
+	bound.left	 = camx;
+	bound.right  = bound.left + mWidth;
+	bound.top	 = camy;
+	bound.bottom = bound.top + mHeight;
 
 	return bound;
 }
@@ -87,4 +109,29 @@ int Camera::GetWidth()
 int Camera::GetHeight()
 {
 	return mHeight;
+}
+
+bool Camera::checkInCamera(RECT a)
+{
+	if (a.right < camx)
+		return false;
+	else if (a.left > camx + CAMERA_WIDTH)
+		return false;
+	return true;
+}
+
+void Camera::start_auto()
+{
+	isfollowSimon = false;
+	autotransiting = true;
+	if (camx < des)
+	{
+		camx += 2.0f;
+		CGame::GetInstance()->SetCamPos(camx, 0);
+	}
+	else
+	{
+		autotransiting = false;
+		isfollowSimon = true;
+	}
 }

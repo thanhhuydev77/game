@@ -12,4 +12,6 @@ height: <height of matrix>
 <number of invisible object(1)> brick,endpoint,...
 <id object1> <direct(1:right 0:left)> <x> <y> <width> <height>
 
+<number of static object>
+<id> <x> <y> 
 <matrix of map>

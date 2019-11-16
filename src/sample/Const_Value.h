@@ -12,6 +12,9 @@ public:
 #define SCREEN_WIDTH		200
 #define SCREEN_HEIGHT		200
 #define MAX_FRAME_RATE		120
+#define CAMERA_WIDTH		500
+#define CAMERA_HEIGHT		500
+
 #pragma endregion
 #pragma region texture
 
@@ -31,6 +34,8 @@ public:
 #define ID_TEX_MAP3				15
 #define ID_TEX_ITEM				13
 #define ID_TEX_BITEM			14
+#define ID_TEX_STATIC_OBJ		16
+
 #define MAP1					"content\\tilemap\\map1.txt"
 #define MAP2					"content\\tilemap\\map2.txt"
 #define MAP3					"content\\tilemap\\map3.txt"
@@ -91,6 +96,7 @@ public:
 static enum in_obj_type { Brick,endmap1, stairup, stairdown,map2to3_p1, map2to3_p2, map3to2_p1,map3to2_p2};
 static enum small_item_type {smallheart, largeheart,whippowerup,holywater,sword,axe,redmoneybag,bluemoneybag,whitemoneybag};
 static enum bound_item_type { Bratizer, candle,breakableBrick,BreakableBlock,flame};
+static enum static_obj_type{Door};
 #define BRATIZER_STATE_ACTIVE		1
 #define BRATIZER_STATE_UNACTIVE		0
 #define BRATIZER_BBOX_WIDTH			32
@@ -105,6 +111,9 @@ static enum bound_item_type { Bratizer, candle,breakableBrick,BreakableBlock,fla
 #define BRICK_BBOX_HEIGHT			32
 #define BLOCK_BBOX_WIDTH			32
 #define BLOCK_BBOX_HEIGHT			64
+#define DOOR_BBOX_WIDTH				24
+#define DOOR_BBOX_HEIGHT			96
+
 #pragma endregion
 #pragma region whip
 

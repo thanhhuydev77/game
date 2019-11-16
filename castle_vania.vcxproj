@@ -159,6 +159,7 @@
     <ClInclude Include="src\map\tileset.h" />
     <ClInclude Include="src\weapon\Whip.h" />
     <ClInclude Include="src\item\Whip_PowerUp.h" />
+    <ClInclude Include="src\item\StaticObject.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\camera\Camera.cpp" />
@@ -188,6 +189,7 @@
     <ClCompile Include="src\map\tileset.cpp" />
     <ClCompile Include="src\weapon\Whip.cpp" />
     <ClCompile Include="src\item\Whip_PowerUp.cpp" />
+    <ClCompile Include="src\item\StaticObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="content\textures\bbox.png" />

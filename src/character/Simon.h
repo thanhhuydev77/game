@@ -12,6 +12,8 @@
 #include "../item/SwordItem.h"
 #include "../sample/debug.h"
 #include "../item/BoundItem.h"
+#include "../item/StaticObject.h"
+#include "../camera/Camera.h"
 using namespace std;
 class Simon : public CGameObject
 {

@@ -3,6 +3,8 @@
 #include "../utility/LoadResourceHelper.h"
 #include "../sample/Const_Value.h"
 #include "../sample/textures.h"
+#include "../camera/Camera.h"
+#include "../sample/debug.h"
 class BoundItem :
 	public CGameObject
 {

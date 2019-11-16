@@ -115,6 +115,14 @@ void Sword::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 void Sword::Render()
 {
+	float t, l, r, b;
+	GetBoundingBox(l, t, r, b);
+	RECT check;
+	check.left = l;
+	check.top = t;
+	check.right = r;
+	check.bottom = b;
+	if (Camera::getInstance()->checkInCamera(check))
 	if (state == SWORD_STATE_ACTIVE)
 	{
 		animations[0]->Render(x, y, 255, nx);//

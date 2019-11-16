@@ -39,6 +39,7 @@ private:
 	vector<LPGAMEOBJECT> BrickandpointObjects; // all brick and point
 	vector<LPGAMEOBJECT> BratizerandItemObjects; //all bratizers and items
 	vector<LPGAMEOBJECT> allStairpoint; // all stair point
+	vector<LPGAMEOBJECT> allStaticObject;
 	
 public:
 	SceneGame();
@@ -49,7 +50,9 @@ public:
 	vector<LPGAMEOBJECT> getallobjects();
 	vector<LPGAMEOBJECT> getallBrickandpointObjects();
 	vector<LPGAMEOBJECT> getallallStairpoint();
+	vector<LPGAMEOBJECT> getallStaticObject();
 	int getmapwidth();
+	void resetlist();
 	void RenderBackground();
 	~SceneGame();
 

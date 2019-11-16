@@ -15,8 +15,18 @@ BoundItem::BoundItem()
 
 void BoundItem::Render()
 {
+	//bool checkin = false;
+	float t, l, r, b;
+	GetBoundingBox(l, t, r, b);
+	RECT check;
+	check.left = l;
+	check.top = t;
+	check.right = r;
+	check.bottom = b;
+	if(Camera::getInstance()->checkInCamera(check))
 	if (state == BRATIZER_STATE_ACTIVE)
 	{
+		//checkin = true;
 		// defaul ani 
 		//int ani = 0;
 		// animations 2 is flame
@@ -29,6 +39,7 @@ void BoundItem::Render()
 		animations[Type]->Render(x, y, 255);
 		RenderBoundingBox();
 	}
+	//DebugOut(L"is render :%d",checkin);
 }
 
 void BoundItem::start_disappear()

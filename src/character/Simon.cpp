@@ -36,7 +36,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 	{
 		//start autoclimb when not auto walk
 		//1 is walking first,2 is climb first
-		if (autowalking && dofirst == 1)
+		if (autowalking && dofirst == 1 && !Camera::getInstance()->isautogo())
 		{
 
 			//walking to left
@@ -272,6 +272,31 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 					}
 					else if (dynamic_cast<BoundItem *>(e->obj))
 					{
+						x += min_tx * dx + nx * 0.1f;		// nx*0.5f : need to push out a bit to avoid overlapping next frame
+						y += min_ty * dy + ny * 0.1f;
+
+						if (nx != 0)
+						{
+							resetToDefault();
+							vx = 0;
+						}
+						if (ny != 0)
+						{
+							if (ny > 0)
+								vy = 0;
+							else
+							{
+								vy = 0;
+								onGround = true;
+							}
+						}
+
+					}
+					else if (dynamic_cast<StaticObject *>(e->obj) && nx == -1)
+					{
+						startAutowalk(-nx, x + 120);
+						dynamic_cast<StaticObject *>(e->obj)->start_open();
+						Camera::getInstance()->nextarea();
 						x += min_tx * dx + nx * 0.1f;		// nx*0.5f : need to push out a bit to avoid overlapping next frame
 						y += min_ty * dy + ny * 0.1f;
 

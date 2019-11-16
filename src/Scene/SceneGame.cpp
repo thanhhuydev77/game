@@ -38,9 +38,25 @@ vector<LPGAMEOBJECT> SceneGame::getallallStairpoint()
 	return mmap->getallstairpoint();
 }
 
+vector<LPGAMEOBJECT> SceneGame::getallStaticObject()
+{
+	return mmap->getallstaticObject();
+}
+
 int SceneGame::getmapwidth()
 {
 	return mmap->GetWidth();
+}
+
+void SceneGame::resetlist()
+{
+	this->BratizerandItemObjects.clear();
+	this->BratizerObjects.clear();
+	this->BrickObjects.clear();
+	this->coObjects.clear();
+	this->objects.clear();
+	this->ItemObjects.clear();
+	
 }
 
 void SceneGame::RenderBackground()
@@ -159,14 +175,8 @@ void SceneGame::Update(DWORD dt)
 				}
 				else if (type == Const_Value::in_obj_type::map2to3_p1)
 				{
-					float x, y;
-					simon->GetPosition(x, y);
-					this->BratizerandItemObjects.clear();
-					this->BratizerObjects.clear();
-					this->BrickObjects.clear();
-					this->coObjects.clear();
-					this->objects.clear();
-					this->ItemObjects.clear();
+					resetlist();
+					Camera::getInstance()->reset();
 					this->LoadContent(MAP3, ID_TEX_MAP3);
 					//simon->SetPosition(x, 0.0f);
 					//simon->setstateendmap1(false);
@@ -176,12 +186,8 @@ void SceneGame::Update(DWORD dt)
 				else if (type == Const_Value::in_obj_type::map2to3_p2)
 				{
 					
-					this->BratizerandItemObjects.clear();
-					this->BratizerObjects.clear();
-					this->BrickObjects.clear();
-					this->coObjects.clear();
-					this->objects.clear();
-					this->ItemObjects.clear();
+					resetlist();
+					Camera::getInstance()->reset();
 					this->LoadContent(MAP3, ID_TEX_MAP3);
 					simon->SetPosition(770.0f, OFFSET_Y + 0.0f);
 					//simon->setstateendmap1(false);
@@ -189,15 +195,9 @@ void SceneGame::Update(DWORD dt)
 				}
 				else if (type == Const_Value::in_obj_type::map3to2_p1)
 				{
-					float x, y;
-					simon->GetPosition(x, y);
-					this->BratizerandItemObjects.clear();
-					this->BratizerObjects.clear();
-					this->BrickObjects.clear();
-					this->coObjects.clear();
-					this->objects.clear();
-					this->ItemObjects.clear();
+					resetlist();
 					this->LoadContent(MAP2, ID_TEX_MAP2);
+					Camera::getInstance()->setcurrentarea(1);
 					//simon->SetPosition(x, 0.0f);
 					//simon->setstateendmap1(false);
 					simon->SetPosition(3176.0f, OFFSET_Y + 290.0f);
@@ -206,13 +206,9 @@ void SceneGame::Update(DWORD dt)
 				else if (type == Const_Value::in_obj_type::map3to2_p2)
 				{
 
-					this->BratizerandItemObjects.clear();
-					this->BratizerObjects.clear();
-					this->BrickObjects.clear();
-					this->coObjects.clear();
-					this->objects.clear();
-					this->ItemObjects.clear();
+					resetlist();
 					this->LoadContent(MAP2, ID_TEX_MAP2);
+					Camera::getInstance()->setcurrentarea(1);
 					simon->SetPosition(3822.0f, OFFSET_Y + 290.0f);
 					//simon->setstateendmap1(false);
 					break;
@@ -282,30 +278,18 @@ void SceneGame::Update(DWORD dt)
 		if (ItemObjects[i]->GetState() == ITEM_STATE_ACTIVE)
 			coObjects.push_back(ItemObjects[i]);
 	}
+	for (unsigned int i = 0; i < allStaticObject.size(); i++)
+	{
+		allStaticObject[i]->Update(dt);
+	}
+
 	simon->Update(dt, &coObjects);
 	whip->Update(dt, &BratizerandItemObjects);
 	sword->Update(dt, &BratizerandItemObjects);
 	
 
-#pragma region Update camera to follow simon
+	Camera::getInstance()->Update(dt,simon);
 
-	//float cx, cy;
-	//simon->GetPosition(cx, cy);
-
-	//if (cx >= SCREEN_WIDTH / 2 && cx < mapwidth - (SCREEN_WIDTH + 600) / 2)
-	//	cx -= SCREEN_WIDTH / 2 - 10.0f;
-	//else if (cx < SCREEN_WIDTH / 2)
-	//	cx = 10.0f;
-	//else if (cx >= mapwidth - (SCREEN_WIDTH + 600) / 2)
-	//	cx = mapwidth - SCREEN_WIDTH - 300;
-
-	//cy -= SCREEN_HEIGHT / 2;
-	//CGame::GetInstance()->SetCamPos(cx, 0.0f /*cy*/);
-	Camera::getInstance()->FollowtoSimon(simon);
-	//float x1, y1, x2, y2;
-	RECT a = Camera::getInstance()->GetBound();
-	DebugOut(L"left:%d --top:%d --right:%d --bottom:%d \n",a.left,a.top,a.right,a.bottom);
-#pragma endregion
 }
 
 void SceneGame::LoadContent(string mapname, int idmap)
@@ -321,6 +305,7 @@ void SceneGame::LoadContent(string mapname, int idmap)
 	BratizerObjects = this->getBratizerobjects();
 	ItemObjects = this->getItemobjects();
 	coObjects = this->getallHidenObjects();
+	allStaticObject = getallStaticObject();
 	BratizerandItemObjects = this->getBratizerobjects();
 
 	for (unsigned int i = 0; i < ItemObjects.size(); i++)
@@ -333,7 +318,7 @@ void SceneGame::LoadContent(string mapname, int idmap)
 	simon = Simon::getinstance();
 	float x, y;
 	BrickObjects.at(0)->GetPosition(x, y);
-	simon->SetPosition(x, y - SIMON_BIG_BBOX_HEIGHT - 1);
+	simon->SetPosition(3000.0f, 0 - SIMON_BIG_BBOX_HEIGHT - 1);
 	objects.push_back(simon);
 	//init sword and whip
 	sword = new Sword(simon);

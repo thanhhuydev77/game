@@ -34,6 +34,11 @@ vector<LPGAMEOBJECT> Map::getallstairpoint()
 	return allstairpoint;
 }
 
+vector<LPGAMEOBJECT> Map::getallstaticObject()
+{
+	return allstaticObject;
+}
+
 void Map::loaditems()
 {
 	for (int i = 0; i < arrobjects.size(); i++)
@@ -55,6 +60,20 @@ void Map::loaditems()
 		bra->setSubItem(smallitem);
 
 	}
+}
+
+void Map::loadStaticObject(int id, int left, int top)
+{
+	StaticObject *st_obj;
+	st_obj = new StaticObject();
+	//st_obj->setDirect(direct);
+	st_obj->setType(id);
+
+	st_obj->SetPosition(left, top + OFFSET_Y);
+	//allHidenObject.push_back(in_obj);
+	allbrickandpoint.push_back(st_obj);
+	allstaticObject.push_back(st_obj);
+	objects.push_back(st_obj);
 }
 
 void Map::loadinvisibleobjects(int id, int direct, int top, int left, int width, int height)
@@ -126,6 +145,22 @@ Map::Map(string filePath, int idtex)
 			loadinvisibleobjects(id, direct, top, left, width, height);
 
 		}
+		int numofstaticobjects;
+		infile >> numofstaticobjects;
+		for (int i = 0; i < numofstaticobjects; i++)
+		{
+			int id,left,top;
+			infile >> id >> left >> top ;
+			loadStaticObject(id,left,top);
+		}
+		int numarea;
+		infile >> numarea;
+		for (int i = 0; i < numarea; i++)
+		{
+			int area;
+			infile >> area;
+			activearea.push_back(area);
+		}
 		for (int i = 0; i < maheight*mawidth; i++)
 		{
 			int mapindex;
@@ -136,6 +171,7 @@ Map::Map(string filePath, int idtex)
 	}
 	infile.close();
 	loaditems();
+	Camera::getInstance()->setactivearea(activearea);
 }
 
 Map * Map::GetMap()
@@ -174,14 +210,30 @@ void Map::Draw()
 
 	int t_width = GetTileWidth();
 	int t_height = GetTileHeight();
+	//int num = 0;
 	//ve len man hinh theo ma tran trong mapsprite
 	for (int y = 0; y < maheight; y++)
 		for (int x = 0; x < mawidth; x++)
 		{
-			ts->get((mapsprite->at(i)))->Draw(x*t_width, y*t_height + OFFSET_Y, 255);
+			float cx = x * t_width;
+			float cy = y * t_height + OFFSET_Y;
+			RECT locate;
+			locate.left = cx;
+			locate.top = cy;
+			locate.right = cx + t_width;
+			locate.bottom = cy + t_height;
+				
+				
+			bool check = Camera::getInstance()->checkInCamera(locate);
+			if (check)
+			{
+				//num++;
+				ts->get((mapsprite->at(i)))->Draw(cx, cy, 255);
+			}
 			i++;
+			//DebugOut(L"tile at %d : %d", i, check);
 		}
-
+	//DebugOut(L"num : %d", num);
 }
 
 Map::~Map()

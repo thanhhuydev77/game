@@ -27,6 +27,7 @@
     <ClInclude Include="src\item\BoundItem.h" />
     <ClInclude Include="src\Scene\SceneGame.h" />
     <ClInclude Include="src\camera\Camera.h" />
+    <ClInclude Include="src\item\StaticObject.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header">
@@ -67,6 +68,7 @@
     <ClCompile Include="src\item\BoundItem.cpp" />
     <ClCompile Include="src\Scene\SceneGame.cpp" />
     <ClCompile Include="src\camera\Camera.cpp" />
+    <ClCompile Include="src\item\StaticObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="content\textures\bbox.png" />

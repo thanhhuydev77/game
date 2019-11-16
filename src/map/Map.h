@@ -10,6 +10,8 @@
 #include "../item/Whip_PowerUp.h"
 #include "../item/SwordItem.h"
 #include "../sample/Endpoint.h"
+#include "../camera/Camera.h"
+#include "../item/StaticObject.h"
 class Map
 {
 private:
@@ -37,7 +39,8 @@ private:
 	vector<LPGAMEOBJECT> itemsobjects;
 	vector<LPGAMEOBJECT> allbrickandpoint;
 	vector<LPGAMEOBJECT> allstairpoint;
-
+	vector<LPGAMEOBJECT> allstaticObject;
+	vector<int> activearea;
 public:
 	Map();
 	vector<LPGAMEOBJECT> getallObject();
@@ -46,7 +49,9 @@ public:
 	vector<LPGAMEOBJECT> getItemsObject();
 	vector<LPGAMEOBJECT> getallbrickandpoint();
 	vector<LPGAMEOBJECT> getallstairpoint();
+	vector<LPGAMEOBJECT> getallstaticObject();
 	void loaditems();
+	void loadStaticObject(int id, int top, int left);
 	void loadinvisibleobjects(int id,int direct,int top, int left, int width, int height);
 	Map (string filePath,int idtex);
 	Map* GetMap();

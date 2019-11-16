@@ -48,9 +48,19 @@ void Whip_PowerUp::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void Whip_PowerUp::Render()
 {
-	if (state == ITEM_STATE_ACTIVE)
-		animations[0]->Render(x, y, 255);
-	RenderBoundingBox();
+	float t, l, r, b;
+	GetBoundingBox(l, t, r, b);
+	RECT check;
+	check.left = l;
+	check.top = t;
+	check.right = r;
+	check.bottom = b;
+	if (Camera::getInstance()->checkInCamera(check))
+		if (state == ITEM_STATE_ACTIVE)
+		{
+			animations[0]->Render(x, y, 255);
+			RenderBoundingBox();
+		}
 }
 
 void Whip_PowerUp::GetBoundingBox(float & l, float & t, float & r, float & b)

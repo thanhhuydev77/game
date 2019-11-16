@@ -49,9 +49,19 @@ void  SwordItem::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void  SwordItem::Render()
 {
-	if (state == ITEM_STATE_ACTIVE)
-		animations[0]->Render(x, y, 255);
-	RenderBoundingBox();
+	float t, l, r, b;
+	GetBoundingBox(l, t, r, b);
+	RECT check;
+	check.left = l;
+	check.top = t;
+	check.right = r;
+	check.bottom = b;
+	if (Camera::getInstance()->checkInCamera(check))
+		if (state == ITEM_STATE_ACTIVE)
+		{
+			animations[0]->Render(x, y, 255);
+			RenderBoundingBox();
+		}
 }
 
 void  SwordItem::GetBoundingBox(float & l, float & t, float & r, float & b)
