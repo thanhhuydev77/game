@@ -26,7 +26,7 @@ void StaticObject::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	if (opening)
 	{
-		if (GetTickCount() - disappear_start > 2000)
+		if (GetTickCount() - disappear_start > DOOR_OPEN_ANI_TIME)
 		{
 			opening = false;
 			disappear_start = 0;
@@ -44,6 +44,7 @@ void StaticObject::GetBoundingBox(float & left, float & top, float & right, floa
 	case 0:
 		if (!opening)
 		{
+
 			width = DOOR_BBOX_WIDTH;
 			height = DOOR_BBOX_HEIGHT;
 		}

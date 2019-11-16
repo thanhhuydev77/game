@@ -294,7 +294,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 					}
 					else if (dynamic_cast<StaticObject *>(e->obj) && nx == -1)
 					{
-						startAutowalk(-nx, x + 120);
+						startAutowalk(-nx, x+120);
 						dynamic_cast<StaticObject *>(e->obj)->start_open();
 						Camera::getInstance()->nextarea();
 						x += min_tx * dx + nx * 0.1f;		// nx*0.5f : need to push out a bit to avoid overlapping next frame
@@ -341,14 +341,15 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 		state = temp_state;
 		if (onGround)
 			dx = 0;
+		jumpingmono = jumpingplex = attacwhenjump;
 	}
 
 #pragma endregion
 
 	/*DebugOut(L"\n Onground: %d--", onGround);
 	DebugOut(L"x : %d, y :%d ", (int)x,(int)y);*/
-	/*DebugOut(L"vx=%f,dx = %f --",vx,dx);
-	DebugOut(L"state: %d +", state);*/
+	//DebugOut(L"vx=%f,dx = %f --",vx,dx);
+	DebugOut(L"targetx: %d --autogo:%d ", (int)targetX,autowalking);
 }
 
 void Simon::Render()
@@ -389,7 +390,7 @@ void Simon::Render()
 		if (attacking)
 			ani = SIMON_ANI_SIT_ATTACK;
 		else
-			ani = SIMON_ANI_JUMP;
+			ani = SIMON_ANI_SIT;
 	}
 	if (attacking)
 	{
@@ -543,6 +544,7 @@ void Simon::StartAttack()
 		temp_state = state;
 		overlap_time = GetTickCount();
 		temp_nx = nx;
+		attacwhenjump = (jumpingmono || jumpingplex);
 	}
 	
 }
@@ -561,7 +563,7 @@ void Simon::StartmonoJump()
 	if (!jumpingmono && !jumpingplex && !collecting&&!attacking) {
 		jumpingmono = true; jump_start = GetTickCount();
 		//onGround = false;
-		temp_state = SIMON_STATE_JUMP;
+		temp_state = SIMON_STATE_SIT;
 	}
 }
 
@@ -573,7 +575,7 @@ void Simon::StartplexJump()
 		jumpingplex = true; jumpplus_start = GetTickCount();
 		temp_nx = nx;
 		//onGround = false;
-		temp_state = SIMON_STATE_JUMP;
+		temp_state = SIMON_STATE_SIT;
 	}
 
 }

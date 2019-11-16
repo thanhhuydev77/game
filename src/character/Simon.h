@@ -76,6 +76,7 @@ public:
 	bool isclimbing() { return climbing; }
 	bool iscanclimbup() { return canclimbup; }
 	bool iscanclimbdown() { return canclimbdown; }
+	bool attacwhenjump;
 	void SetState(int state);
 	void setcanclimb(bool icanclimb, bool up);
 	bool inAutoMode() { return (autoclimbing || autowalking); }

@@ -153,6 +153,8 @@ static enum static_obj_type{Door};
 #define AXE_BBOX_HEIGHT				28
 #define MONEYBAG_BBOX_WIDTH			28
 #define MONEYBAG_BBOX_HEIGHT		28
+#define DOOR_OPEN_ANI_TIME			3000
+
 #pragma endregion
 };
 

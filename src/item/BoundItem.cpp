@@ -39,6 +39,7 @@ void BoundItem::Render()
 		animations[Type]->Render(x, y, 255);
 		RenderBoundingBox();
 	}
+	
 	//DebugOut(L"is render :%d",checkin);
 }
 
@@ -56,7 +57,7 @@ void BoundItem::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		{
 			disappearing = false;
 			disappear_start = 0;
-			state = BRATIZER_STATE_UNACTIVE;
+			state = ITEM_STATE_UNACTIVE;
 			subItem->SetState(ITEM_STATE_ACTIVE);
 		}
 	}
@@ -65,6 +66,7 @@ void BoundItem::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void BoundItem::GetBoundingBox(float & l, float & t, float & r, float & b)
 {
 	int width, height;
+	//if(state == ITEM_STATE_ACTIVE)
 	switch (Type)
 	{
 	case Const_Value::bound_item_type::Bratizer:
@@ -77,16 +79,38 @@ void BoundItem::GetBoundingBox(float & l, float & t, float & r, float & b)
 		break;
 	
 	case Const_Value::bound_item_type::breakableBrick:
-		width = BRICK_BBOX_WIDTH;
-		height = BRICK_BBOX_HEIGHT;
+		if (state == ITEM_STATE_ACTIVE)
+		{
+			width = BRICK_BBOX_WIDTH;
+			height = BRICK_BBOX_HEIGHT;
+		}
+		else
+		{
+			l = 0;
+			t = 0;
+			r = 0;
+			b = 0;
+			return;
+		}
 		break;
 	case Const_Value::bound_item_type::BreakableBlock:
-		width = BLOCK_BBOX_WIDTH;
-		height = BLOCK_BBOX_HEIGHT;
+		if (state == ITEM_STATE_ACTIVE)
+		{
+			width = BLOCK_BBOX_WIDTH;
+			height = BLOCK_BBOX_HEIGHT;
+		}
+		else
+		{
+			l = 0;
+			t = 0;
+			r = 0;
+			b = 0;
+			return;
+		}
 		break;
 	default:
-		width = BRATIZER_BBOX_WIDTH;
-		height = BRATIZER_BBOX_HEIGHT;
+		width = 0;
+		height = 0;
 		break;
 	}
 	l = x ;

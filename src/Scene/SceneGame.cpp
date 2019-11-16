@@ -196,20 +196,24 @@ void SceneGame::Update(DWORD dt)
 				else if (type == Const_Value::in_obj_type::map3to2_p1)
 				{
 					resetlist();
-					this->LoadContent(MAP2, ID_TEX_MAP2);
 					Camera::getInstance()->setcurrentarea(1);
+					Camera::getInstance()->SetPosition(3072, 0);
+					this->LoadContent(MAP2, ID_TEX_MAP2);
+					
 					//simon->SetPosition(x, 0.0f);
 					//simon->setstateendmap1(false);
-					simon->SetPosition(3176.0f, OFFSET_Y + 290.0f);
+					simon->SetPosition(3160.0f, OFFSET_Y + 290.0f);
 					break;
 				}
 				else if (type == Const_Value::in_obj_type::map3to2_p2)
 				{
 
 					resetlist();
-					this->LoadContent(MAP2, ID_TEX_MAP2);
 					Camera::getInstance()->setcurrentarea(1);
-					simon->SetPosition(3822.0f, OFFSET_Y + 290.0f);
+					Camera::getInstance()->SetPosition(3072,0);
+					this->LoadContent(MAP2, ID_TEX_MAP2);
+					
+					simon->SetPosition(3806.0f, OFFSET_Y + 290.0f);
 					//simon->setstateendmap1(false);
 					break;
 				}
@@ -318,7 +322,7 @@ void SceneGame::LoadContent(string mapname, int idmap)
 	simon = Simon::getinstance();
 	float x, y;
 	BrickObjects.at(0)->GetPosition(x, y);
-	simon->SetPosition(3000.0f, 0 - SIMON_BIG_BBOX_HEIGHT - 1);
+	simon->SetPosition(2900,0 - SIMON_BIG_BBOX_HEIGHT - 1);
 	objects.push_back(simon);
 	//init sword and whip
 	sword = new Sword(simon);
@@ -338,7 +342,14 @@ void SceneGame::Draw()
 
 void SceneGame::OnKeyDown(int KeyCode)
 {
-
+	if(Camera::getInstance()->isautogo())
+	{
+		return;
+	}
+	if (simon->inAutoMode())
+	{
+		return;
+	}
 	switch (KeyCode)
 	{
 	case DIK_SPACE:
@@ -428,70 +439,40 @@ void SceneGame::OnKeyUp(int keyCode)
 
 void SceneGame::KeyState(BYTE * states)
 {
+	bool cameraauto = Camera::getInstance()->isautogo();
 	if (simon->inAutoMode())
 	{
 		return;
 	}
 	//sitting
-	if (games->IsKeyDown(DIK_S) && !simon->iscollecting() && !simon->isclimbing())
+	if (games->IsKeyDown(DIK_S) && !simon->iscollecting() && !simon->isclimbing()&&!cameraauto)
 	{
 			simon->SetState(SIMON_STATE_SIT);
 			//whip->SetState(WHIP_STATE_UNACTIVE);
 			//simon->reset();
 	}
 	//walk to right
-	else if (games->IsKeyDown(DIK_RIGHT) && !simon->iscollecting() && !simon->isclimbing() && !simon->isattacking())
+	else if (games->IsKeyDown(DIK_RIGHT) && !simon->iscollecting() && !simon->isclimbing() && !simon->isattacking() && !cameraauto)
 	{
 		if (simon->isOnGround())
 			simon->SetState(SIMON_STATE_WALKING_RIGHT);
 	}
 	//walk to left 
-	else if (games->IsKeyDown(DIK_LEFT) && !simon->iscollecting() && !simon->isclimbing() && !simon->isattacking())
+	else if (games->IsKeyDown(DIK_LEFT) && !simon->iscollecting() && !simon->isclimbing() && !simon->isattacking() && !cameraauto)
 	{
 		if (simon->isOnGround())
 			simon->SetState(SIMON_STATE_WALKING_LEFT);
 	}
 	//go up
-	else if (games->IsKeyDown(DIK_UP) && !simon->iscollecting() && simon->isclimbing())
+	else if (games->IsKeyDown(DIK_UP) && !simon->iscollecting() && simon->isclimbing() && !cameraauto)
 	{
 		simon->startclimbup();
 	}
-	else if (games->IsKeyDown(DIK_DOWN) && !simon->iscollecting() && simon->isclimbing())
+	else if (games->IsKeyDown(DIK_DOWN) && !simon->iscollecting() && simon->isclimbing() && !cameraauto)
 	{
 		simon->startclimbdown();
 	}
-	//else if (games->IsKeyDown(DIK_UP) && simon->iscanclimbup())
-	//{
-	//	{
-	//		if (!simon->isclimbing() )
-	//		{
-	//			float l, t, r, b;
-	//			typestairstart->GetBoundingBox(l, t, r, b);
-	//			//climb to left
-	//			if (typestairstart->getDirect() == -1)
-	//			{
-	//				simon->startAutowalk(typestairstart->getDirect(), l - (SIMON_BIG_BBOX_WIDTH - SIMON_SMALL_BBOX_WIDTH) / 2);
-	//				simon->startAutoClimb(typestairstart->getDirect(), l, t);
-	//			}
-	//			else
-	//			{
-	//				simon->startAutowalk(typestairstart->getDirect(), r - SIMON_SMALL_BBOX_WIDTH - (SIMON_BIG_BBOX_WIDTH - SIMON_SMALL_BBOX_WIDTH) / 2);
-	//				simon->startAutoClimb(typestairstart->getDirect(), r, t);
-	//			}
 
-	//		}
-	//		else if(!simon->inAutoMode())
-	//		{
-	//			simon->startclimbup();
-	//		}
-	//	}
-	//}
-	////go down
-	//else if (games->IsKeyDown(DIK_DOWN) && simon->iscanclimbdown())
-	//{
-	//	simon->startclimbdown();
-	//}
-	//something else
 	else
 	{
 		//idle

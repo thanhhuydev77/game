@@ -5,6 +5,7 @@
 #include "../sample/GameObject.h"
 #include "../sample/Game.h"
 #include "../character/Simon.h"
+#include"../sample/debug.h"
 class Camera
 {
 	static Camera * _instance;

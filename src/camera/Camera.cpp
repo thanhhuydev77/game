@@ -36,6 +36,7 @@ void Camera::Update(DWORD dt, CGameObject *Simon)
 	{
 		start_auto();
 	}
+	DebugOut(L"autotrasiting :%d --",autotransiting);
 }
 
 
@@ -64,24 +65,26 @@ void Camera::FollowtoSimon(CGameObject * simon)
 		des = activearea[currentarea];
 		start_auto();
 	}
-
+	else
+	{
 		float cx, cy;
 		simon->GetPosition(cx, cy);
 		//GIUA MAP
 		if (cx >= (CAMERA_WIDTH) / 2 + activearea[currentarea] && cx < (activearea[currentarea + 1] - (CAMERA_WIDTH) / 2))
-			camx =cx - ((CAMERA_WIDTH) / 2);
+			camx = cx - ((CAMERA_WIDTH) / 2);
 		//DAU MAP
 		else if (cx < (CAMERA_WIDTH) / 2 + activearea[currentarea] && camx >= activearea[currentarea] - 20)
 			camx = activearea[currentarea];
 		//CUOI MAP
 		else if (cx >= activearea[currentarea + 1] - (CAMERA_WIDTH) / 2)
 			camx = activearea[currentarea + 1] - (CAMERA_WIDTH)+16;
-		
+
 		cy -= SCREEN_HEIGHT / 2;
 		//camx = cx;
 		SetPosition(camx, 0.0f);
 		camy = 0;
 		CGame::GetInstance()->SetCamPos(camx, 0.0f /*cy*/);
+	}
 }
 
 D3DXVECTOR3 Camera::GetPosition()
