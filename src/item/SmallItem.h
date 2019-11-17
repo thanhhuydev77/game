@@ -7,6 +7,7 @@
 class SmallItem :
 	public CGameObject
 {
+	DWORD appear_start;
 	int Type;
 public:
 	SmallItem();

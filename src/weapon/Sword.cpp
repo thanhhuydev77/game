@@ -46,7 +46,7 @@ void Sword::StartAttack()
 {
 	if (state != SWORD_STATE_ACTIVE && !attacking && dynamic_cast<Simon*>(owner)->isattacking())
 	{
-		state = SWORD_STATE_ACTIVE;
+		//state = SWORD_STATE_ACTIVE;
 		attacking = true;
 		waiting = true;
 		attack_start = GetTickCount();
@@ -58,7 +58,6 @@ void Sword::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
 	if (state == SWORD_STATE_ACTIVE || waiting)
 	{
-
 		x += vx;
 		//waiting time : 200 --> attack time = 200->600
 		if (GetTickCount() - attack_start > SIMON_ATTACK_TIME + 200)
@@ -67,6 +66,7 @@ void Sword::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			attack_start = 0;
 			state = SWORD_STATE_UNACTIVE;
 			waiting = false;
+			DebugOut(L"ketthuc \n");
 		}
 		else
 		{
@@ -76,6 +76,7 @@ void Sword::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				waiting = false;
 				state = SWORD_STATE_ACTIVE;
 				vx = nx * SWORD_FLY_SPEED;
+				DebugOut(L"batdau \n");
 			}
 			//waiting 200ms before transit
 			else
@@ -83,46 +84,24 @@ void Sword::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				state = SWORD_STATE_UNACTIVE;
 				vx = 0;
 				waiting = true;
+				DebugOut(L"cho \n");
 			}
 		}
-		vector<LPGAMEOBJECT> bra;
-		vector<LPGAMEOBJECT> item;
-		for (UINT i = 0; i < coObjects->size(); i++)
-		{
-			if (dynamic_cast<BoundItem *>(coObjects->at(i)))
-				bra.push_back(coObjects->at(i));
-			else
-				item.push_back(coObjects->at(i));
-		}
-		for (UINT i = 0; i < bra.size(); i++)
-		{
-			BoundItem *bratizer = dynamic_cast<BoundItem *>(bra[i]);
-			if (CheckOverLap(bratizer) && bratizer->GetState() == BRATIZER_STATE_ACTIVE)
-			{
-				bratizer->SetState(BRATIZER_STATE_UNACTIVE);
-				bratizer->SetPosition(-BRATIZER_BBOX_WIDTH, 0);
-				this->state = SWORD_STATE_UNACTIVE;
-				this->attacking = false;
-				if (dynamic_cast<SmallItem *>(item[i]))
-					item[i]->SetState(ITEM_STATE_ACTIVE);
-				else
-					item[i]->SetState(ITEM_STATE_ACTIVE);
-			}
-		}
-
 	}
+	DebugOut(L"state sword :%d \n",state);
+}
+
+void Sword::reset()
+{
+	state = SWORD_STATE_UNACTIVE;
+	attack_start = 0;
+	attacking = false;
+	waiting = false;
 }
 
 void Sword::Render()
 {
-	float t, l, r, b;
-	GetBoundingBox(l, t, r, b);
-	RECT check;
-	check.left = l;
-	check.top = t;
-	check.right = r;
-	check.bottom = b;
-	if (Camera::getInstance()->checkInCamera(check))
+	DebugOut(L"state sword render :%d \n", state);
 	if (state == SWORD_STATE_ACTIVE)
 	{
 		animations[0]->Render(x, y, 255, nx);//
@@ -132,10 +111,19 @@ void Sword::Render()
 
 void Sword::GetBoundingBox(float & left, float & top, float & right, float & bottom)
 {
+	if (state == SWORD_STATE_ACTIVE)
+	{
+		left = x;
+		top = y;
 
-	left = x;
-	top = y;
-
-	right = left + SWORD_BBOX_WIDTH;
-	bottom = top + SWORD_BBOX_HEIGHT;
+		right = left + SWORD_BBOX_WIDTH;
+		bottom = top + SWORD_BBOX_HEIGHT;
+	}
+	else
+	{
+		left = 0;
+		top = 0;
+		right = 0;
+		bottom = 0;
+	}
 }

@@ -189,26 +189,27 @@ void Whip::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	}
 	else
 	{
-		vector<LPGAMEOBJECT> bra;
-		vector<LPGAMEOBJECT> item;
-		for (UINT i = 0; i < coObjects->size(); i++)
+		/*for (UINT i = 0; i < coObjects->size(); i++)
 		{
 			if (dynamic_cast<BoundItem *>(coObjects->at(i)))
-				bra.push_back(coObjects->at(i));
-			else
-				item.push_back(coObjects->at(i));
-		}
-		for (UINT i = 0; i < bra.size(); i++)
-		{
-			BoundItem *bratizer = dynamic_cast<BoundItem *>(bra[i]);
-			if (CheckOverLap(bratizer))
 			{
-				//bratizer->SetState(BRATIZER_STATE_UNACTIVE);
-				bratizer->start_disappear();
-				//bratizer->SetPosition(-BRATIZER_BBOX_WIDTH, 0);
-				//item[i]->SetState(ITEM_STATE_ACTIVE);
+				BoundItem *bratizer = dynamic_cast<BoundItem *>(coObjects->at(i));
+				if (CheckOverLap(bratizer))
+				{
+					bratizer->start_disappear();
+				}
 			}
-		}
+			else
+			{
+
+				Ghost *bratizer = dynamic_cast<Ghost *>(coObjects->at(i));
+				if (CheckOverLap(bratizer))
+				{
+					bratizer->takedamage();
+				}
+			}
+		}*/
+		
 	}
 }
 
@@ -225,74 +226,83 @@ void Whip::Render()
 
 void Whip::GetBoundingBox(float & left, float & top, float & right, float & bottom)
 {
+	if (state == WHIP_STATE_ACTIVE)
+	{
+		int frame = animations[level - 1]->GetCurrentFrame();
+		left = x;
+		top = y;
+		if (level != 3)   //level 1,2
+			switch (frame)
+			{
+			case 0:
+			{
+				right = left + WHIP_F1_BBOX_WIDTH;
+				bottom = top + WHIP_F1_BBOX_HEIGHT;
+				break;
+			}
+			case 1:
+			{
+				right = left + WHIP_F2_BBOX_WIDTH;
+				bottom = top + WHIP_F2_BBOX_HEIGHT;
+				break;
+			}
+			case 2:
+			{
+				right = left + WHIP_F3_BBOX_WIDTH;
+				bottom = top + WHIP_F3_BBOX_HEIGHT;
+				break;
+			}
+			default:
+				right = left;
+				bottom = top;
+				break;
+			}
+		else //level 3
 
-	int frame = animations[level - 1]->GetCurrentFrame();
-	left = x;
-	top = y;
-	if (level != 3)   //level 1,2
-		switch (frame)
-		{
-		case 0:
-		{
-			right = left + WHIP_F1_BBOX_WIDTH ;
-			bottom = top + WHIP_F1_BBOX_HEIGHT;
-			break;
-		}
-		case 1:
-		{
-			right = left + WHIP_F2_BBOX_WIDTH ;
-			bottom = top + WHIP_F2_BBOX_HEIGHT ;
-			break;
-		}
-		case 2:
-		{
-			right = left + WHIP_F3_BBOX_WIDTH ;
-			bottom = top + WHIP_F3_BBOX_HEIGHT ;
-			break;
-		}
-		default:
-			right = left;
-			bottom = top;
-			break;
-		}
-	else //level 3
-		
-		switch (frame)
-		{
+			switch (frame)
+			{
 
-		case 0:
-		case 1:
-		case 2:
-		case 3:
-		{
-			
-			
-			right = left + WHIP_F1_BBOX_WIDTH ;
-			bottom = top + WHIP_F1_BBOX_HEIGHT ;
-			break;
-		}
-		case 4:
-		case 5:
-		case 6:
-		case 7:
-		{
-			
-			right = left + WHIP_F2_BBOX_WIDTH ;
-			bottom = top + WHIP_F2_BBOX_HEIGHT ;
-			break;
-		}
-		case 8:
-		case 9:
-		case 10:
-		case 11:
-		{
-			right = left + WHIP_F3_HLV_BBOX_WIDTH ;
-			bottom = top + WHIP_F3_BBOX_HEIGHT ;
-			break;
-		}
-		default:
-			right = left;
-			bottom = top;
-			break;
-		}
+			case 0:
+			case 1:
+			case 2:
+			case 3:
+			{
+
+
+				right = left + WHIP_F1_BBOX_WIDTH;
+				bottom = top + WHIP_F1_BBOX_HEIGHT;
+				break;
+			}
+			case 4:
+			case 5:
+			case 6:
+			case 7:
+			{
+
+				right = left + WHIP_F2_BBOX_WIDTH;
+				bottom = top + WHIP_F2_BBOX_HEIGHT;
+				break;
+			}
+			case 8:
+			case 9:
+			case 10:
+			case 11:
+			{
+				right = left + WHIP_F3_HLV_BBOX_WIDTH;
+				bottom = top + WHIP_F3_BBOX_HEIGHT;
+				break;
+			}
+			default:
+				right = left;
+				bottom = top;
+				break;
+			}
+	}
+	else
+	{
+		left = 0;
+		top = 0;
+		right = 0;
+		bottom = 0;
+	}
 }

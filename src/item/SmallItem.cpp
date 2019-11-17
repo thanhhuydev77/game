@@ -10,11 +10,20 @@ SmallItem::SmallItem()
 
 void SmallItem::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-
+	if (state == ITEM_STATE_UNACTIVE)
+		appear_start = GetTickCount();
 	if (state == ITEM_STATE_ACTIVE)
 	{
+		if (appear_start == 0)
+			appear_start = GetTickCount();
+		if (GetTickCount() - appear_start > ITEM_TIME_APPREARENCE)
+		{
+			state = ITEM_STATE_UNACTIVE;
+			return;
+		}
+
 		CGameObject::Update(dt);
-		vy += ITEM_GRAVITY * dt;
+		vy += ITEM_GRAVITY ;
 		vector<LPCOLLISIONEVENT> coEvents;
 		vector<LPCOLLISIONEVENT> coEventsResult;
 

@@ -36,7 +36,7 @@ void Camera::Update(DWORD dt, CGameObject *Simon)
 	{
 		start_auto();
 	}
-	DebugOut(L"autotrasiting :%d --",autotransiting);
+	//DebugOut(L"autotrasiting :%d --",autotransiting);
 }
 
 
@@ -106,7 +106,7 @@ RECT Camera::GetBound()
 
 int Camera::GetWidth()
 {
-	return mWidth;
+	return CAMERA_WIDTH;
 }
 
 int Camera::GetHeight()

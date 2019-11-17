@@ -49,7 +49,7 @@ public:
 
 	// Inherited via SceneExample
 	virtual void Update(DWORD dt) override;
-	virtual void LoadContent(string namemap, int idmap) override;
+	virtual void LoadContent(int map) override;
 	virtual void Draw() override;
 	virtual void OnKeyDown(int keyCode);
 	virtual void OnKeyUp(int keyCode);

@@ -11,7 +11,7 @@ Simon::Simon()
 	LoadResourceHelper::Loadanimationfromfile("content\\characters\\player\\player_ani\\allani.txt", this);
 
 	level = 1;
-	sword_turn = 0;
+	sword_turn = 5;
 }
 
 Simon * Simon::getinstance()
@@ -349,7 +349,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 	/*DebugOut(L"\n Onground: %d--", onGround);
 	DebugOut(L"x : %d, y :%d ", (int)x,(int)y);*/
 	//DebugOut(L"vx=%f,dx = %f --",vx,dx);
-	DebugOut(L"targetx: %d --autogo:%d ", (int)targetX,autowalking);
+	//DebugOut(L"targetx: %d --autogo:%d ", (int)targetX,autowalking);
 }
 
 void Simon::Render()
@@ -453,15 +453,15 @@ void Simon::collisionwithSmallItem(CGameObject * si)
 	switch (lh->getType())
 	{
 
-	case Const_Value::smallheart: //small heart
+	case Const_Value::small_item_type::smallheart: //small heart
 		lh->SetState(ITEM_STATE_UNACTIVE);
 		lh->SetPosition(0 - SMALL_HEART_BBOX_WIDTH, 0);
 		break;
-	case Const_Value::largeheart: //large heart
+	case Const_Value::small_item_type::largeheart: //large heart
 		lh->SetState(ITEM_STATE_UNACTIVE);
 		lh->SetPosition(0 - LARGE_HEART_BBOX_WIDTH, 0);
 		break;
-	case Const_Value::whippowerup: // whip power up
+	case Const_Value::small_item_type::whippowerup: // whip power up
 		lh->SetState(ITEM_STATE_UNACTIVE);
 		lh->SetPosition(0 - WHIP_POWER_UP_BBOX_WIDTH, 0);
 		this->StartCollect();
@@ -471,12 +471,12 @@ void Simon::collisionwithSmallItem(CGameObject * si)
 		lh->SetState(ITEM_STATE_UNACTIVE);
 		lh->SetPosition(0 - HOLYWATER_BBOX_WIDTH, 0);
 		break;
-	case Const_Value::sword: //sword
+	case Const_Value::small_item_type::sworditem: //sword
 		lh->SetState(ITEM_STATE_UNACTIVE);
 		lh->SetPosition(0 - SWORD_BBOX_WIDTH, 0);
 		this->sword_turn += 5;
 		break;
-	case Const_Value::axe:
+	case Const_Value::small_item_type::axeitem:
 		lh->SetState(ITEM_STATE_UNACTIVE);
 		lh->SetPosition(0 - AXE_BBOX_WIDTH, 0);
 		axe_turn += 5;

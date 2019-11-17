@@ -56,6 +56,7 @@ class Simon : public CGameObject
 		float targetX;
 		float targetY;
 		bool canclimb;
+		int currentWeapond;
 		int dofirst;
 		Simon();
 public:
@@ -98,7 +99,10 @@ public:
 	int GetDirect();
 	void setTempnx(int temp) { temp_nx = temp; }
 	void setTempny(int temp) { if (temp == 2) temp_ny = -1; else if (temp == 3) temp_ny = 1; }
+	void setcurrentWeapond(int wea) { currentWeapond = wea; }
+	bool getcurrentWeapond() { return currentWeapond; }
 	int getx() { return x; }
+	int getVx() { return (int)vx; };
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom);
 };
 

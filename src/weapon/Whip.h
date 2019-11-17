@@ -6,6 +6,8 @@
 #include "../item/BoundItem.h"
 #include <vector>
 #include "../item/SmallItem.h"
+#include "../enemies/Ghost.h"
+
 using namespace std;
 
 class Whip : public CGameObject 

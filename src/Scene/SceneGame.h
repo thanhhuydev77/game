@@ -2,7 +2,7 @@
 #include <windows.h>
 #include <d3d9.h>
 #include <d3dx9.h>
-
+#include <random>
 #include "../sample/debug.h"
 #include "../sample/Game.h"
 #include "../sample/GameObject.h"
@@ -18,6 +18,8 @@
 #include "../Scene/SceneManager.h"
 #include "../camera/Camera.h"
 #include "Scene2.h"
+#include "../enemies/Ghost.h"
+
 using namespace std;
 
 class SceneGame : public Scene
@@ -29,7 +31,12 @@ private:
 	Simon *simon;
 	Whip  *whip;
 	Map * mmap;
+	//Ghost *ghost;
 	int mapwidth;
+	bool wait_to_create_Ghost;
+	int num_of_ghost = 0;
+	int groundY;
+	DWORD timecreatGhost;
 	CInvisibleObject* typestairstart ;
 	vector<LPGAMEOBJECT> objects;  //all object
 	vector<LPGAMEOBJECT> BratizerObjects; //all bratizer
@@ -40,10 +47,12 @@ private:
 	vector<LPGAMEOBJECT> BratizerandItemObjects; //all bratizers and items
 	vector<LPGAMEOBJECT> allStairpoint; // all stair point
 	vector<LPGAMEOBJECT> allStaticObject;
+	vector<LPGAMEOBJECT> allEnemies;
+
 	
 public:
 	SceneGame();
-	void loadmap(string path, int idtex);
+	void loadmap(int map);
 	vector<LPGAMEOBJECT> getallHidenObjects();
 	vector<LPGAMEOBJECT> getBratizerobjects();
 	vector<LPGAMEOBJECT> getItemobjects();
@@ -52,13 +61,14 @@ public:
 	vector<LPGAMEOBJECT> getallallStairpoint();
 	vector<LPGAMEOBJECT> getallStaticObject();
 	int getmapwidth();
+	int currentMap = 0;
 	void resetlist();
 	void RenderBackground();
 	~SceneGame();
-
+	void collisionweapond();
 	// Inherited via SceneExample
 	virtual void Update(DWORD dt) override;
-	virtual void LoadContent(string mapname, int idmap) override;
+	virtual void LoadContent(int map) override;
 	virtual void Draw() override;
 	virtual void OnKeyDown(int keyCode);
 	virtual void OnKeyUp(int keyCode);

@@ -40,6 +40,7 @@ public:
 	void start_auto();
 	bool isautogo() { return autotransiting; }
 	D3DXVECTOR3 GetPosition();
+	int Getx() { return camx; }
 	RECT GetBound();
 
 	~Camera();

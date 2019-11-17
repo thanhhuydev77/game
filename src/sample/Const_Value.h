@@ -35,6 +35,12 @@ public:
 #define ID_TEX_ITEM				13
 #define ID_TEX_BITEM			14
 #define ID_TEX_STATIC_OBJ		16
+#define ID_TEX_GHOST		17
+#define ID_TEX_PANTHER		18
+#define ID_TEX_FISHMEN		19
+#define ID_TEX_GIANTBAT		20
+#define ID_TEX_VAMPIREBAT	21
+#define ID_TEX_FLAME	22
 
 #define MAP1					"content\\tilemap\\map1.txt"
 #define MAP2					"content\\tilemap\\map2.txt"
@@ -90,13 +96,30 @@ public:
 #define SIMON_ATTACK_TIME			400
 #define SIMON_JUMP_TIME				1000
 #define SIMON_UNTOUCHABLE_TIME		3000
+static enum Weapond { whip, sword, axe };
 #pragma endregion
+#pragma region enemies
+#define GHOST_ACTIVE_AREA_1_LEFT	80
+#define GHOST_ACTIVE_AREA_1_RIGHT	825
+#define GHOST_ACTIVE_AREA_2_LEFT	2200
+#define GHOST_ACTIVE_AREA_2_RIGHT	2775
+#define GHOST_ACTIVE_AREA_3_LEFT	4233
+#define GHOST_ACTIVE_AREA_3_RIGHT	4993
+#define GHOST_AREA_3_COLUMN1		4412.0f 
+#define GHOST_AREA_3_COLUMN2		4590.0f
+
+#define GHOST_SPEED_X		0.09f
+#define GHOST_GRAVITY		0.005f
+#define GHOST_BBOX_WIDTH	34
+#define GHOST_BBOX_HEIGHT	64
+#pragma endregion
+
 #pragma region backgroundobject
 
-static enum in_obj_type { Brick,endmap1, stairup, stairdown,map2to3_p1, map2to3_p2, map3to2_p1,map3to2_p2};
-static enum small_item_type {smallheart, largeheart,whippowerup,holywater,sword,axe,redmoneybag,bluemoneybag,whitemoneybag};
-static enum bound_item_type { Bratizer, candle,breakableBrick,BreakableBlock,flame};
-static enum static_obj_type{Door};
+	static enum in_obj_type { Brick, endmap1, stairup, stairdown, map2to3_p1, map2to3_p2, map3to2_p1, map3to2_p2 };
+	static enum small_item_type { smallheart, largeheart, whippowerup, holywater, sworditem, axeitem, redmoneybag, bluemoneybag, whitemoneybag };
+	static enum bound_item_type { Bratizer, candle, breakableBrick, BreakableBlock, flame };
+	static enum static_obj_type { Door };
 #define BRATIZER_STATE_ACTIVE		1
 #define BRATIZER_STATE_UNACTIVE		0
 #define BRATIZER_BBOX_WIDTH			32
@@ -137,10 +160,10 @@ static enum static_obj_type{Door};
 #define SWORD_BBOX_HEIGHT		18
 #pragma endregion
 #pragma region item
-
+#define ITEM_TIME_APPREARENCE		3000
 #define ITEM_STATE_ACTIVE			1
 #define ITEM_STATE_UNACTIVE			0
-#define ITEM_GRAVITY			0.001f
+#define ITEM_GRAVITY				0.01f
 #define SMALL_HEART_BBOX_WIDTH		16
 #define SMALL_HEART_BBOX_HEIGHT		16
 #define LARGE_HEART_BBOX_WIDTH		24

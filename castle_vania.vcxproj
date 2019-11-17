@@ -133,8 +133,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\effect\Effect.h" />
+    <ClInclude Include="src\enemies\Ghost.h" />
     <ClInclude Include="src\camera\Camera.h" />
-    <ClInclude Include="src\Scene\Scene2.h" />
     <ClInclude Include="src\sample\CSampleKeyHandler.h" />
     <ClInclude Include="src\Scene\SceneExample.h" />
     <ClInclude Include="src\Scene\SceneManager.h" />
@@ -162,8 +163,9 @@
     <ClInclude Include="src\item\StaticObject.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\effect\Effect.cpp" />
+    <ClCompile Include="src\enemies\Ghost.cpp" />
     <ClCompile Include="src\camera\Camera.cpp" />
-    <ClCompile Include="src\Scene\Scene2.cpp" />
     <ClCompile Include="src\sample\CSampleKeyHandler.cpp" />
     <ClCompile Include="src\Scene\SceneExample.cpp" />
     <ClCompile Include="src\Scene\SceneManager.cpp" />

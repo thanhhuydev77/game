@@ -23,7 +23,7 @@ public:
 	void StartAttack();
 	bool isattacking() { return attacking; };
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects = NULL);
-	
+	void reset();
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom);
 	virtual void Render();
 };

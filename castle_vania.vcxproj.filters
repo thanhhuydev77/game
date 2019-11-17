@@ -21,13 +21,14 @@
     <ClInclude Include="src\Scene\SceneExample.h" />
     <ClInclude Include="src\sample\CSampleKeyHandler.h" />
     <ClInclude Include="src\sample\Endpoint.h" />
-    <ClInclude Include="src\Scene\Scene2.h" />
     <ClInclude Include="src\map\Invisibleobject.h" />
     <ClInclude Include="src\item\SmallItem.h" />
     <ClInclude Include="src\item\BoundItem.h" />
     <ClInclude Include="src\Scene\SceneGame.h" />
     <ClInclude Include="src\camera\Camera.h" />
     <ClInclude Include="src\item\StaticObject.h" />
+    <ClInclude Include="src\enemies\Ghost.h" />
+    <ClInclude Include="src\effect\Effect.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header">
@@ -62,13 +63,14 @@
     <ClCompile Include="src\Scene\SceneExample.cpp" />
     <ClCompile Include="src\sample\CSampleKeyHandler.cpp" />
     <ClCompile Include="src\sample\Endpoint.cpp" />
-    <ClCompile Include="src\Scene\Scene2.cpp" />
     <ClCompile Include="src\map\Invisibleobject.cpp" />
     <ClCompile Include="src\item\SmallItem.cpp" />
     <ClCompile Include="src\item\BoundItem.cpp" />
     <ClCompile Include="src\Scene\SceneGame.cpp" />
     <ClCompile Include="src\camera\Camera.cpp" />
     <ClCompile Include="src\item\StaticObject.cpp" />
+    <ClCompile Include="src\enemies\Ghost.cpp" />
+    <ClCompile Include="src\effect\Effect.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="content\textures\bbox.png" />

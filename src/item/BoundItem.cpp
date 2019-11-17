@@ -37,9 +37,9 @@ void BoundItem::Render()
 				animations[Const_Value::bound_item_type::flame]->Render(x , y, 255);
 		else
 		animations[Type]->Render(x, y, 255);
-		RenderBoundingBox();
+		
 	}
-	
+	RenderBoundingBox();
 	//DebugOut(L"is render :%d",checkin);
 }
 
@@ -66,56 +66,58 @@ void BoundItem::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void BoundItem::GetBoundingBox(float & l, float & t, float & r, float & b)
 {
 	int width, height;
-	//if(state == ITEM_STATE_ACTIVE)
-	switch (Type)
+	if (state == ITEM_STATE_ACTIVE)
 	{
-	case Const_Value::bound_item_type::Bratizer:
-		width = BRATIZER_BBOX_WIDTH;
-		height = BRATIZER_BBOX_HEIGHT;
-		break;
-	case Const_Value::bound_item_type::candle:
-		width = CANDLE_BBOX_WIDTH;
-		height = CANDLE_BBOX_HEIGHT;
-		break;
-	
-	case Const_Value::bound_item_type::breakableBrick:
-		if (state == ITEM_STATE_ACTIVE)
+		switch (Type)
 		{
+		case Const_Value::bound_item_type::Bratizer:
+			width = BRATIZER_BBOX_WIDTH;
+			height = BRATIZER_BBOX_HEIGHT;
+			break;
+		case Const_Value::bound_item_type::candle:
+			width = CANDLE_BBOX_WIDTH;
+			height = CANDLE_BBOX_HEIGHT;
+			break;
+
+		case Const_Value::bound_item_type::breakableBrick:
+
 			width = BRICK_BBOX_WIDTH;
 			height = BRICK_BBOX_HEIGHT;
-		}
-		else
-		{
-			l = 0;
-			t = 0;
-			r = 0;
-			b = 0;
-			return;
-		}
-		break;
-	case Const_Value::bound_item_type::BreakableBlock:
-		if (state == ITEM_STATE_ACTIVE)
-		{
-			width = BLOCK_BBOX_WIDTH;
-			height = BLOCK_BBOX_HEIGHT;
-		}
-		else
-		{
-			l = 0;
-			t = 0;
-			r = 0;
-			b = 0;
-			return;
-		}
-		break;
-	default:
-		width = 0;
-		height = 0;
-		break;
-	}
-	l = x ;
-	t = y ;
 
-	r = l + width ;
-	b = t + height ;
+
+			break;
+		case Const_Value::bound_item_type::BreakableBlock:
+			if (state == ITEM_STATE_ACTIVE)
+			{
+				width = BLOCK_BBOX_WIDTH;
+				height = BLOCK_BBOX_HEIGHT;
+			}
+			else
+			{
+				l = 0;
+				t = 0;
+				r = 0;
+				b = 0;
+				return;
+			}
+			break;
+		default:
+			width = 0;
+			height = 0;
+			break;
+		}
+		l = x;
+		t = y;
+
+		r = l + width;
+		b = t + height;
+	}
+	else
+	{
+		l = 0;
+		t = 0;
+		r = 0;
+		b = 0;
+		return;
+	}
 }
