@@ -133,6 +133,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\enemies\Enemy.h" />
+    <ClInclude Include="src\enemies\Panther.h" />
     <ClInclude Include="src\effect\Effect.h" />
     <ClInclude Include="src\enemies\Ghost.h" />
     <ClInclude Include="src\camera\Camera.h" />
@@ -163,6 +165,8 @@
     <ClInclude Include="src\item\StaticObject.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\enemies\Enemy.cpp" />
+    <ClCompile Include="src\enemies\Panther.cpp" />
     <ClCompile Include="src\effect\Effect.cpp" />
     <ClCompile Include="src\enemies\Ghost.cpp" />
     <ClCompile Include="src\camera\Camera.cpp" />

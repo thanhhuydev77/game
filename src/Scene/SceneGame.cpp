@@ -5,7 +5,7 @@
 
 void SceneGame::loadmap(int map)
 {
-	
+
 	switch (map)
 	{
 	case 1:
@@ -23,7 +23,7 @@ void SceneGame::loadmap(int map)
 	}
 	currentMap = map;
 
-	
+
 }
 
 vector<LPGAMEOBJECT> SceneGame::getallHidenObjects()
@@ -75,7 +75,8 @@ void SceneGame::resetlist()
 	this->objects.clear();
 	this->ItemObjects.clear();
 	this->allEnemies.clear();
-
+	CountEnemyGhost = 0;
+	CountEnemyPanther = 0;
 }
 
 void SceneGame::RenderBackground()
@@ -94,13 +95,13 @@ void SceneGame::collisionweapond()
 	bool resetsword = false;
 	switch (simon->getcurrentWeapond())
 	{
-		case Const_Value::Weapond::whip:
-			weapond = whip;
-			break;
-		case Const_Value::Weapond::sword:
-			weapond = sword;
-			resetsword = true;
-			break;
+	case Const_Value::Weapond::whip:
+		weapond = whip;
+		break;
+	case Const_Value::Weapond::sword:
+		weapond = sword;
+		resetsword = true;
+		break;
 	default:
 		weapond = whip;
 		break;
@@ -118,40 +119,81 @@ void SceneGame::collisionweapond()
 			}
 		}
 	}
-	for (UINT i = 0; i < allEnemies.size();i++)
+	for (UINT i = 0; i < allEnemies.size(); i++)
 	{
-		Ghost *ghost = dynamic_cast<Ghost *>(allEnemies.at(i));
-		if (weapond->CheckOverLap(ghost))
+		int type = 0;
+		CGameObject *enemy = NULL;
+		if (dynamic_cast<Ghost *>(allEnemies.at(i)))
 		{
-			//allEnemies.erase(allEnemies.begin()+i);
-			
-			//25% -->small heart
-			int makeitem = rand() % 6;
-			if (makeitem == 1)
-			{
-				SmallItem *sm = new SmallItem();
-				sm->setType(Const_Value::small_item_type::smallheart);
-				float x, y;
-				ghost->GetPosition(x, y);
-				sm->SetPosition(x, y);
-				sm->SetState(ITEM_STATE_UNACTIVE);
-				ghost->addSubItem(sm);
-				ItemObjects.push_back(sm);
-				objects.push_back(sm);
-			}
-			ghost->takedamage();
-			
-			if (resetsword)
-				sword->reset();
+			enemy = dynamic_cast<Ghost *>(allEnemies.at(i));
+			type = 1;
 		}
+		if (dynamic_cast<Panther *>(allEnemies.at(i)))
+		{
+			enemy = dynamic_cast<Panther *>(allEnemies.at(i));
+			type = 2;
+		}
+		if (enemy != nullptr)
+			if (weapond->CheckOverLap(enemy) && enemy->GetState() == ENEMY_STATE_LIVE)
+			{
+				//ghost
+				if (type == 1)
+				{
+					//25% -->small heart
+					int makeitem = rand() % 6;
+					//has item
+					if (makeitem == 1)
+					{
+						SmallItem *sm = new SmallItem();
+						sm->setType(Const_Value::small_item_type::smallheart);
+						float x, y;
+						enemy->GetPosition(x, y);
+						sm->SetPosition(x, y);
+						sm->SetState(ITEM_STATE_UNACTIVE);
+						dynamic_cast<Ghost*>(enemy)->addSubItem(sm);
+						ItemObjects.push_back(sm);
+						objects.push_back(sm);
+						
+					}
+					dynamic_cast<Ghost*>(enemy)->takedamage();
+					//CountEnemyGhost-=1;
+					if (resetsword)
+						sword->reset();
+					break;
+				}
+				//panther
+				else if (type == 2)
+				{
+					int makeitem = rand() % 6;
+					if (makeitem == 1)
+					{
+						SmallItem *sm = new SmallItem();
+						sm->setType(Const_Value::small_item_type::smallheart);
+						float x, y;
+						enemy->GetPosition(x, y);
+						sm->SetPosition(x, y);
+						sm->SetState(ITEM_STATE_UNACTIVE);
+						dynamic_cast<Panther*>(enemy)->addSubItem(sm);
+						ItemObjects.push_back(sm);
+						objects.push_back(sm);
+						
+					}
+					dynamic_cast<Panther*>(enemy)->takedamage();
+					//CountEnemyPanther--;
+					if (resetsword)
+						sword->reset();
+					break;
+				}
+			}
 	}
 
-	
+
 }
 
 SceneGame::SceneGame()
 {
 	//LoadContent();
+	
 }
 
 void SceneGame::Update(DWORD dt)
@@ -353,34 +395,42 @@ void SceneGame::Update(DWORD dt)
 #pragma endregion
 	// item falling and stop when on stair
 #pragma region create ghost
-		if(currentMap == 2)
+	if (currentMap == 2)
 		if (GetTickCount() - timecreatGhost > 1000)
 		{
 			//simon in ghost area 1 and 2
-			
+
 			if (simon->getx() >= GHOST_ACTIVE_AREA_1_LEFT && simon->getx() < GHOST_ACTIVE_AREA_1_RIGHT || simon->getx() > GHOST_ACTIVE_AREA_2_LEFT && simon->getx() < GHOST_ACTIVE_AREA_2_RIGHT)
 			{
-				if (allEnemies.size() < 3)
+				if (CountEnemyGhost < 3)
 				{
 					Ghost *ghost;
 					//simon going right
 					timecreatGhost = GetTickCount();
 					if (simon->getVx() > 0)
+					{
+						CountEnemyGhost++;
 						ghost = new Ghost(Camera::getInstance()->Getx() + Camera::getInstance()->GetWidth(), groundY - GHOST_BBOX_HEIGHT - 2, -1);
+					}
 					else if (simon->getVx() < 0)
+					{
+						CountEnemyGhost++;
 						ghost = new Ghost(Camera::getInstance()->Getx(), groundY - GHOST_BBOX_HEIGHT - 2, 1);
+					}
 					else
 					{
 						int random = rand() % 2;
 						if (random == 0) // đi từ bên trái
 						{
+							CountEnemyGhost++;
 							ghost = new Ghost(Camera::getInstance()->Getx() + Camera::getInstance()->GetWidth(), groundY - GHOST_BBOX_HEIGHT - 2, -1);
 						}
 						else // đi từ bên phải
 						{
+							CountEnemyGhost++;
 							ghost = new Ghost(Camera::getInstance()->Getx(), groundY - GHOST_BBOX_HEIGHT - 2, 1);
 						}
-						
+
 					}
 					allEnemies.push_back(ghost);
 				}
@@ -398,12 +448,14 @@ void SceneGame::Update(DWORD dt)
 					{
 						if (simon->getx() < GHOST_AREA_3_COLUMN1)
 						{
-							allEnemies.push_back(new Ghost(Camera::getInstance()->Getx() + Camera::getInstance()->GetWidth(),OFFSET_Y+ 185 - GHOST_BBOX_HEIGHT, -1));
+							allEnemies.push_back(new Ghost(Camera::getInstance()->Getx() + Camera::getInstance()->GetWidth(), OFFSET_Y + 185 - GHOST_BBOX_HEIGHT, -1));
+							CountEnemyGhost++;
 							break;
 						}
 						if (simon->getx() > GHOST_AREA_3_COLUMN2)
 						{
-							allEnemies.push_back(new Ghost(Camera::getInstance()->Getx(), OFFSET_Y+185 - GHOST_BBOX_HEIGHT, -1));
+							allEnemies.push_back(new Ghost(Camera::getInstance()->Getx(), OFFSET_Y + 185 - GHOST_BBOX_HEIGHT, -1));
+							CountEnemyGhost++;
 							break;
 						}
 						else
@@ -411,25 +463,33 @@ void SceneGame::Update(DWORD dt)
 
 						}
 					}
-					
+
 					case 1:
 					{
 						if (simon->getVx() > 0)
+						{
 							allEnemies.push_back(new Ghost(Camera::getInstance()->Getx() + Camera::getInstance()->GetWidth(), OFFSET_Y + 330 - GHOST_BBOX_HEIGHT, -1));
+							CountEnemyGhost++;
+						}
 						else
 						{
 							if (simon->getVx() < 0)
+							{
 								allEnemies.push_back(new Ghost(Camera::getInstance()->Getx(), OFFSET_Y + 330 - GHOST_BBOX_HEIGHT, 1));
+								CountEnemyGhost++;
+							}
 							else
 							{
 								int randm = rand() % 2;
 								if (randm == 0) // đi từ bên trái
 								{
 									allEnemies.push_back(new Ghost(Camera::getInstance()->Getx() + Camera::getInstance()->GetWidth(), groundY - GHOST_BBOX_HEIGHT - 2, -1));
+									CountEnemyGhost++;
 								}
 								else // đi từ bên phải
 								{
 									allEnemies.push_back(new Ghost(Camera::getInstance()->Getx(), groundY - GHOST_BBOX_HEIGHT - 2, 1));
+									CountEnemyGhost++;
 								}
 							}
 						}
@@ -443,19 +503,52 @@ void SceneGame::Update(DWORD dt)
 			}
 		}
 #pragma endregion
+#pragma region create panther
+	if (REGION_CREATE_PANTHER_LEFT > simon->getx() || simon->getx() > REGION_CREATE_PANTHER_RIGHT)
+	{
+		if (CountEnemyPanther == 0) // không còn Panther nào sống thì mới dc tạo lại cả 3
+		{
+
+			int directionPanther = abs(REGION_CREATE_PANTHER_LEFT - simon->getx()) < abs(REGION_CREATE_PANTHER_RIGHT - simon->getx()) ? -1 : 1; // hướng mặt của Panther quay về hướng simon
+			allEnemies.push_back(new Panther(1398.0f, OFFSET_Y + 0.0f, directionPanther, directionPanther == -1 ? 20.0f : 9.0f, simon));
+			allEnemies.push_back(new Panther(1783.0f, OFFSET_Y + 6.0f, directionPanther, directionPanther == -1 ? 278.0f : 180.0f, simon));
+			allEnemies.push_back(new Panther(1923.0f, OFFSET_Y + 0.0f, directionPanther, directionPanther == -1 ? 68.0f : 66.0f, simon));
+			CountEnemyPanther += 3;
+		}
+	}
+#pragma endregion
 
 #pragma region update object
 	for (unsigned int i = 0; i < allEnemies.size(); i++)
 	{
-		if (!dynamic_cast<Ghost*>(allEnemies[i])->Isdied())
+		if (dynamic_cast<Ghost*>(allEnemies[i]))
 		{
-			coObjects.push_back(allEnemies[i]);
-			allEnemies[i]->Update(dt, &BrickObjects);
+			if (!dynamic_cast<Ghost*>(allEnemies[i])->Isdied())
+			{
+				//coObjects.push_back(allEnemies[i]);
+				allEnemies[i]->Update(dt, &BrickObjects);
+			}
+			else
+			{
+				allEnemies.erase(allEnemies.begin() + i);
+				CountEnemyGhost--;
+				//delete(allEnemies[i]);
+			}
 		}
 		else
 		{
-			allEnemies.erase(allEnemies.begin() + i);
-			//delete(allEnemies[i]);
+			if (dynamic_cast<Panther*>(allEnemies[i]))
+				if (!dynamic_cast<Panther*>(allEnemies[i])->Isdied())
+				{
+					//coObjects.push_back(allEnemies[i]);
+					allEnemies[i]->Update(dt, &BrickObjects);
+				}
+				else
+				{
+					allEnemies.erase(allEnemies.begin() + i);
+					CountEnemyPanther--;
+					//delete(allEnemies[i]);
+				}
 		}
 		//BratizerandItemObjects.push_back(allEnemies[i]);
 		//DebugOut(L"ghost i x:%d --", allEnemies[i]->getx());
@@ -474,17 +567,18 @@ void SceneGame::Update(DWORD dt)
 	{
 		allStaticObject[i]->Update(dt);
 	}
-	
+
 	simon->Update(dt, &coObjects);
 	collisionweapond();
 	whip->Update(dt);
 	sword->Update(dt);
-	
+
 	Camera::getInstance()->Update(dt, simon);
 	//ghost->Update(dt, &BrickObjects);
 #pragma endregion
 
-
+	DebugOut(L"CountEnemyGhost:%d--", CountEnemyGhost);
+	DebugOut(L"CountEnemyPanther:%d\n", CountEnemyPanther);
 }
 
 void SceneGame::LoadContent(int map)

@@ -19,6 +19,7 @@
 #include "../camera/Camera.h"
 #include "Scene2.h"
 #include "../enemies/Ghost.h"
+#include "../enemies/Panther.h"
 
 using namespace std;
 
@@ -37,6 +38,8 @@ private:
 	int num_of_ghost = 0;
 	int groundY;
 	DWORD timecreatGhost;
+	int CountEnemyPanther;
+	int CountEnemyGhost;
 	CInvisibleObject* typestairstart ;
 	vector<LPGAMEOBJECT> objects;  //all object
 	vector<LPGAMEOBJECT> BratizerObjects; //all bratizer

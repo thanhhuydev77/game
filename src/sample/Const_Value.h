@@ -99,6 +99,8 @@ public:
 static enum Weapond { whip, sword, axe };
 #pragma endregion
 #pragma region enemies
+#define ENEMY_STATE_LIVE			1
+#define ENEMY_STATE_DIE				2
 #define GHOST_ACTIVE_AREA_1_LEFT	80
 #define GHOST_ACTIVE_AREA_1_RIGHT	825
 #define GHOST_ACTIVE_AREA_2_LEFT	2200
@@ -112,8 +114,18 @@ static enum Weapond { whip, sword, axe };
 #define GHOST_GRAVITY		0.005f
 #define GHOST_BBOX_WIDTH	34
 #define GHOST_BBOX_HEIGHT	64
-#pragma endregion
 
+#define REGION_CREATE_PANTHER_LEFT 1038.0f
+#define REGION_CREATE_PANTHER_RIGHT 2305.0f
+
+#define PANTHER_VYJUMP 0.3f
+#define PANTHER_VXJUMP 0.2f
+#define PANTHER_GRAVITY 0.005f
+#define PANTHER_GRAVITY_JUMPING 0.001f
+#define PANTHER_SPEED_RUNNING 0.18f
+#define PANTHER_BBOX_WIDTH	66
+#define PANTHER_BBOX_HEIGHT	32
+#pragma endregion
 #pragma region backgroundobject
 
 	static enum in_obj_type { Brick, endmap1, stairup, stairdown, map2to3_p1, map2to3_p2, map3to2_p1, map3to2_p2 };

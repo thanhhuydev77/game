@@ -14,6 +14,7 @@ Ghost::Ghost(float X, float Y, int Direction)
 	nx = Direction;
 	Health = 1;
 	vx = GHOST_SPEED_X * Direction;
+	state = ENEMY_STATE_LIVE;
 }
 
 
@@ -29,6 +30,7 @@ void Ghost::start_disappear()
 
 void Ghost::takedamage()
 { 
+	state = ENEMY_STATE_DIE;
 	start_disappear();
 	vx = 0;
 }
@@ -93,7 +95,7 @@ void Ghost::GetBoundingBox(float & left, float & top, float & right, float & bot
 {
 	left = x;
 	top = y;
-	right = x + GHOST_BBOX_WIDTH;
+	right = left + GHOST_BBOX_WIDTH;
 	bottom = top + GHOST_BBOX_HEIGHT;
 }
 
