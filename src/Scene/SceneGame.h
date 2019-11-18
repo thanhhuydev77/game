@@ -20,6 +20,7 @@
 #include "Scene2.h"
 #include "../enemies/Ghost.h"
 #include "../enemies/Panther.h"
+#include "../enemies/Bat.h"
 
 using namespace std;
 
@@ -40,6 +41,10 @@ private:
 	DWORD timecreatGhost;
 	int CountEnemyPanther;
 	int CountEnemyGhost;
+	bool isAllowCreateBat;
+	DWORD TimeCreateBat; 
+	DWORD TimeWaitCreateBat; 
+	int CountEnemyBat;
 	CInvisibleObject* typestairstart ;
 	vector<LPGAMEOBJECT> objects;  //all object
 	vector<LPGAMEOBJECT> BratizerObjects; //all bratizer

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <string>
 using namespace std;
 class Const_Value
@@ -101,6 +101,7 @@ static enum Weapond { whip, sword, axe };
 #pragma region enemies
 #define ENEMY_STATE_LIVE			1
 #define ENEMY_STATE_DIE				2
+#pragma region ghost
 #define GHOST_ACTIVE_AREA_1_LEFT	80
 #define GHOST_ACTIVE_AREA_1_RIGHT	825
 #define GHOST_ACTIVE_AREA_2_LEFT	2200
@@ -114,7 +115,8 @@ static enum Weapond { whip, sword, axe };
 #define GHOST_GRAVITY		0.005f
 #define GHOST_BBOX_WIDTH	34
 #define GHOST_BBOX_HEIGHT	64
-
+#pragma endregion
+#pragma region panther
 #define REGION_CREATE_PANTHER_LEFT 1038.0f
 #define REGION_CREATE_PANTHER_RIGHT 2305.0f
 
@@ -124,7 +126,24 @@ static enum Weapond { whip, sword, axe };
 #define PANTHER_GRAVITY_JUMPING 0.001f
 #define PANTHER_SPEED_RUNNING 0.18f
 #define PANTHER_BBOX_WIDTH	66
-#define PANTHER_BBOX_HEIGHT	32
+#define PANTHER_BBOX_HEIGHT	27
+#pragma endregion
+#pragma region bat
+#define BAT_AREA_LEFT				3166
+#define BAT_AREA_RIGHT				4037
+#define CREATE_BAT_BOUNDARY_DIVISION_DIRECTION_X 3590.0f 
+#define CREATE_BAT_BOUNDARY_DIVISION_DIRECTION_Y 207.0f 
+#define BAT_BBOX_WIDTH				34
+#define BAT_BBOX_HEIGHT				34
+#define BAT_SPEED_X 0.1f 
+#define BAT_SPEED_Y 0.05f
+#define DeltaY 20
+#pragma endregion
+
+
+
+
+
 #pragma endregion
 #pragma region backgroundobject
 
@@ -175,9 +194,11 @@ static enum Weapond { whip, sword, axe };
 #define ITEM_TIME_APPREARENCE		3000
 #define ITEM_STATE_ACTIVE			1
 #define ITEM_STATE_UNACTIVE			0
-#define ITEM_GRAVITY				0.01f
+#define ITEM_GRAVITY				0.04f
+#define SMALL_HEART_SPEED_X				0.05f
+#define SMALL_HEART_AROUNDX			25
 #define SMALL_HEART_BBOX_WIDTH		16
-#define SMALL_HEART_BBOX_HEIGHT		16
+#define SMALL_HEART_BBOX_HEIGHT		32
 #define LARGE_HEART_BBOX_WIDTH		24
 #define LARGE_HEART_BBOX_HEIGHT		20
 #define WHIP_POWER_UP_BBOX_WIDTH	32

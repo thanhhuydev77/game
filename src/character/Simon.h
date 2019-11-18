@@ -102,6 +102,7 @@ public:
 	void setcurrentWeapond(int wea) { currentWeapond = wea; }
 	bool getcurrentWeapond() { return currentWeapond; }
 	int getx() { return x; }
+	int gety() { return y; }
 	int getVx() { return (int)vx; };
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom);
 };

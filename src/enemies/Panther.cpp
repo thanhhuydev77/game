@@ -174,7 +174,7 @@ void Panther::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void Panther::GetBoundingBox(float & left, float & top, float & right, float & bottom)
 {
 	left = x;
-	top = y;
+	top = y+5;
 	right = left + PANTHER_BBOX_WIDTH;
 	bottom = top + PANTHER_BBOX_HEIGHT;
 }

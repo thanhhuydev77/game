@@ -5,13 +5,19 @@ SmallItem::SmallItem()
 	LoadResourceHelper::Loadspritefromfile("content\\items\\all_item_sprite.txt", ID_TEX_ITEM);
 	LoadResourceHelper::Loadanimationfromfile("content\\items\\all_item_ani.txt", this);
 	Type = 0;
+	OrginalX = x;
 	this->state = ITEM_STATE_UNACTIVE;
 }
 
 void SmallItem::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	if (state == ITEM_STATE_UNACTIVE)
+	{
+		OrginalX = x;
 		appear_start = GetTickCount();
+		if(Type == Const_Value::small_item_type::smallheart)
+		vx = SMALL_HEART_SPEED_X;
+	}
 	if (state == ITEM_STATE_ACTIVE)
 	{
 		if (appear_start == 0)
@@ -23,7 +29,25 @@ void SmallItem::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		}
 
 		CGameObject::Update(dt);
-		vy += ITEM_GRAVITY ;
+		if(Type == Const_Value::small_item_type::smallheart)
+		vy = ITEM_GRAVITY ;
+		else
+			vy += ITEM_GRAVITY;
+
+		if (Type == Const_Value::small_item_type::smallheart)
+		{
+			if (x - OrginalX >= SMALL_HEART_AROUNDX)
+			{
+				vx = -SMALL_HEART_SPEED_X;
+			}
+			else
+				if (x - OrginalX <= -SMALL_HEART_AROUNDX)
+				{
+					vx = SMALL_HEART_SPEED_X;
+				}
+
+		}
+			
 		vector<LPCOLLISIONEVENT> coEvents;
 		vector<LPCOLLISIONEVENT> coEventsResult;
 
@@ -31,6 +55,7 @@ void SmallItem::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		CalcPotentialCollisions(coObjects, coEvents);
 		if (coEvents.size() == 0)
 		{
+			x += dx;
 			y += dy;
 		}
 		else
@@ -42,6 +67,7 @@ void SmallItem::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				LPCOLLISIONEVENT e = coEventsResult[i];
 				if (dynamic_cast<CInvisibleObject *>(e->obj) && dynamic_cast<CInvisibleObject *>(e->obj)->Gettype() == Const_Value::Brick)
 				{
+					vx = 0;
 					y += min_ty * dy + ny * 0.1f;
 					if (ny != 0) vy = 0;
 				}

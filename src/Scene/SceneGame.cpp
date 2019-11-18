@@ -116,6 +116,7 @@ void SceneGame::collisionweapond()
 				bratizer->start_disappear();
 				if (resetsword)
 					sword->reset();
+				break;
 			}
 		}
 	}
@@ -132,6 +133,11 @@ void SceneGame::collisionweapond()
 		{
 			enemy = dynamic_cast<Panther *>(allEnemies.at(i));
 			type = 2;
+		}
+		if (dynamic_cast<Bat *>(allEnemies.at(i)))
+		{
+			enemy = dynamic_cast<Bat *>(allEnemies.at(i));
+			type = 3;
 		}
 		if (enemy != nullptr)
 			if (weapond->CheckOverLap(enemy) && enemy->GetState() == ENEMY_STATE_LIVE)
@@ -157,9 +163,7 @@ void SceneGame::collisionweapond()
 					}
 					dynamic_cast<Ghost*>(enemy)->takedamage();
 					//CountEnemyGhost-=1;
-					if (resetsword)
-						sword->reset();
-					break;
+					
 				}
 				//panther
 				else if (type == 2)
@@ -180,10 +184,16 @@ void SceneGame::collisionweapond()
 					}
 					dynamic_cast<Panther*>(enemy)->takedamage();
 					//CountEnemyPanther--;
-					if (resetsword)
-						sword->reset();
-					break;
 				}
+				//bat
+				else if (type == 3)
+				{
+					dynamic_cast<Bat*>(enemy)->takedamage();
+					//CountEnemyPanther--;
+				}
+				if (resetsword)
+					sword->reset();
+				break;
 			}
 	}
 
@@ -517,6 +527,21 @@ void SceneGame::Update(DWORD dt)
 		}
 	}
 #pragma endregion
+#pragma region create bat
+	if (simon->getx() > BAT_AREA_LEFT && simon->getx() < BAT_AREA_RIGHT)
+	{
+		DWORD now = GetTickCount();
+		if (GetTickCount() - TimeCreateBat >= TimeWaitCreateBat) 
+		{
+			TimeCreateBat = now; 
+			if (simon->getx() < CREATE_BAT_BOUNDARY_DIVISION_DIRECTION_X || (simon->getx() > CREATE_BAT_BOUNDARY_DIVISION_DIRECTION_X && OFFSET_Y+simon->gety() > CREATE_BAT_BOUNDARY_DIVISION_DIRECTION_Y))
+				allEnemies.push_back(new Bat(Camera::getInstance()->Getx()+ Camera::getInstance()->GetWidth() - 10,simon->gety() + 40, -1));
+			else
+				allEnemies.push_back(new Bat(Camera::getInstance()->Getx() - 10,simon->gety() + 40, 1));
+			TimeWaitCreateBat = 4000 + (rand() % 3000);
+		}
+	}
+#pragma endregion
 
 #pragma region update object
 	for (unsigned int i = 0; i < allEnemies.size(); i++)
@@ -534,21 +559,33 @@ void SceneGame::Update(DWORD dt)
 				CountEnemyGhost--;
 				//delete(allEnemies[i]);
 			}
-		}
-		else
+		}else
+		if (dynamic_cast<Panther*>(allEnemies[i]))
 		{
-			if (dynamic_cast<Panther*>(allEnemies[i]))
-				if (!dynamic_cast<Panther*>(allEnemies[i])->Isdied())
-				{
-					//coObjects.push_back(allEnemies[i]);
-					allEnemies[i]->Update(dt, &BrickObjects);
-				}
-				else
-				{
-					allEnemies.erase(allEnemies.begin() + i);
-					CountEnemyPanther--;
-					//delete(allEnemies[i]);
-				}
+			if (!dynamic_cast<Panther*>(allEnemies[i])->Isdied())
+			{
+				//coObjects.push_back(allEnemies[i]);
+				allEnemies[i]->Update(dt, &BrickObjects);
+			}
+			else
+			{
+				allEnemies.erase(allEnemies.begin() + i);
+				CountEnemyPanther--;
+				//delete(allEnemies[i]);
+			}
+		}else
+		if (dynamic_cast<Bat*>(allEnemies[i]))
+		{
+			if (!dynamic_cast<Bat*>(allEnemies[i])->Isdied())
+			{
+				//coObjects.push_back(allEnemies[i]);
+				allEnemies[i]->Update(dt, &BrickObjects);
+			}
+			else
+			{
+				allEnemies.erase(allEnemies.begin() + i);
+				//delete(allEnemies[i]);
+			}
 		}
 		//BratizerandItemObjects.push_back(allEnemies[i]);
 		//DebugOut(L"ghost i x:%d --", allEnemies[i]->getx());
@@ -557,7 +594,9 @@ void SceneGame::Update(DWORD dt)
 		ItemObjects[i]->Update(dt, &BrickObjects);
 	//update bratizers
 	for (unsigned int i = 0; i < BratizerObjects.size(); i++)
+	{
 		BratizerObjects[i]->Update(dt);
+	}
 	for (unsigned int i = 0; i < ItemObjects.size(); i++)
 	{
 		if (ItemObjects[i]->GetState() == ITEM_STATE_ACTIVE)

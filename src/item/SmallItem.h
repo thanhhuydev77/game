@@ -9,6 +9,7 @@ class SmallItem :
 {
 	DWORD appear_start;
 	int Type;
+	int OrginalX;
 public:
 	SmallItem();
 	void setType(int type) { Type = type; }
