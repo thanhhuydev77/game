@@ -139,58 +139,118 @@ void SceneGame::collisionweapond()
 			enemy = dynamic_cast<Bat *>(allEnemies.at(i));
 			type = 3;
 		}
+		if (dynamic_cast<Fishmen *>(allEnemies.at(i)))
+		{
+			enemy = dynamic_cast<Fishmen *>(allEnemies.at(i));
+			type = 4;
+		}
 		if (enemy != nullptr)
 			if (weapond->CheckOverLap(enemy) && enemy->GetState() == ENEMY_STATE_LIVE)
 			{
-				//ghost
-				if (type == 1)
+				////ghost
+				//if (type == 1)
+				//{
+				//	//25% -->small heart
+				//	int makeitem = rand() % 6;
+				//	//has item
+				//	if (makeitem == 1)
+				//	{
+				//		SmallItem *sm = new SmallItem();
+				//		int randtype = rand() % 9;
+				//		sm->setType(randtype);
+				//		float x, y;
+				//		enemy->GetPosition(x, y);
+				//		sm->SetPosition(x, y);
+				//		sm->SetState(ITEM_STATE_UNACTIVE);
+				//		dynamic_cast<Ghost*>(enemy)->addSubItem(sm);
+				//		ItemObjects.push_back(sm);
+				//		objects.push_back(sm);
+				//		
+				//	}
+				//	dynamic_cast<Ghost*>(enemy)->takedamage();
+				//	//CountEnemyGhost-=1;
+				//	
+				//}
+				////panther
+				//else if (type == 2)
+				//{
+				//	int makeitem = rand() % 6;
+				//	if (makeitem == 1)
+				//	{
+				//		SmallItem *sm = new SmallItem();
+				//		sm->setType(Const_Value::small_item_type::smallheart);
+				//		float x, y;
+				//		enemy->GetPosition(x, y);
+				//		sm->SetPosition(x, y);
+				//		sm->SetState(ITEM_STATE_UNACTIVE);
+				//		dynamic_cast<Panther*>(enemy)->addSubItem(sm);
+				//		ItemObjects.push_back(sm);
+				//		objects.push_back(sm);
+				//		
+				//	}
+				//	dynamic_cast<Panther*>(enemy)->takedamage();
+				//	//CountEnemyPanther--;
+				//}
+				////bat
+				//else if (type == 3)
+				//{
+				//	int makeitem = rand() % 6;
+				//	//has item
+				//	if (makeitem == 1)
+				//	{
+				//		SmallItem *sm = new SmallItem();
+				//		sm->setType(Const_Value::small_item_type::smallheart);
+				//		float x, y;
+				//		enemy->GetPosition(x, y);
+				//		sm->SetPosition(x, y);
+				//		sm->SetState(ITEM_STATE_UNACTIVE);
+				//		dynamic_cast<Bat*>(enemy)->addSubItem(sm);
+				//		ItemObjects.push_back(sm);
+				//		objects.push_back(sm);
+				//	}
+				//	dynamic_cast<Bat*>(enemy)->takedamage();
+				//	//CountEnemyPanther--;
+				//}
+				int makeitem = rand() % 6;
+				SmallItem *sm = nullptr;
+				if (makeitem == 1)
 				{
-					//25% -->small heart
-					int makeitem = rand() % 6;
-					//has item
-					if (makeitem == 1)
-					{
-						SmallItem *sm = new SmallItem();
-						sm->setType(Const_Value::small_item_type::smallheart);
-						float x, y;
-						enemy->GetPosition(x, y);
-						sm->SetPosition(x, y);
-						sm->SetState(ITEM_STATE_UNACTIVE);
-						dynamic_cast<Ghost*>(enemy)->addSubItem(sm);
-						ItemObjects.push_back(sm);
-						objects.push_back(sm);
-						
-					}
+					sm = new SmallItem();
+					int randtype = rand() % 9;
+					sm->setType(randtype);
+					float x, y;
+					enemy->GetPosition(x, y);
+					sm->SetPosition(x, y);
+					sm->SetState(ITEM_STATE_UNACTIVE);
+					ItemObjects.push_back(sm);
+					objects.push_back(sm);
+				}
+				switch (type)
+				{
+				case 1:
+					if(makeitem == 1)
+					dynamic_cast<Ghost*>(enemy)->addSubItem(sm);
 					dynamic_cast<Ghost*>(enemy)->takedamage();
-					//CountEnemyGhost-=1;
-					
-				}
-				//panther
-				else if (type == 2)
-				{
-					int makeitem = rand() % 6;
+					break;
+				case 2:
 					if (makeitem == 1)
-					{
-						SmallItem *sm = new SmallItem();
-						sm->setType(Const_Value::small_item_type::smallheart);
-						float x, y;
-						enemy->GetPosition(x, y);
-						sm->SetPosition(x, y);
-						sm->SetState(ITEM_STATE_UNACTIVE);
 						dynamic_cast<Panther*>(enemy)->addSubItem(sm);
-						ItemObjects.push_back(sm);
-						objects.push_back(sm);
-						
-					}
 					dynamic_cast<Panther*>(enemy)->takedamage();
-					//CountEnemyPanther--;
-				}
-				//bat
-				else if (type == 3)
-				{
+					break;
+				case 3:
+					if (makeitem == 1)
+						dynamic_cast<Bat*>(enemy)->addSubItem(sm);
 					dynamic_cast<Bat*>(enemy)->takedamage();
-					//CountEnemyPanther--;
+					break;
+				case 4:
+					if (makeitem == 1)
+						dynamic_cast<Fishmen*>(enemy)->addSubItem(sm);
+					dynamic_cast<Fishmen*>(enemy)->takedamage();
+					break;
+				default:
+					break;
 				}
+				
 				if (resetsword)
 					sword->reset();
 				break;
@@ -534,11 +594,65 @@ void SceneGame::Update(DWORD dt)
 		if (GetTickCount() - TimeCreateBat >= TimeWaitCreateBat) 
 		{
 			TimeCreateBat = now; 
-			if (simon->getx() < CREATE_BAT_BOUNDARY_DIVISION_DIRECTION_X || (simon->getx() > CREATE_BAT_BOUNDARY_DIVISION_DIRECTION_X && OFFSET_Y+simon->gety() > CREATE_BAT_BOUNDARY_DIVISION_DIRECTION_Y))
-				allEnemies.push_back(new Bat(Camera::getInstance()->Getx()+ Camera::getInstance()->GetWidth() - 10,simon->gety() + 40, -1));
-			else
-				allEnemies.push_back(new Bat(Camera::getInstance()->Getx() - 10,simon->gety() + 40, 1));
+			if (simon->getx() < CREATE_BAT_BOUNDARY_DIVISION_DIRECTION_X )
+				allEnemies.push_back(new Bat(Camera::getInstance()->Getx()+ Camera::getInstance()->GetWidth() - 10,simon->gety()+30, -1));
+			else if((simon->getx() > CREATE_BAT_BOUNDARY_DIVISION_DIRECTION_X &&simon->gety() > CREATE_BAT_BOUNDARY_DIVISION_DIRECTION_Y+OFFSET_Y))
+				allEnemies.push_back(new Bat(Camera::getInstance()->Getx() - 10,simon->gety() + 30, 1));
 			TimeWaitCreateBat = 4000 + (rand() % 3000);
+		}
+	}
+#pragma endregion
+#pragma region create fishmen
+	if (currentMap == 3)
+	{
+		if (CountEnemyFishmen < 2)
+		{
+			DWORD now = GetTickCount();
+			if (now - TimeCreateFishmen >= TimeWaitCreateFishmen) // đủ thời gian chờ
+			{
+				TimeCreateFishmen = now; // đặt lại thời gian đã tạo
+				float vtx = 0;
+				#pragma region depend on simon location to create where fishmen at 
+				if (FISHMEN_ZONE_1_LEFT < simon->getx() && simon->getx() <= FISHMEN_ZONE_1_RIGHT)
+				{
+					vtx = (rand() % 2) ? (FISHMEN_POS_3) : (FISHMEN_POS_4);
+				}
+				if (FISHMEN_ZONE_2_LEFT < simon->getx() && simon->getx() <= FISHMEN_ZONE_2_RIGHT)
+				{
+					vtx = (rand() % 2) ? (FISHMEN_POS_1) : ((rand() % 2) ? (FISHMEN_POS_3) : (FISHMEN_POS_4));
+				}
+				if (FISHMEN_ZONE_3_LEFT < simon->getx() && simon->getx() <= FISHMEN_ZONE_3_RIGHT)
+				{
+					vtx = (rand() % 2) ? (FISHMEN_POS_4) : (FISHMEN_POS_5);
+				}
+				if (FISHMEN_ZONE_4_LEFT < simon->getx() && simon->getx() <= FISHMEN_ZONE_4_RIGHT)
+				{
+					vtx = (rand() % 2) ? (FISHMEN_POS_3) : (FISHMEN_POS_5);
+				}
+				if (FISHMEN_ZONE_5_LEFT < simon->getx() && simon->getx() <= FISHMEN_ZONE_5_RIGHT)
+				{
+					vtx = (rand() % 2) ? (FISHMEN_POS_4) : (FISHMEN_POS_6);
+				}
+				if (FISHMEN_ZONE_6_LEFT < simon->getx() && simon->getx() <= FISHMEN_ZONE_6_RIGHT)
+				{
+					vtx = (rand() % 2) ? (FISHMEN_POS_5) : ((rand() % 2) ? (FISHMEN_POS_7) : (FISHMEN_POS_8));
+				}
+				if (FISHMEN_ZONE_7_LEFT < simon->getx() && simon->getx() <= FISHMEN_ZONE_7_RIGHT)
+				{
+					vtx = (rand() % 2) ? (FISHMEN_POS_6) : (FISHMEN_POS_8);
+				}
+				if (FISHMEN_ZONE_8_LEFT < simon->getx() && simon->getx() <= FISHMEN_ZONE_8_RIGHT)
+				{
+					vtx = (rand() % 2) ? (FISHMEN_POS_6) : (FISHMEN_POS_7);
+				}
+#pragma endregion
+				float vty = FISHMEN_POS_Y;
+				int directionFishmen = vtx < simon->getx() ? 1 : -1;
+				allEnemies.push_back(new Fishmen(vtx, vty, directionFishmen, simon, &allfireball));
+				CountEnemyFishmen++;
+
+				TimeWaitCreateFishmen = 2000 + (rand() % 2000);
+			}
 		}
 	}
 #pragma endregion
@@ -550,7 +664,8 @@ void SceneGame::Update(DWORD dt)
 		{
 			if (!dynamic_cast<Ghost*>(allEnemies[i])->Isdied())
 			{
-				//coObjects.push_back(allEnemies[i]);
+				if(allEnemies[i]->GetState() == ENEMY_STATE_LIVE)
+				coObjects.push_back(allEnemies[i]);
 				allEnemies[i]->Update(dt, &BrickObjects);
 			}
 			else
@@ -564,7 +679,8 @@ void SceneGame::Update(DWORD dt)
 		{
 			if (!dynamic_cast<Panther*>(allEnemies[i])->Isdied())
 			{
-				//coObjects.push_back(allEnemies[i]);
+				if (allEnemies[i]->GetState() == ENEMY_STATE_LIVE)
+				coObjects.push_back(allEnemies[i]);
 				allEnemies[i]->Update(dt, &BrickObjects);
 			}
 			else
@@ -578,7 +694,8 @@ void SceneGame::Update(DWORD dt)
 		{
 			if (!dynamic_cast<Bat*>(allEnemies[i])->Isdied())
 			{
-				//coObjects.push_back(allEnemies[i]);
+				if (allEnemies[i]->GetState() == ENEMY_STATE_LIVE)
+				coObjects.push_back(allEnemies[i]);
 				allEnemies[i]->Update(dt, &BrickObjects);
 			}
 			else
@@ -586,9 +703,28 @@ void SceneGame::Update(DWORD dt)
 				allEnemies.erase(allEnemies.begin() + i);
 				//delete(allEnemies[i]);
 			}
-		}
-		//BratizerandItemObjects.push_back(allEnemies[i]);
-		//DebugOut(L"ghost i x:%d --", allEnemies[i]->getx());
+		} else
+		if (dynamic_cast<Fishmen*>(allEnemies[i]))
+			{
+				if (!dynamic_cast<Fishmen*>(allEnemies[i])->Isdied())
+				{
+					if (allEnemies[i]->GetState() == ENEMY_STATE_LIVE)
+					coObjects.push_back(allEnemies[i]);
+					allEnemies[i]->Update(dt, &BrickObjects);
+				}
+				else
+				{
+					allEnemies.erase(allEnemies.begin() + i);
+					CountEnemyFishmen--;
+					//delete(allEnemies[i]);
+				}
+			}
+		
+	}
+	for (UINT i = 0; i < allfireball.size(); i++)
+	{
+		if (!dynamic_cast<Fireball*>(allfireball[i])->isFinish())
+			coObjects.push_back(allfireball[i]);
 	}
 	for (unsigned int i = 0; i < ItemObjects.size(); i++)
 		ItemObjects[i]->Update(dt, &BrickObjects);
@@ -606,7 +742,10 @@ void SceneGame::Update(DWORD dt)
 	{
 		allStaticObject[i]->Update(dt);
 	}
-
+	for (unsigned int i = 0; i < allfireball.size(); i++)
+	{
+		allfireball[i]->Update(dt);
+	}
 	simon->Update(dt, &coObjects);
 	collisionweapond();
 	whip->Update(dt);
@@ -616,8 +755,8 @@ void SceneGame::Update(DWORD dt)
 	//ghost->Update(dt, &BrickObjects);
 #pragma endregion
 
-	DebugOut(L"CountEnemyGhost:%d--", CountEnemyGhost);
-	DebugOut(L"CountEnemyPanther:%d\n", CountEnemyPanther);
+	//DebugOut(L"CountEnemyGhost:%d--", CountEnemyGhost);
+	//DebugOut(L"Simon can climb up:%d\n", simon->iscanclimbup());
 }
 
 void SceneGame::LoadContent(int map)
@@ -656,6 +795,7 @@ void SceneGame::LoadContent(int map)
 	objects.push_back(sword);
 	whip = new Whip(simon);
 	objects.push_back(whip);
+	allfireball.push_back(new Fireball(1000, simon->gety(), -1));
 	Camera::getInstance()->Setsize(mapwidth, SCREEN_HEIGHT);
 }
 
@@ -667,6 +807,9 @@ void SceneGame::Draw()
 		objects[i]->Render();
 	for (unsigned int i = 0; i < allEnemies.size(); i++)
 		allEnemies[i]->Render();
+	for (unsigned int i = 0; i < allfireball.size(); i++)
+		allfireball[i]->Render();
+
 }
 
 void SceneGame::OnKeyDown(int KeyCode)

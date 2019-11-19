@@ -21,6 +21,8 @@
 #include "../enemies/Ghost.h"
 #include "../enemies/Panther.h"
 #include "../enemies/Bat.h"
+#include "../weapon/Fireball.h"
+#include "../enemies/Fishmen.h"
 
 using namespace std;
 
@@ -41,11 +43,18 @@ private:
 	DWORD timecreatGhost;
 	int CountEnemyPanther;
 	int CountEnemyGhost;
+	int CountEnemyFishmen;
 	bool isAllowCreateBat;
+
+	DWORD TimeCreateFishmen;
+	DWORD TimeWaitCreateFishmen;
+
 	DWORD TimeCreateBat; 
 	DWORD TimeWaitCreateBat; 
 	int CountEnemyBat;
 	CInvisibleObject* typestairstart ;
+	vector<LPGAMEOBJECT> allfireball;  //all object
+
 	vector<LPGAMEOBJECT> objects;  //all object
 	vector<LPGAMEOBJECT> BratizerObjects; //all bratizer
 	vector<LPGAMEOBJECT> coObjects;//all object except simon

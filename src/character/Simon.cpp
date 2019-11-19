@@ -5,11 +5,23 @@
 #include <string>
 #include"../item/BoundItem.h"
 Simon* Simon::_instance = NULL;
+void Simon::takedamage(int damage,int direct )
+{
+	Health -= damage;
+	hurting = true;
+	if (climbing)
+		StartUntouchable();
+	else
+	{
+		StartHurting(direct);
+		StartUntouchable();
+	}
+}
 Simon::Simon()
 {
 	LoadResourceHelper::Loadspritefromfile("content\\characters\\player\\player_sprites.txt", ID_TEX_SIMON);
 	LoadResourceHelper::Loadanimationfromfile("content\\characters\\player\\player_ani\\allani.txt", this);
-
+	Health = 100;
 	level = 1;
 	sword_turn = 5;
 }
@@ -23,6 +35,49 @@ Simon * Simon::getinstance()
 void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 {
 	CGameObject::Update(dt);
+	if (GetTickCount() - untouchable_start > SIMON_UNTOUCHABLE_TIME)
+	{
+		untouchable_start = 0;
+		untouchable = 0;
+	}
+#pragma region hurting
+	if (GetTickCount() - hurt_start > SIMON_JUMP_TIME)
+	{
+		hurt_start = 0;
+		hurting = false;
+	}
+	else
+	{
+		//jumping up
+		state = temp_state;
+		if (GetTickCount() - hurt_start < (SIMON_JUMP_TIME / 2))
+		{
+			vx = -temp_nx * SIMON_HURT_SPEED_X;
+			temp_vx = vx;
+			dx = temp_vx * dt;
+			if (onGround)
+			{
+				vy = -SIMON_HURT_SPEED_Y;
+				onGround = false;
+				dx = 0;
+			}
+			else
+			{
+				nx = temp_nx;
+			}
+		}
+		else if (GetTickCount() - hurt_start >= (SIMON_JUMP_TIME / 2))
+		{
+			nx = temp_nx;
+			dx = temp_vx * dt;
+			if (onGround)
+			{
+				resetToDefault();
+			}
+		}
+	}
+
+#pragma endregion
 
 	if (!climbing)
 	{
@@ -146,7 +201,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 				//DebugOut(L"time up: %d--", GetTickCount() - jumpplus_start);
 				vx = temp_nx * SIMON_JUMP_SPEED_X;
 				temp_vx = vx;
-				dx =temp_vx*dt;
+				dx = temp_vx * dt;
 				if (onGround)
 				{
 					vy = -SIMON_JUMP_SPEED_Y;
@@ -161,7 +216,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 			else if (GetTickCount() - jumpplus_start >= (SIMON_JUMP_TIME / 2))
 			{
 				nx = temp_nx;
-				dx = temp_vx*dt;
+				dx = temp_vx * dt;
 				if (onGround)
 				{
 					resetToDefault();
@@ -253,7 +308,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 									onGround = true;
 								}
 							}
-							
+
 							break;
 						case Const_Value::in_obj_type::endmap1:
 							endmap1 = true;
@@ -294,7 +349,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 					}
 					else if (dynamic_cast<StaticObject *>(e->obj) && nx == -1)
 					{
-						startAutowalk(-nx, x+120);
+						startAutowalk(-nx, x + 120);
 						dynamic_cast<StaticObject *>(e->obj)->start_open();
 						Camera::getInstance()->nextarea();
 						x += min_tx * dx + nx * 0.1f;		// nx*0.5f : need to push out a bit to avoid overlapping next frame
@@ -316,6 +371,15 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 							}
 						}
 
+					}
+					else if ((dynamic_cast<Ghost *>(e->obj) || dynamic_cast<Panther *>(e->obj) || dynamic_cast<Fishmen *>(e->obj)|| dynamic_cast<Bat *>(e->obj) || dynamic_cast<Fireball *>(e->obj))&&untouchable == 0 )
+					{
+						if(nx!=0)
+						takedamage(10,-nx);
+						else
+							takedamage(10, 1);
+						if (dynamic_cast<Bat *>(e->obj))
+							dynamic_cast<Bat *>(e->obj)->takedamage();
 					}
 				}
 			}
@@ -346,16 +410,15 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 
 #pragma endregion
 
-	/*DebugOut(L"\n Onground: %d--", onGround);
-	DebugOut(L"x : %d, y :%d ", (int)x,(int)y);*/
-	//DebugOut(L"vx=%f,dx = %f --",vx,dx);
-	//DebugOut(L"targetx: %d --autogo:%d ", (int)targetX,autowalking);
+	DebugOut(L"health :%d \n", Health);
 }
 
 void Simon::Render()
 {
 	int ani;
-
+	int alpha = 255;
+	if (untouchable == 1)
+		alpha = 170;
 	if (state == SIMON_STATE_DIE)
 		ani = SIMON_ANI_DIE;
 	else if (vy < 0)
@@ -374,9 +437,9 @@ void Simon::Render()
 			else if (state == SIMON_STATE_STANDING_ONSTAIR && !attacking)
 			{
 				if (nx == climb_direct)
-					animations[SIMON_ANI_GOUP]->GetFrame(1)->GetSprite()->Draw(x, y, 255, nx);
+					animations[SIMON_ANI_GOUP]->GetFrame(1)->GetSprite()->Draw(x, y, alpha, nx);
 				else
-					animations[SIMON_ANI_GODOWN]->GetFrame(1)->GetSprite()->Draw(x, y, 255, nx);
+					animations[SIMON_ANI_GODOWN]->GetFrame(1)->GetSprite()->Draw(x, y, alpha, nx);
 			}
 			else
 
@@ -385,6 +448,7 @@ void Simon::Render()
 		else
 			ani = SIMON_ANI_WALKING;
 	}
+	
 	if (jumpingmono || jumpingplex)
 	{
 		if (attacking)
@@ -429,15 +493,17 @@ void Simon::Render()
 		ani = SIMON_ANI_GODOWN;
 	if (state == SIMON_STATE_GOUP)
 		ani = SIMON_ANI_GOUP;
+	if (hurting)
+		ani = SIMON_ANI_IDLE;
 	if (state == SIMON_STATE_STANDING_ONSTAIR && !attacking)
 	{
 		if (nx == climb_direct)
-			animations[SIMON_ANI_GOUP]->GetFrame(1)->GetSprite()->Draw(x, y, 255, nx);
+			animations[SIMON_ANI_GOUP]->GetFrame(1)->GetSprite()->Draw(x, y, alpha, nx);
 		else
-			animations[SIMON_ANI_GODOWN]->GetFrame(1)->GetSprite()->Draw(x, y, 255, nx);
+			animations[SIMON_ANI_GODOWN]->GetFrame(1)->GetSprite()->Draw(x, y, alpha, nx);
 	}
 	else
-		animations[ani]->Render(x, y, 255, nx);
+		animations[ani]->Render(x, y, alpha, nx);
 	RenderBoundingBox();
 
 }
@@ -496,7 +562,7 @@ void Simon::collisionwithSmallItem(CGameObject * si)
 
 void Simon::resetAnimation()
 {
-	
+
 	animations[SIMON_ANI_ATTACK]->reset();
 	animations[SIMON_ANI_GOUP_ATTACK]->reset();
 	animations[SIMON_ANI_GODOWN_ATTACK]->reset();
@@ -537,7 +603,7 @@ void Simon::setcanclimb(bool icanclimb, bool up)
 
 void Simon::StartAttack()
 {
-	if (!attacking && !collecting) {
+	if (!attacking && !collecting&&!hurting) {
 		resetAnimation();
 		attacking = true;
 		attack_start = GetTickCount();
@@ -546,7 +612,7 @@ void Simon::StartAttack()
 		temp_nx = nx;
 		attacwhenjump = (jumpingmono || jumpingplex);
 	}
-	
+
 }
 
 void Simon::resetToDefault()
@@ -555,12 +621,14 @@ void Simon::resetToDefault()
 	jumpingmono = false;
 	jumpplus_start = 0;
 	jumpingplex = false;
+	/*hurt_start = 0;
+	hurting = false;*/
 	state = SIMON_STATE_IDLE;
 }
 
 void Simon::StartmonoJump()
 {
-	if (!jumpingmono && !jumpingplex && !collecting&&!attacking) {
+	if (!jumpingmono && !jumpingplex && !collecting && !attacking && !hurting) {
 		jumpingmono = true; jump_start = GetTickCount();
 		//onGround = false;
 		temp_state = SIMON_STATE_SIT;
@@ -569,7 +637,7 @@ void Simon::StartmonoJump()
 
 void Simon::StartplexJump()
 {
-	if (!jumpingmono && !jumpingplex && !collecting && !attacking)
+	if (!jumpingmono && !jumpingplex && !collecting && !attacking && !hurting)
 	{
 
 		jumpingplex = true; jumpplus_start = GetTickCount();
@@ -664,7 +732,6 @@ void Simon::Upgrate()
 		level++;
 }
 
-
 int Simon::GetDirect()
 {
 	return nx;
@@ -673,7 +740,7 @@ int Simon::GetDirect()
 void Simon::GetBoundingBox(float & left, float & top, float & right, float & bottom)
 {
 
-	if (state == SIMON_STATE_SIT || jumpingmono||jumpingplex)
+	if (state == SIMON_STATE_SIT || jumpingmono || jumpingplex)
 	{
 		left = x + (SIMON_BIG_BBOX_WIDTH - SIMON_SMALL_BBOX_WIDTH) / 2;
 		top = y + SIMON_SPACING_ONTOP;
@@ -684,7 +751,7 @@ void Simon::GetBoundingBox(float & left, float & top, float & right, float & bot
 	else
 	{
 		left = x + (SIMON_BIG_BBOX_WIDTH - SIMON_SMALL_BBOX_WIDTH) / 2;
-		top = y +(SIMON_BIG_BBOX_HEIGHT - SIMON_SMALL_BBOX_HEIGHT) / 2;
+		top = y + (SIMON_BIG_BBOX_HEIGHT - SIMON_SMALL_BBOX_HEIGHT) / 2;
 
 		right = left + SIMON_SMALL_BBOX_WIDTH;
 		bottom = top + SIMON_SMALL_BBOX_HEIGHT - +(SIMON_BIG_BBOX_HEIGHT - SIMON_SMALL_BBOX_HEIGHT) / 2;

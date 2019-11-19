@@ -32,6 +32,8 @@
     <ClInclude Include="src\enemies\Panther.h" />
     <ClInclude Include="src\enemies\Enemy.h" />
     <ClInclude Include="src\enemies\Bat.h" />
+    <ClInclude Include="src\enemies\Fishmen.h" />
+    <ClInclude Include="src\weapon\Fireball.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header">
@@ -77,6 +79,8 @@
     <ClCompile Include="src\enemies\Panther.cpp" />
     <ClCompile Include="src\enemies\Enemy.cpp" />
     <ClCompile Include="src\enemies\Bat.cpp" />
+    <ClCompile Include="src\enemies\Fishmen.cpp" />
+    <ClCompile Include="src\weapon\Fireball.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="content\textures\bbox.png" />

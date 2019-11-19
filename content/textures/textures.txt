@@ -20,3 +20,4 @@ ID_TEX_FISHMEN		content\\textures\\Fishman.png		255 255 255
 ID_TEX_GIANTBAT		content\\textures\\GiantBat.png		255 255 255
 ID_TEX_VAMPIREBAT	content\\textures\\VampireBat.png	255 255 255
 ID_TEX_FLAME		content\\textures\\Flame.png		255 255 255
+ID_TEX_FIREBALL		content\\textures\\Fireball.png		255 255 255

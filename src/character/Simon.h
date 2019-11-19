@@ -14,6 +14,11 @@
 #include "../item/BoundItem.h"
 #include "../item/StaticObject.h"
 #include "../camera/Camera.h"
+#include "../enemies/Bat.h"
+#include "../enemies/Fishmen.h"
+#include "../enemies/Ghost.h"
+#include "../enemies/Panther.h"
+
 using namespace std;
 class Simon : public CGameObject
 {
@@ -30,6 +35,9 @@ class Simon : public CGameObject
 		int untouchable;
 		bool canclimbup;
 		bool canclimbdown;
+		bool hurting;
+		int Hurtdirect;
+		DWORD hurt_start;
 		DWORD untouchable_start;
 		DWORD collect_start;
 		DWORD overlap_time;
@@ -40,7 +48,7 @@ class Simon : public CGameObject
 		int temp_nx;
 		int temp_ny;
 		int climb_direct;
-
+		
 		int sword_turn;
 		int money;
 		int axe_turn;
@@ -70,6 +78,10 @@ public:
 	bool iscollecting() { return collecting; }
 	void setclimbing(bool is) { climbing = is; if(!is) canclimbdown = canclimbup = false;
 	}
+	bool ishurting() { return hurting; }
+	void takedamage(int damage,int direct );
+	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount(); }
+	void StartHurting(int direct ) { hurting = 1; hurt_start = GetTickCount(); temp_nx = direct; }
 	void collisionwithSmallItem(CGameObject *si);
 	bool isJumping() { return (jumpingmono || jumpingplex); }
 	bool isOnGround() { return onGround; }
@@ -81,7 +93,7 @@ public:
 	void SetState(int state);
 	void setcanclimb(bool icanclimb, bool up);
 	bool inAutoMode() { return (autoclimbing || autowalking); }
-	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount(); }
+
 	void StartAttack();
 	void resetToDefault();
 	void StartmonoJump();

@@ -32,10 +32,13 @@ void Bat::takedamage()
 	state = ENEMY_STATE_DIE;
 	start_disappear();
 	vx = 0;
+	vy = 0;
 }
 
 void Bat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	if (Health <= 0)
+		return;
 	CGameObject::Update(dt);
 	if (y - yBackup >= DeltaY)
 	{
@@ -46,6 +49,7 @@ void Bat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		{
 			vy = BAT_SPEED_Y;
 		}
+	
 	if (disappearing)
 	{
 		if (GetTickCount() - disappear_start > 300)
@@ -53,10 +57,16 @@ void Bat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			disappearing = false;
 			disappear_start = 0;
 			Health -= 1;
+			if (subItem != nullptr)
+				subItem->SetState(ITEM_STATE_ACTIVE);
 		}
 	}
 	y += dy;
 	x += dx;
+	if (x <= 3034 || x >= 4092)
+	{
+		Health = 0;
+	}
 }
 
 void Bat::GetBoundingBox(float & left, float & top, float & right, float & bottom)

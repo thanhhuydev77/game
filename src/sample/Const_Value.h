@@ -40,8 +40,8 @@ public:
 #define ID_TEX_FISHMEN		19
 #define ID_TEX_GIANTBAT		20
 #define ID_TEX_VAMPIREBAT	21
-#define ID_TEX_FLAME	22
-
+#define ID_TEX_FLAME		22
+#define ID_TEX_FIREBALL		23
 #define MAP1					"content\\tilemap\\map1.txt"
 #define MAP2					"content\\tilemap\\map2.txt"
 #define MAP3					"content\\tilemap\\map3.txt"
@@ -49,12 +49,14 @@ public:
 #define OFFSET_Y		100
 #pragma endregion
 #pragma region Simon
-
+#define SIMON_UNTOUCHABLE_TIME		2000
 #define SIMON_TIME_ATTACK_OFF		40
 #define SIMON_TIME_COLLECT			1000
 #define SIMON_WALKING_SPEED			0.09f 
 #define SIMON_JUMP_SPEED_Y			0.26f
 #define SIMON_JUMP_SPEED_X			0.08f
+#define SIMON_HURT_SPEED_X			0.04f
+#define SIMON_HURT_SPEED_Y			0.20f
 #define SIMON_JUMP_DEFLECT_SPEED	0.2f
 #define SIMON_GRAVITY				0.0005f
 #define SIMON_DIE_DEFLECT_SPEED		0.5f
@@ -139,6 +141,53 @@ static enum Weapond { whip, sword, axe };
 #define BAT_SPEED_Y 0.05f
 #define DeltaY 20
 #pragma endregion
+#pragma region fishmen
+#define FISHMEN_BBOX_WIDTH				34
+#define FISHMEN_BBOX_HEIGHT				66
+#define FISHMEN_TIME_LIMIT_WAIT_AFTER_ATTACK 700
+#define FISHMEN_GRAVITY 0.01f
+#define FISHMEN_SPEED_X 0.07f
+#define FISHMEN_SPEED_Y_UP 0.2f
+#define FISHMEN_SPEED_Y_DOWN 0.3f
+#define FISHMEN_DX_LIMIT 140 
+#define FISHMEN_DX_ATTACK_LIMIT 130 
+#define FISHMEN_DY_JUMP 270
+
+#define FISHMEN_ZONE_1_LEFT 0.0f
+#define FISHMEN_ZONE_1_RIGHT 128.0f
+#define FISHMEN_POS_1 56.0f
+
+#define FISHMEN_ZONE_2_LEFT 128.0f
+#define FISHMEN_ZONE_2_RIGHT 261.0f
+#define FISHMEN_POS_2 189.0f
+
+#define FISHMEN_ZONE_3_LEFT 261.0f
+#define FISHMEN_ZONE_3_RIGHT 393.0f
+#define FISHMEN_POS_3 317.0f
+
+#define FISHMEN_ZONE_4_LEFT 393
+#define FISHMEN_ZONE_4_RIGHT 506
+#define FISHMEN_POS_4 440
+
+#define FISHMEN_ZONE_5_LEFT 506.0f
+#define FISHMEN_ZONE_5_RIGHT 642.0f
+#define FISHMEN_POS_5 571.0f
+
+#define FISHMEN_ZONE_6_LEFT 642.0f
+#define FISHMEN_ZONE_6_RIGHT 764.0f
+#define FISHMEN_POS_6 695.0f
+
+#define FISHMEN_ZONE_7_LEFT 764.0f
+#define FISHMEN_ZONE_7_RIGHT 891.0f
+#define FISHMEN_POS_7 816.0f
+
+
+#define FISHMEN_ZONE_8_LEFT 891.0f
+#define FISHMEN_ZONE_8_RIGHT 1030.0f
+#define FISHMEN_POS_8 952.0f
+
+#define FISHMEN_POS_Y 400.0f
+#pragma endregion
 
 
 
@@ -190,6 +239,12 @@ static enum Weapond { whip, sword, axe };
 #define SWORD_BBOX_WIDTH		32
 #define SWORD_BBOX_HEIGHT		18
 #pragma endregion
+#pragma region fireball
+#define FIREBALL_SPEED			0.21f
+#define FIREBALL_BBOX_WIDTH		15
+#define FIREBALL_BBOX_HEIGHT	11
+#pragma endregion
+
 #pragma region item
 #define ITEM_TIME_APPREARENCE		3000
 #define ITEM_STATE_ACTIVE			1
