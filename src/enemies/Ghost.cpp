@@ -53,6 +53,16 @@ void Ghost::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			//delete(this);
 		}
 	}
+	float t, l, r, b;
+	GetBoundingBox(l, t, r, b);
+	RECT check;
+	check.left = l;
+	check.top = t;
+	check.right = r;
+	check.bottom = b;
+	// still in camera
+	if (!Camera::getInstance()->checkInCamera(check))
+		Health = 0;
 	vector<LPGAMEOBJECT> listObject_Brick;
 	listObject_Brick.clear();
 	for (UINT i = 0; i < coObjects->size(); i++)

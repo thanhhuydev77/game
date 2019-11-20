@@ -16,6 +16,9 @@ void Simon::takedamage(int damage,int direct )
 		StartHurting(direct);
 		StartUntouchable();
 	}
+	if (Health <= 0)
+		timeDie = GetTickCount();
+	
 }
 Simon::Simon()
 {
@@ -24,6 +27,8 @@ Simon::Simon()
 	Health = 100;
 	level = 1;
 	sword_turn = 5;
+	NumofLife = 3;
+	timeDie = 0;
 }
 
 Simon * Simon::getinstance()
@@ -34,6 +39,7 @@ Simon * Simon::getinstance()
 
 void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 {
+	
 	CGameObject::Update(dt);
 	if (GetTickCount() - untouchable_start > SIMON_UNTOUCHABLE_TIME)
 	{
@@ -50,6 +56,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 	{
 		//jumping up
 		state = temp_state;
+		attacking = false;
 		if (GetTickCount() - hurt_start < (SIMON_JUMP_TIME / 2))
 		{
 			vx = -temp_nx * SIMON_HURT_SPEED_X;
@@ -76,9 +83,21 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 			}
 		}
 	}
-
+	if (GetTickCount() - timeDie > 2000 && timeDie != 0)
+	{
+		if (NumofLife >= 1)
+		{
+			comeback();
+			NumofLife--;
+		}
+	}
+	if (Health <= 0)
+	{
+		state = SIMON_STATE_DIE;
+		return;
+	}
 #pragma endregion
-
+	
 	if (!climbing)
 	{
 		vy += SIMON_GRAVITY * dt;
@@ -233,17 +252,16 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 			collect_start = 0;
 		}
 #pragma endregion
-		{
+{
 			vector<LPCOLLISIONEVENT> coEvents;
 
 			vector<LPCOLLISIONEVENT> coEventsResult;
 
 			coEvents.clear();
 			// turn off collision when die 
-			if (state != SIMON_STATE_DIE)
-			{
+			
 				CalcPotentialCollisions(colliable_objects, coEvents);
-			}
+
 
 
 			if (coEvents.size() == 0)
@@ -419,9 +437,7 @@ void Simon::Render()
 	int alpha = 255;
 	if (untouchable == 1)
 		alpha = 170;
-	if (state == SIMON_STATE_DIE)
-		ani = SIMON_ANI_DIE;
-	else if (vy < 0)
+	 if (vy < 0)
 	{
 		ani = SIMON_ANI_JUMP;
 	}
@@ -494,18 +510,28 @@ void Simon::Render()
 	if (state == SIMON_STATE_GOUP)
 		ani = SIMON_ANI_GOUP;
 	if (hurting)
-		ani = SIMON_ANI_IDLE;
+		ani = SIMON_ANI_TAKEDAMAGE;
+	if (Health<=0)
+	{
+		ani = SIMON_ANI_DIE;
+		DebugOut(L"ani :%d --", ani);
+	}
 	if (state == SIMON_STATE_STANDING_ONSTAIR && !attacking)
 	{
 		if (nx == climb_direct)
 			animations[SIMON_ANI_GOUP]->GetFrame(1)->GetSprite()->Draw(x, y, alpha, nx);
 		else
 			animations[SIMON_ANI_GODOWN]->GetFrame(1)->GetSprite()->Draw(x, y, alpha, nx);
+		return;
 	}
-	else
-		animations[ani]->Render(x, y, alpha, nx);
+	if (ani == SIMON_ANI_DIE &&animations[ani]->GetCurrentFrame() == 1&& animations[SIMON_ANI_DIE]->GetFrame(1)->GetSprite()->GetId() == 1026)
+	{
+		animations[ani]->GetFrame(1)->GetSprite()->Draw(x, y, alpha,nx);
+		return;
+	}
+	animations[ani]->Render(x, y, alpha, nx);
 	RenderBoundingBox();
-
+	DebugOut(L"ani :%d --", ani);
 }
 
 void Simon::setswordturndesc()
@@ -562,11 +588,12 @@ void Simon::collisionwithSmallItem(CGameObject * si)
 
 void Simon::resetAnimation()
 {
-
+	
 	animations[SIMON_ANI_ATTACK]->reset();
 	animations[SIMON_ANI_GOUP_ATTACK]->reset();
 	animations[SIMON_ANI_GODOWN_ATTACK]->reset();
 	animations[SIMON_ANI_SIT_ATTACK]->reset();
+	
 	attack_start = 0;
 	attacking = false;
 }
@@ -599,6 +626,19 @@ void Simon::setcanclimb(bool icanclimb, bool up)
 		canclimbup = icanclimb;
 	else
 		canclimbdown = icanclimb;
+}
+
+void Simon::comeback()
+{
+	x = Camera::getInstance()->Getx() + 100;
+	y = OFFSET_Y;
+	Health = 100;
+	resetToDefault();
+	vx = 0;
+	vy = 0;
+	resetAnimation();
+	timeDie = 0;
+	nx = 1;
 }
 
 void Simon::StartAttack()

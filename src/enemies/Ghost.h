@@ -1,6 +1,7 @@
 #pragma once
 #include "../sample/GameObject.h"
 #include "../map/Invisibleobject.h"
+#include "../camera/Camera.h"
 class Ghost :
 	public CGameObject
 {

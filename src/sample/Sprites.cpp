@@ -31,9 +31,9 @@ void CSprite::Draw(float x, float y, int alpha, double scale)
 	game->Draw(x, y, texture, left, top, right, bottom,alpha,scale);	
 }
 
-int CSprite::GetCurrentFrame()
+int CSprite::GetId()
 {
-	return 0;
+	return id;
 }
 
 

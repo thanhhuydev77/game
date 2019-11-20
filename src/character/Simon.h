@@ -23,6 +23,7 @@ using namespace std;
 class Simon : public CGameObject
 {
 	static Simon* _instance;
+	int NumofLife;
 		bool onGround;
 		bool standingonstair;
 		bool autowalking;
@@ -37,6 +38,7 @@ class Simon : public CGameObject
 		bool canclimbdown;
 		bool hurting;
 		int Hurtdirect;
+		DWORD timeDie;
 		DWORD hurt_start;
 		DWORD untouchable_start;
 		DWORD collect_start;
@@ -80,6 +82,7 @@ public:
 	}
 	bool ishurting() { return hurting; }
 	void takedamage(int damage,int direct );
+	bool isgameover() { return NumofLife <= 0; }
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount(); }
 	void StartHurting(int direct ) { hurting = 1; hurt_start = GetTickCount(); temp_nx = direct; }
 	void collisionwithSmallItem(CGameObject *si);
@@ -93,7 +96,7 @@ public:
 	void SetState(int state);
 	void setcanclimb(bool icanclimb, bool up);
 	bool inAutoMode() { return (autoclimbing || autowalking); }
-
+	void comeback();
 	void StartAttack();
 	void resetToDefault();
 	void StartmonoJump();
