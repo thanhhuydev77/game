@@ -12,7 +12,7 @@ Whip::Whip( CGameObject * owner)
 	LoadResourceHelper::Loadanimationfromfile("content\\characters\\player\\whip\\whip_ani.txt", this);
 	
 	level = 0;
-	state = WHIP_STATE_UNACTIVE;
+	state = WEPOND_STATE_UNACTIVE;
 	this->owner = owner;
 }
 
@@ -166,9 +166,9 @@ void Whip::Upgrade()
 
 void Whip::StartAttack()
 {
-	if (state != WHIP_STATE_ACTIVE && owner->GetState() != SIMON_STATE_COLLECT )
+	if (state != WEPOND_STATE_ACTIVE && owner->GetState() != SIMON_STATE_COLLECT)
 	{
-		state = WHIP_STATE_ACTIVE;
+		state = WEPOND_STATE_ACTIVE;
 		attack_start = GetTickCount();
 		animations[level - 1]->reset();
 	}
@@ -180,12 +180,12 @@ void Whip::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	if (!dynamic_cast<Simon*>(owner)->isattacking())
 	{
 		attack_start = 0;
-		state = WHIP_STATE_UNACTIVE;
+		state = WEPOND_STATE_UNACTIVE;
 	}
 	if (GetTickCount() - attack_start > SIMON_ATTACK_TIME)
 	{
 		attack_start = 0;
-		state = WHIP_STATE_UNACTIVE;
+		state = WEPOND_STATE_UNACTIVE;
 	}
 	else
 	{
@@ -215,7 +215,7 @@ void Whip::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 void Whip::Render()
 {
-	if (state == WHIP_STATE_ACTIVE)
+	if (state == WEPOND_STATE_ACTIVE)
 	{
 		//level begin at 1 and ani begin at 0
 		animations[level - 1]->Render(x, y, 255, nx);//
@@ -226,7 +226,7 @@ void Whip::Render()
 
 void Whip::GetBoundingBox(float & left, float & top, float & right, float & bottom)
 {
-	if (state == WHIP_STATE_ACTIVE)
+	if (state == WEPOND_STATE_ACTIVE)
 	{
 		int frame = animations[level - 1]->GetCurrentFrame();
 		left = x;

@@ -123,6 +123,16 @@ bool Camera::checkInCamera(RECT a)
 	return true;
 }
 
+bool Camera::checkInCamera(float t, float l, float r, float b)
+{
+	RECT a;
+	a.top = t;
+	a.left = l;
+	a.right = r;
+	a.bottom = b;
+	return checkInCamera(a);
+}
+
 void Camera::start_auto()
 {
 	isfollowSimon = false;

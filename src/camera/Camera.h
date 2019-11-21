@@ -37,6 +37,7 @@ public:
 	int GetWidth();
 	int GetHeight();
 	bool checkInCamera(RECT a);
+	bool checkInCamera(float t,float l,float r,float b);
 	void start_auto();
 	bool isautogo() { return autotransiting; }
 	D3DXVECTOR3 GetPosition();

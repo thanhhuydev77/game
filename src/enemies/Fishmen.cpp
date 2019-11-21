@@ -62,6 +62,7 @@ void Fishmen::Attack()
 
 void Fishmen::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	vy += FISHMEN_GRAVITY * dt;
 	if (disappearing)
 	{
 		if (GetTickCount() - disappear_start > 300)
@@ -157,17 +158,15 @@ void Fishmen::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			bool isCollisionDirectionX = false;
 			for (UINT i = 0; i < coEventsResult.size(); i++) // không cho fishmen vượt qua gạch loại nhỏ theo trục x
 			{
-				//if (coEventsResult[i]->nx != 0)
-				//{
-				//	CInvisibleObject * brick = dynamic_cast<CInvisibleObject*>(coEventsResult[i]->obj);
-				//	if (brick->GetModel() == BRICK_MODEL_3)
-				//	{
-				//		x += min_tx * dx + nx * 0.4f;
-				//nx *= -1;
-
-				isCollisionDirectionX = true;
-				//	}
-				//}
+				if (coEventsResult[i]->nx != 0)
+				{
+					CInvisibleObject * brick = dynamic_cast<CInvisibleObject*>(coEventsResult[i]->obj);
+					{
+						x += min_tx * dx + nx * 0.4f;
+						nx *= -1;
+						isCollisionDirectionX = true;
+					}
+				}
 			}
 
 			if (!isCollisionDirectionX) // ko va chạm với trục x 
@@ -208,10 +207,10 @@ void Fishmen::Render()
 	if (disappearing)
 		animations[3]->Render(x - 10, y + 3, 255);
 	else
-	if (walking)
-		animations[1]->Render(x, y, 255,nx);
-	else if (shooting)
-		animations[2]->Render(x, y, 255,nx);
-	else
-		animations[0]->Render(x, y, 255,nx);
+		if (walking)
+			animations[1]->Render(x, y, 255, nx);
+		else if (shooting)
+			animations[2]->Render(x, y, 255, nx);
+		else
+			animations[0]->Render(x, y, 255, nx);
 }

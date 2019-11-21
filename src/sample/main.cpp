@@ -59,7 +59,7 @@ void LoadResources()
 {
 	scenemanager = SceneManager::getInstance();
 	scenemanager->ReplaceScene(new SceneGame());
-	scenemanager->GetCurrentScene()->LoadContent(2);
+	scenemanager->GetCurrentScene()->LoadContent(1);
 }
 
 /*

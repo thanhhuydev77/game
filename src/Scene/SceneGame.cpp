@@ -93,6 +93,7 @@ void SceneGame::collisionweapond()
 	//if (simon->getcurrentWeapond() == Const_Value::Weapond::whip && whip->GetState() == WHIP_STATE_ACTIVE);
 	CGameObject *weapond;
 	bool resetsword = false;
+	DebugOut(L"\n type:%d \n\n", simon->getcurrentWeapond());
 	switch (simon->getcurrentWeapond())
 	{
 	case Const_Value::Weapond::whip:
@@ -101,6 +102,12 @@ void SceneGame::collisionweapond()
 	case Const_Value::Weapond::sword:
 		weapond = sword;
 		resetsword = true;
+		break;
+	case Const_Value::Weapond::axe:
+		weapond = axe;
+		break;
+	case Const_Value::Weapond::holywater:
+		weapond = holywater;
 		break;
 	default:
 		weapond = whip;
@@ -144,6 +151,7 @@ void SceneGame::collisionweapond()
 			enemy = dynamic_cast<Fishmen *>(allEnemies.at(i));
 			type = 4;
 		}
+
 		if (enemy != nullptr)
 			if (weapond->CheckOverLap(enemy) && enemy->GetState() == ENEMY_STATE_LIVE)
 			{
@@ -257,7 +265,7 @@ void SceneGame::collisionweapond()
 			}
 	}
 
-
+	
 }
 
 SceneGame::SceneGame()
@@ -268,7 +276,7 @@ SceneGame::SceneGame()
 
 void SceneGame::Update(DWORD dt)
 {
-
+	
 	coObjects = this->getallBrickandpointObjects();
 #pragma region checkoverlap with stair point --> can climb
 
@@ -466,6 +474,7 @@ void SceneGame::Update(DWORD dt)
 	// item falling and stop when on stair
 #pragma region create ghost
 	if (currentMap == 2)
+	{
 		if (GetTickCount() - timecreatGhost > 1000)
 		{
 			//simon in ghost area 1 and 2
@@ -574,31 +583,32 @@ void SceneGame::Update(DWORD dt)
 		}
 #pragma endregion
 #pragma region create panther
-	if (REGION_CREATE_PANTHER_LEFT > simon->getx() || simon->getx() > REGION_CREATE_PANTHER_RIGHT)
-	{
-		if (CountEnemyPanther == 0) // không còn Panther nào sống thì mới dc tạo lại cả 3
+		if (REGION_CREATE_PANTHER_LEFT > simon->getx() || simon->getx() > REGION_CREATE_PANTHER_RIGHT)
 		{
+			if (CountEnemyPanther == 0) // không còn Panther nào sống thì mới dc tạo lại cả 3
+			{
 
-			int directionPanther = abs(REGION_CREATE_PANTHER_LEFT - simon->getx()) < abs(REGION_CREATE_PANTHER_RIGHT - simon->getx()) ? -1 : 1; // hướng mặt của Panther quay về hướng simon
-			allEnemies.push_back(new Panther(1398.0f, OFFSET_Y + 0.0f, directionPanther, directionPanther == -1 ? 20.0f : 9.0f, simon));
-			allEnemies.push_back(new Panther(1783.0f, OFFSET_Y + 6.0f, directionPanther, directionPanther == -1 ? 278.0f : 180.0f, simon));
-			allEnemies.push_back(new Panther(1923.0f, OFFSET_Y + 0.0f, directionPanther, directionPanther == -1 ? 68.0f : 66.0f, simon));
-			CountEnemyPanther += 3;
+				int directionPanther = abs(REGION_CREATE_PANTHER_LEFT - simon->getx()) < abs(REGION_CREATE_PANTHER_RIGHT - simon->getx()) ? -1 : 1; // hướng mặt của Panther quay về hướng simon
+				allEnemies.push_back(new Panther(1398.0f, OFFSET_Y + 0.0f, directionPanther, directionPanther == -1 ? 20.0f : 9.0f, simon));
+				allEnemies.push_back(new Panther(1783.0f, OFFSET_Y + 6.0f, directionPanther, directionPanther == -1 ? 278.0f : 180.0f, simon));
+				allEnemies.push_back(new Panther(1923.0f, OFFSET_Y + 0.0f, directionPanther, directionPanther == -1 ? 68.0f : 66.0f, simon));
+				CountEnemyPanther += 3;
+			}
 		}
-	}
 #pragma endregion
 #pragma region create bat
-	if (simon->getx() > BAT_AREA_LEFT && simon->getx() < BAT_AREA_RIGHT)
-	{
-		DWORD now = GetTickCount();
-		if (GetTickCount() - TimeCreateBat >= TimeWaitCreateBat) 
+		if (simon->getx() > BAT_AREA_LEFT && simon->getx() < BAT_AREA_RIGHT)
 		{
-			TimeCreateBat = now; 
-			if (simon->getx() < CREATE_BAT_BOUNDARY_DIVISION_DIRECTION_X )
-				allEnemies.push_back(new Bat(Camera::getInstance()->Getx()+ Camera::getInstance()->GetWidth() - 10,simon->gety()+30, -1));
-			else if((simon->getx() > CREATE_BAT_BOUNDARY_DIVISION_DIRECTION_X &&simon->gety() > CREATE_BAT_BOUNDARY_DIVISION_DIRECTION_Y+OFFSET_Y))
-				allEnemies.push_back(new Bat(Camera::getInstance()->Getx() - 10,simon->gety() + 30, 1));
-			TimeWaitCreateBat = 4000 + (rand() % 3000);
+			DWORD now = GetTickCount();
+			if (GetTickCount() - TimeCreateBat >= TimeWaitCreateBat)
+			{
+				TimeCreateBat = now;
+				if (simon->getx() < CREATE_BAT_BOUNDARY_DIVISION_DIRECTION_X)
+					allEnemies.push_back(new Bat(Camera::getInstance()->Getx() + Camera::getInstance()->GetWidth() - 10, simon->gety() + 30, -1));
+				else if ((simon->getx() > CREATE_BAT_BOUNDARY_DIVISION_DIRECTION_X &&simon->gety() > CREATE_BAT_BOUNDARY_DIVISION_DIRECTION_Y + OFFSET_Y))
+					allEnemies.push_back(new Bat(Camera::getInstance()->Getx() - 10, simon->gety() + 30, 1));
+				TimeWaitCreateBat = 4000 + (rand() % 3000);
+			}
 		}
 	}
 #pragma endregion
@@ -726,6 +736,7 @@ void SceneGame::Update(DWORD dt)
 		if (!dynamic_cast<Fireball*>(allfireball[i])->isFinish())
 			coObjects.push_back(allfireball[i]);
 	}
+	
 	for (unsigned int i = 0; i < ItemObjects.size(); i++)
 		ItemObjects[i]->Update(dt, &BrickObjects);
 	//update bratizers
@@ -750,13 +761,11 @@ void SceneGame::Update(DWORD dt)
 	collisionweapond();
 	whip->Update(dt);
 	sword->Update(dt);
-
+	axe->Update(dt);
+	holywater->Update(dt, &BrickObjects);
 	Camera::getInstance()->Update(dt, simon);
-	//ghost->Update(dt, &BrickObjects);
+	
 #pragma endregion
-
-	//DebugOut(L"CountEnemyGhost:%d--", CountEnemyGhost);
-	//DebugOut(L"Simon can climb up:%d\n", simon->iscanclimbup());
 }
 
 void SceneGame::LoadContent(int map)
@@ -795,6 +804,10 @@ void SceneGame::LoadContent(int map)
 	objects.push_back(sword);
 	whip = new Whip(simon);
 	objects.push_back(whip);
+	axe = new Axe(simon);
+	objects.push_back(axe);
+	holywater = new Holy_Water(simon);
+	objects.push_back(holywater);
 	allfireball.push_back(new Fireball(1000, simon->gety(), -1));
 	Camera::getInstance()->Setsize(mapwidth, SCREEN_HEIGHT);
 }
@@ -834,18 +847,50 @@ void SceneGame::OnKeyDown(int KeyCode)
 		break;
 	case DIK_A:
 		//using knife
-		if (games->IsKeyDown(DIK_UP) && simon->getswordturn() >= 1 && sword->GetState() == SWORD_STATE_UNACTIVE)
+		CGameObject *weapond;
+		
+		if (games->IsKeyDown(DIK_UP) && simon->getcurrentsubWeapondTurn() >= 1)
 		{
-			simon->StartAttack();
-			simon->setswordturndesc();
-			sword->StartAttack();
-			simon->setcurrentWeapond(Const_Value::Weapond::sword);
+			switch (simon->getcurrentsubWeapond())
+			{
+			case Const_Value::Weapond::sword:
+				if (sword->GetState() != WEPOND_STATE_ACTIVE)
+				{
+					simon->StartAttack();
+					simon->setcurrentsubWeapondTurnDesc();
+					sword->StartAttack();
+					simon->setcurrentWeapond(Const_Value::Weapond::sword);
+				}
+				break;
+			case Const_Value::Weapond::axe:
+				if (axe->GetState() != WEPOND_STATE_ACTIVE)
+				{
+					simon->StartAttack();
+					simon->setcurrentsubWeapondTurnDesc();
+					axe->StartAttack();
+					simon->setcurrentWeapond(Const_Value::Weapond::axe);
+				}
+				break;
+			case Const_Value::Weapond::holywater:
+				if (holywater->GetState() != WEPOND_STATE_ACTIVE)
+				{
+					simon->StartAttack();
+					simon->setcurrentsubWeapondTurnDesc();
+					holywater->StartAttack();
+					simon->setcurrentWeapond(Const_Value::Weapond::holywater);
+				}
+				break;
+			default:
+				break;
+			}
+			
+
 		}
 		//using whip 
 		else
 		{
 			//animation with whip
-			if (!simon->iscollecting())
+			if (!simon->iscollecting() )
 			{
 				simon->StartAttack();
 				whip->StartAttack();

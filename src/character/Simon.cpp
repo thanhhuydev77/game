@@ -26,7 +26,8 @@ Simon::Simon()
 	LoadResourceHelper::Loadanimationfromfile("content\\characters\\player\\player_ani\\allani.txt", this);
 	Health = 100;
 	level = 1;
-	sword_turn = 5;
+	currentsubWeapondTurn = 5;
+	currentsubwepond = 3;
 	NumofLife = 3;
 	timeDie = 0;
 }
@@ -534,9 +535,9 @@ void Simon::Render()
 	DebugOut(L"ani :%d --", ani);
 }
 
-void Simon::setswordturndesc()
+void Simon::setcurrentsubWeapondTurnDesc()
 {
-	if (sword_turn >= 1) sword_turn--; else sword_turn = 0;
+	if (currentsubWeapondTurn >= 1) currentsubWeapondTurn--; else currentsubWeapondTurn = 0;
 }
 
 void Simon::collisionwithSmallItem(CGameObject * si)
@@ -559,19 +560,32 @@ void Simon::collisionwithSmallItem(CGameObject * si)
 		this->StartCollect();
 		this->Upgrate();
 		break;
-	case Const_Value::holywater: // holy water
+	case Const_Value::holywateritem: // holy water
 		lh->SetState(ITEM_STATE_UNACTIVE);
 		lh->SetPosition(0 - HOLYWATER_BBOX_WIDTH, 0);
+		if (currentsubwepond == Const_Value::Weapond::holywater)
+			this->currentsubWeapondTurn += 5;
+		else
+			this->currentsubWeapondTurn = 5;
+		currentsubwepond = Const_Value::Weapond::holywater;
 		break;
 	case Const_Value::small_item_type::sworditem: //sword
 		lh->SetState(ITEM_STATE_UNACTIVE);
 		lh->SetPosition(0 - SWORD_BBOX_WIDTH, 0);
-		this->sword_turn += 5;
+		if(currentsubwepond == Const_Value::Weapond::sword)
+		this->currentsubWeapondTurn += 5;
+		else
+			this->currentsubWeapondTurn = 5;
+		currentsubwepond = Const_Value::Weapond::sword;
 		break;
 	case Const_Value::small_item_type::axeitem:
 		lh->SetState(ITEM_STATE_UNACTIVE);
 		lh->SetPosition(0 - AXE_BBOX_WIDTH, 0);
-		axe_turn += 5;
+		if (currentsubwepond == Const_Value::Weapond::axe)
+			this->currentsubWeapondTurn += 5;
+		else
+			this->currentsubWeapondTurn = 5;
+		currentsubwepond = Const_Value::Weapond::axe;
 		break;
 	case Const_Value::whitemoneybag:
 	case Const_Value::redmoneybag:

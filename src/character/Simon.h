@@ -18,7 +18,7 @@
 #include "../enemies/Fishmen.h"
 #include "../enemies/Ghost.h"
 #include "../enemies/Panther.h"
-
+#include "../weapon/Axe.h"
 using namespace std;
 class Simon : public CGameObject
 {
@@ -50,10 +50,7 @@ class Simon : public CGameObject
 		int temp_nx;
 		int temp_ny;
 		int climb_direct;
-		
-		int sword_turn;
 		int money;
-		int axe_turn;
 
 		bool endmap1;
 		int last_nx;
@@ -67,6 +64,8 @@ class Simon : public CGameObject
 		float targetY;
 		bool canclimb;
 		int currentWeapond;
+		int currentsubWeapondTurn;
+		int currentsubwepond;
 		int dofirst;
 		Simon();
 public:
@@ -74,9 +73,9 @@ public:
 	static Simon* getinstance();
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *colliable_objects = NULL);
 	virtual void Render();
-	void setswordturndesc() ;
+	
 	bool isattacking() { return attacking; }
-	int getswordturn() { return sword_turn; }
+	
 	bool iscollecting() { return collecting; }
 	void setclimbing(bool is) { climbing = is; if(!is) canclimbdown = canclimbup = false;
 	}
@@ -115,7 +114,10 @@ public:
 	void setTempnx(int temp) { temp_nx = temp; }
 	void setTempny(int temp) { if (temp == 2) temp_ny = -1; else if (temp == 3) temp_ny = 1; }
 	void setcurrentWeapond(int wea) { currentWeapond = wea; }
-	bool getcurrentWeapond() { return currentWeapond; }
+	int getcurrentWeapond() { return currentWeapond; }
+	int getcurrentsubWeapond() { return currentsubwepond; }
+	int getcurrentsubWeapondTurn() { return currentsubWeapondTurn; }
+	void setcurrentsubWeapondTurnDesc();
 	int getx() { return x; }
 	int gety() { return y; }
 	int getVx() { return (int)vx; };

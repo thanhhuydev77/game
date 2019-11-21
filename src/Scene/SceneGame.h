@@ -23,6 +23,8 @@
 #include "../enemies/Bat.h"
 #include "../weapon/Fireball.h"
 #include "../enemies/Fishmen.h"
+#include "../weapon/Axe.h"
+#include "../weapon/Holy_Water.h"
 
 using namespace std;
 
@@ -34,6 +36,8 @@ private:
 	CGame *games;
 	Simon *simon;
 	Whip  *whip;
+	Axe *axe;
+	Holy_Water *holywater;
 	Map * mmap;
 	//Ghost *ghost;
 	int mapwidth;

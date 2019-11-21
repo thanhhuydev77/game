@@ -133,6 +133,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\weapon\Holy_Water.h" />
+    <ClInclude Include="src\weapon\Axe.h" />
     <ClInclude Include="src\weapon\Fireball.h" />
     <ClInclude Include="src\enemies\Fishmen.h" />
     <ClInclude Include="src\enemies\Bat.h" />
@@ -168,6 +170,8 @@
     <ClInclude Include="src\item\StaticObject.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\weapon\Holy_Water.cpp" />
+    <ClCompile Include="src\weapon\Axe.cpp" />
     <ClCompile Include="src\weapon\Fireball.cpp" />
     <ClCompile Include="src\enemies\Fishmen.cpp" />
     <ClCompile Include="src\enemies\Bat.cpp" />

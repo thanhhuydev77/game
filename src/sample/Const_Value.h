@@ -42,6 +42,9 @@ public:
 #define ID_TEX_VAMPIREBAT	21
 #define ID_TEX_FLAME		22
 #define ID_TEX_FIREBALL		23
+#define ID_TEX_AXE			24
+#define ID_TEX_HOLYWATER	25
+
 #define MAP1					"content\\tilemap\\map1.txt"
 #define MAP2					"content\\tilemap\\map2.txt"
 #define MAP3					"content\\tilemap\\map3.txt"
@@ -100,7 +103,7 @@ public:
 #define SIMON_ATTACK_TIME			400
 #define SIMON_JUMP_TIME				1000
 #define SIMON_UNTOUCHABLE_TIME		3000
-static enum Weapond { whip, sword, axe };
+static enum Weapond { whip, sword, axe,holywater };
 #pragma endregion
 #pragma region enemies
 #define ENEMY_STATE_LIVE			1
@@ -147,9 +150,9 @@ static enum Weapond { whip, sword, axe };
 #define FISHMEN_BBOX_WIDTH				34
 #define FISHMEN_BBOX_HEIGHT				66
 #define FISHMEN_TIME_LIMIT_WAIT_AFTER_ATTACK 700
-#define FISHMEN_GRAVITY 0.01f
+#define FISHMEN_GRAVITY 0.0015f
 #define FISHMEN_SPEED_X 0.07f
-#define FISHMEN_SPEED_Y_UP 0.2f
+#define FISHMEN_SPEED_Y_UP 0.9f
 #define FISHMEN_SPEED_Y_DOWN 0.3f
 #define FISHMEN_DX_LIMIT 140 
 #define FISHMEN_DX_ATTACK_LIMIT 130 
@@ -191,6 +194,13 @@ static enum Weapond { whip, sword, axe };
 #define FISHMEN_POS_Y 400.0f
 #pragma endregion
 
+#pragma region Holy water
+#define HOLYWATER_SPEED_X 0.22f
+#define HOLYWATER_SPEED_Y 0.18f
+#define HOLYWATER_GRAVITY 0.001f
+#define GHOST_BBOX_WIDTH	34
+#define GHOST_BBOX_HEIGHT	30
+#pragma endregion
 
 
 
@@ -199,7 +209,7 @@ static enum Weapond { whip, sword, axe };
 #pragma region backgroundobject
 
 	static enum in_obj_type { Brick, endmap1, stairup, stairdown, map2to3_p1, map2to3_p2, map3to2_p1, map3to2_p2 };
-	static enum small_item_type { smallheart, largeheart, whippowerup, holywater, sworditem, axeitem, redmoneybag, bluemoneybag, whitemoneybag };
+	static enum small_item_type { smallheart, largeheart, whippowerup, holywateritem, sworditem, axeitem, redmoneybag, bluemoneybag, whitemoneybag };
 	static enum bound_item_type { Bratizer, candle, breakableBrick, BreakableBlock, flame };
 	static enum static_obj_type { Door };
 #define BRATIZER_STATE_ACTIVE		1
@@ -222,8 +232,8 @@ static enum Weapond { whip, sword, axe };
 #pragma endregion
 #pragma region whip
 
-#define WHIP_STATE_ACTIVE			1
-#define WHIP_STATE_UNACTIVE			0
+#define WEPOND_STATE_ACTIVE			1
+#define WEPOND_STATE_UNACTIVE		0
 #define WHIP_F1_BBOX_WIDTH			17
 #define WHIP_F1_BBOX_HEIGHT			51
 #define WHIP_F2_BBOX_WIDTH			33
@@ -236,17 +246,24 @@ static enum Weapond { whip, sword, axe };
 #pragma region sword 
 
 #define SWORD_FLY_SPEED			5.0f
-#define SWORD_STATE_ACTIVE		1
-#define SWORD_STATE_UNACTIVE	0
 #define SWORD_BBOX_WIDTH		32
 #define SWORD_BBOX_HEIGHT		18
+#pragma endregion
+#pragma region Axe
+#define AXE_FLY_SPEED_X		0.20f
+#define AXE_FLY_SPEED_Y		0.55f
+#define AXE_BBOX_WIDTH		32
+#define AXE_BBOX_HEIGHT		28
+
+#define THROWINGAXE_SPEED_X 0.25f
+#define THROWINGAXE_SPEED_Y 0.65f
+#define THROWINGAXE_GRAVITY 0.0015f
 #pragma endregion
 #pragma region fireball
 #define FIREBALL_SPEED			0.21f
 #define FIREBALL_BBOX_WIDTH		15
 #define FIREBALL_BBOX_HEIGHT	11
 #pragma endregion
-
 #pragma region item
 #define ITEM_TIME_APPREARENCE		3000
 #define ITEM_STATE_ACTIVE			1
