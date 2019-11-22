@@ -75,8 +75,11 @@ void SceneGame::resetlist()
 	this->objects.clear();
 	this->ItemObjects.clear();
 	this->allEnemies.clear();
+	this->listeffect.clear();
 	CountEnemyGhost = 0;
 	CountEnemyPanther = 0;
+	CountEnemyBat = 0;
+	CountEnemyFishmen = 0;
 }
 
 void SceneGame::RenderBackground()
@@ -120,7 +123,27 @@ void SceneGame::collisionweapond()
 			BoundItem *bratizer = dynamic_cast<BoundItem *>(BratizerandItemObjects.at(i));
 			if (weapond->CheckOverLap(bratizer))
 			{
+				
 				bratizer->start_disappear();
+				if(bratizer->getType() == Const_Value::bound_item_type::Bratizer || bratizer->getType() == Const_Value::bound_item_type::candle)
+				listeffect.push_back(new Effect(Const_Value::effect_type::sparks, bratizer->getx(), bratizer->gety(), 0.0f, 0.0f));
+				if (bratizer->getType() == Const_Value::bound_item_type::breakableBrick)
+				{
+					listeffect.push_back(new Effect(Const_Value::effect_type::broken, bratizer->getx(), bratizer->gety(),-0.125f,0.0f));
+					listeffect.push_back(new Effect(Const_Value::effect_type::broken, bratizer->getx(), bratizer->gety(), -0.1125f,0.2f));
+					listeffect.push_back(new Effect(Const_Value::effect_type::broken, bratizer->getx(), bratizer->gety(), 0.1125f,0.2f));
+					listeffect.push_back(new Effect(Const_Value::effect_type::broken, bratizer->getx(), bratizer->gety(), 0.125f,0.0f));
+				}
+				if (bratizer->getType() == Const_Value::bound_item_type::BreakableBlock)
+				{
+					listeffect.push_back(new Effect(Const_Value::effect_type::broken, bratizer->getx(), bratizer->gety()+20, -0.125f, -0.15f));
+					listeffect.push_back(new Effect(Const_Value::effect_type::broken, bratizer->getx(), bratizer->gety()+20, -0.125f, -0.08f));
+					listeffect.push_back(new Effect(Const_Value::effect_type::broken, bratizer->getx(), bratizer->gety()+20, -0.125f, 0.15f));
+					listeffect.push_back(new Effect(Const_Value::effect_type::broken, bratizer->getx(), bratizer->gety()+20, -0.125f, 0.08f));
+					listeffect.push_back(new Effect(Const_Value::effect_type::broken, bratizer->getx(), bratizer->gety() + 20, 0.125f, -0.15f));
+					listeffect.push_back(new Effect(Const_Value::effect_type::broken, bratizer->getx(), bratizer->gety() + 20, 0.125f, 0.08f));
+					
+				}
 				if (resetsword)
 					sword->reset();
 				break;
@@ -155,70 +178,7 @@ void SceneGame::collisionweapond()
 		if (enemy != nullptr)
 			if (weapond->CheckOverLap(enemy) && enemy->GetState() == ENEMY_STATE_LIVE)
 			{
-				////ghost
-				//if (type == 1)
-				//{
-				//	//25% -->small heart
-				//	int makeitem = rand() % 6;
-				//	//has item
-				//	if (makeitem == 1)
-				//	{
-				//		SmallItem *sm = new SmallItem();
-				//		int randtype = rand() % 9;
-				//		sm->setType(randtype);
-				//		float x, y;
-				//		enemy->GetPosition(x, y);
-				//		sm->SetPosition(x, y);
-				//		sm->SetState(ITEM_STATE_UNACTIVE);
-				//		dynamic_cast<Ghost*>(enemy)->addSubItem(sm);
-				//		ItemObjects.push_back(sm);
-				//		objects.push_back(sm);
-				//		
-				//	}
-				//	dynamic_cast<Ghost*>(enemy)->takedamage();
-				//	//CountEnemyGhost-=1;
-				//	
-				//}
-				////panther
-				//else if (type == 2)
-				//{
-				//	int makeitem = rand() % 6;
-				//	if (makeitem == 1)
-				//	{
-				//		SmallItem *sm = new SmallItem();
-				//		sm->setType(Const_Value::small_item_type::smallheart);
-				//		float x, y;
-				//		enemy->GetPosition(x, y);
-				//		sm->SetPosition(x, y);
-				//		sm->SetState(ITEM_STATE_UNACTIVE);
-				//		dynamic_cast<Panther*>(enemy)->addSubItem(sm);
-				//		ItemObjects.push_back(sm);
-				//		objects.push_back(sm);
-				//		
-				//	}
-				//	dynamic_cast<Panther*>(enemy)->takedamage();
-				//	//CountEnemyPanther--;
-				//}
-				////bat
-				//else if (type == 3)
-				//{
-				//	int makeitem = rand() % 6;
-				//	//has item
-				//	if (makeitem == 1)
-				//	{
-				//		SmallItem *sm = new SmallItem();
-				//		sm->setType(Const_Value::small_item_type::smallheart);
-				//		float x, y;
-				//		enemy->GetPosition(x, y);
-				//		sm->SetPosition(x, y);
-				//		sm->SetState(ITEM_STATE_UNACTIVE);
-				//		dynamic_cast<Bat*>(enemy)->addSubItem(sm);
-				//		ItemObjects.push_back(sm);
-				//		objects.push_back(sm);
-				//	}
-				//	dynamic_cast<Bat*>(enemy)->takedamage();
-				//	//CountEnemyPanther--;
-				//}
+				
 				int makeitem = rand() % 6;
 				SmallItem *sm = nullptr;
 				if (makeitem == 1)
@@ -239,21 +199,25 @@ void SceneGame::collisionweapond()
 					if(makeitem == 1)
 					dynamic_cast<Ghost*>(enemy)->addSubItem(sm);
 					dynamic_cast<Ghost*>(enemy)->takedamage();
+					listeffect.push_back(new Effect(Const_Value::effect_type::sparks, enemy->getx(), enemy->gety()+10, 0.0f, 0.0f));
 					break;
 				case 2:
 					if (makeitem == 1)
 						dynamic_cast<Panther*>(enemy)->addSubItem(sm);
 					dynamic_cast<Panther*>(enemy)->takedamage();
+					listeffect.push_back(new Effect(Const_Value::effect_type::sparks, enemy->getx()+20, enemy->gety(), 0.0f, 0.0f));
 					break;
 				case 3:
 					if (makeitem == 1)
 						dynamic_cast<Bat*>(enemy)->addSubItem(sm);
 					dynamic_cast<Bat*>(enemy)->takedamage();
+					listeffect.push_back(new Effect(Const_Value::effect_type::sparks, enemy->getx(), enemy->gety(), 0.0f, 0.0f));
 					break;
 				case 4:
 					if (makeitem == 1)
 						dynamic_cast<Fishmen*>(enemy)->addSubItem(sm);
 					dynamic_cast<Fishmen*>(enemy)->takedamage();
+					listeffect.push_back(new Effect(Const_Value::effect_type::sparks, enemy->getx(), enemy->gety() + 10, 0.0f, 0.0f));
 					break;
 				default:
 					break;
@@ -305,26 +269,15 @@ void SceneGame::Update(DWORD dt)
 			}
 			else if (type == Const_Value::in_obj_type::endmap1) // stair down
 			{
-				this->BratizerandItemObjects.clear();
-				this->BratizerObjects.clear();
-				this->BrickObjects.clear();
-				this->coObjects.clear();
-				this->objects.clear();
-				this->ItemObjects.clear();
+				resetlist();
 				this->LoadContent(2);
-				//simon->setstateendmap1(false);
 				break;
 			}
 			else if (type == Const_Value::in_obj_type::map2to3_p1)
 			{
 				float x, y;
 				simon->GetPosition(x, y);
-				this->BratizerandItemObjects.clear();
-				this->BratizerObjects.clear();
-				this->BrickObjects.clear();
-				this->coObjects.clear();
-				this->objects.clear();
-				this->ItemObjects.clear();
+				resetlist();
 				this->LoadContent(3);
 				simon->SetPosition(x, 0.0f);
 				//simon->setstateendmap1(false);
@@ -334,12 +287,7 @@ void SceneGame::Update(DWORD dt)
 			{
 				float x, y;
 				simon->GetPosition(x, y);
-				this->BratizerandItemObjects.clear();
-				this->BratizerObjects.clear();
-				this->BrickObjects.clear();
-				this->coObjects.clear();
-				this->objects.clear();
-				this->ItemObjects.clear();
+				resetlist();
 				this->LoadContent(3);
 				simon->SetPosition(x, 0.0f);
 				//simon->setstateendmap1(false);
@@ -507,7 +455,7 @@ void SceneGame::Update(DWORD dt)
 						else // đi từ bên phải
 						{
 							CountEnemyGhost++;
-							ghost = new Ghost(Camera::getInstance()->Getx(), groundY - GHOST_BBOX_HEIGHT - 2, 1);
+						ghost = new Ghost(Camera::getInstance()->Getx(), groundY - GHOST_BBOX_HEIGHT - 2, 1);
 						}
 
 					}
@@ -658,7 +606,7 @@ void SceneGame::Update(DWORD dt)
 #pragma endregion
 				float vty = FISHMEN_POS_Y;
 				int directionFishmen = vtx < simon->getx() ? 1 : -1;
-				allEnemies.push_back(new Fishmen(vtx, vty, directionFishmen, simon, &allfireball));
+				allEnemies.push_back(new Fishmen(vtx, vty, directionFishmen, simon, &allfireball,&listeffect));
 				CountEnemyFishmen++;
 
 				TimeWaitCreateFishmen = 2000 + (rand() % 2000);
@@ -736,10 +684,8 @@ void SceneGame::Update(DWORD dt)
 		if (!dynamic_cast<Fireball*>(allfireball[i])->isFinish())
 			coObjects.push_back(allfireball[i]);
 	}
-	
 	for (unsigned int i = 0; i < ItemObjects.size(); i++)
 		ItemObjects[i]->Update(dt, &BrickObjects);
-	//update bratizers
 	for (unsigned int i = 0; i < BratizerObjects.size(); i++)
 	{
 		BratizerObjects[i]->Update(dt);
@@ -756,6 +702,15 @@ void SceneGame::Update(DWORD dt)
 	for (unsigned int i = 0; i < allfireball.size(); i++)
 	{
 		allfireball[i]->Update(dt);
+	}
+	for (unsigned int i = 0; i < listeffect.size(); i++)
+	{
+		if(!dynamic_cast<Effect*>(listeffect[i])->Isfinish())
+		listeffect[i]->Update(dt);
+		else
+		{
+			listeffect.erase(listeffect.begin() + i);
+		}
 	}
 	simon->Update(dt, &coObjects);
 	collisionweapond();
@@ -784,20 +739,18 @@ void SceneGame::LoadContent(int map)
 	allStaticObject = getallStaticObject();
 	BratizerandItemObjects = this->getBratizerobjects();
 
-	for (unsigned int i = 0; i < ItemObjects.size(); i++)
-	{
-		if (ItemObjects[i]->GetState() == ITEM_STATE_ACTIVE)
-			coObjects.push_back(this->getItemobjects().at(i));
-		//BratizerandItemObjects.push_back(this->getItemobjects().at(i));
-	}
+	//for (unsigned int i = 0; i < ItemObjects.size(); i++)
+	//{
+	//	if (ItemObjects[i]->GetState() == ITEM_STATE_ACTIVE)
+	//		coObjects.push_back(this->getItemobjects().at(i));
+	//	//BratizerandItemObjects.push_back(this->getItemobjects().at(i));
+	//}
 	//init simon with defaul position
-	simon = Simon::getinstance();
+	simon = Simon::getinstance(&listeffect);
 	float x, y;
 	BrickObjects.at(0)->GetPosition(x, y);
 	groundY = y;
-	simon->SetPosition(x, y - SIMON_BIG_BBOX_HEIGHT - 1);
-	/*ghost = new Ghost(x+300,y - GHOST_BBOX_HEIGHT - 2 ,-1);
-	objects.push_back(ghost);*/
+	simon->SetPosition(x,y - SIMON_BIG_BBOX_HEIGHT - 1);
 	objects.push_back(simon);
 	//init sword and whip
 	sword = new Sword(simon);
@@ -822,6 +775,9 @@ void SceneGame::Draw()
 		allEnemies[i]->Render();
 	for (unsigned int i = 0; i < allfireball.size(); i++)
 		allfireball[i]->Render();
+	for (unsigned int i = 0; i < listeffect.size(); i++)
+		listeffect[i]->Render();
+
 
 }
 

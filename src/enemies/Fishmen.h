@@ -2,6 +2,7 @@
 #include "../sample/GameObject.h"
 #include "../weapon/Fireball.h"
 #include "../map/Invisibleobject.h"
+#include "../effect/Effect.h"
 class Fishmen :
 	public CGameObject
 {
@@ -18,8 +19,9 @@ class Fishmen :
 	CGameObject *Fire;
 	bool walking, shooting, isAttacking;
 	vector<CGameObject*> *listWeaponOfEnemy;
+	vector<CGameObject*> *listeffect;
 public:
-	Fishmen(float X, float Y, int Direction, CGameObject* simon, vector<CGameObject*> *listWeaponOfEnemy);
+	Fishmen(float X, float Y, int Direction, CGameObject* simon, vector<CGameObject*> *listWeaponOfEnemy, vector<CGameObject*> *listeffect);
 	~Fishmen();
 	int getx() { return x; }
 	void start_disappear();

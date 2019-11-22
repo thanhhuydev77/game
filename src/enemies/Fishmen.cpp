@@ -2,7 +2,7 @@
 
 
 
-Fishmen::Fishmen(float X, float Y, int Direction, CGameObject* simon, vector<CGameObject*> *listWeaponOfEnemy)
+Fishmen::Fishmen(float X, float Y, int Direction, CGameObject* simon, vector<CGameObject*> *listWeaponOfEnemy, vector<CGameObject*> *listeffect)
 {
 	LoadResourceHelper::Loadspritefromfile("content\\characters\\enemies\\fishman_sprite.txt", ID_TEX_FISHMEN);
 	LoadResourceHelper::Loadanimationfromfile("content\\characters\\enemies\\fishman_ani.txt", this);
@@ -19,6 +19,7 @@ Fishmen::Fishmen(float X, float Y, int Direction, CGameObject* simon, vector<CGa
 	this->listWeaponOfEnemy = listWeaponOfEnemy;
 	vy = -FISHMEN_SPEED_Y_UP;
 	state = ENEMY_STATE_LIVE;
+	this->listeffect = listeffect;
 }
 
 
@@ -123,7 +124,17 @@ void Fishmen::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			vy += FISHMEN_GRAVITY;
 		}
 		CGameObject::Update(dt);
-
+		if ((abs((int)y - WATER_LEVEL_HEIGHT) < 5 && vy < 0 ))
+		{
+			listeffect->push_back(new Effect(Const_Value::effect_type::water, x, y-30, -0.15f, 0.15f));
+			listeffect->push_back(new Effect(Const_Value::effect_type::water, x+FISHMEN_BBOX_WIDTH, y-30,0.15f, 0.15f));
+		}
+		
+			if ((abs((int)y + FISHMEN_BBOX_HEIGHT - WATER_LEVEL_HEIGHT) < 5 && vy > 0))
+			{
+				listeffect->push_back(new Effect(Const_Value::effect_type::water, x, y +FISHMEN_BBOX_HEIGHT- 30, -0.15f, 0.15f));
+				listeffect->push_back(new Effect(Const_Value::effect_type::water, x + FISHMEN_BBOX_WIDTH, y+FISHMEN_BBOX_HEIGHT - 30, 0.15f, 0.15f));
+			}
 #pragma region Xu li va cham Brick
 		vector<LPCOLLISIONEVENT> coEvents;
 		vector<LPCOLLISIONEVENT> coEventsResult;

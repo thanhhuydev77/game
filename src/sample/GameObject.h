@@ -76,6 +76,8 @@ public:
 	virtual void Render() = 0;
 	virtual void SetState(int state) { this->state = state; }
 	int getx() { return x; }
+	int gety() { return y; }
+	int getVx() { return (int)vx; }
 
 	~CGameObject();
 };

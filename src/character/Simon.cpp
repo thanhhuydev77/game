@@ -5,7 +5,7 @@
 #include <string>
 #include"../item/BoundItem.h"
 Simon* Simon::_instance = NULL;
-void Simon::takedamage(int damage,int direct )
+void Simon::takedamage(int damage, int direct)
 {
 	Health -= damage;
 	hurting = true;
@@ -18,9 +18,9 @@ void Simon::takedamage(int damage,int direct )
 	}
 	if (Health <= 0)
 		timeDie = GetTickCount();
-	
+
 }
-Simon::Simon()
+Simon::Simon(vector<LPGAMEOBJECT> *listeffect)
 {
 	LoadResourceHelper::Loadspritefromfile("content\\characters\\player\\player_sprites.txt", ID_TEX_SIMON);
 	LoadResourceHelper::Loadanimationfromfile("content\\characters\\player\\player_ani\\allani.txt", this);
@@ -30,17 +30,18 @@ Simon::Simon()
 	currentsubwepond = 3;
 	NumofLife = 3;
 	timeDie = 0;
+	this->listeffect = listeffect;
 }
 
-Simon * Simon::getinstance()
+Simon * Simon::getinstance(vector<LPGAMEOBJECT> *listeffect)
 {
-	if (_instance == NULL) _instance = new Simon();
+	if (_instance == NULL) _instance = new Simon(listeffect);
 	return _instance;
 }
 
 void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 {
-	
+
 	CGameObject::Update(dt);
 	if (GetTickCount() - untouchable_start > SIMON_UNTOUCHABLE_TIME)
 	{
@@ -92,13 +93,21 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 			NumofLife--;
 		}
 	}
+	/*if (!Camera::getInstance()->checkInCamera(x, y, x + SIMON_SMALL_BBOX_WIDTH, y + SIMON_SMALL_BBOX_HEIGHT))
+	{
+		if (NumofLife >= 1)
+		{
+			comeback();
+			NumofLife--;
+		}
+	}*/
 	if (Health <= 0)
 	{
 		state = SIMON_STATE_DIE;
 		return;
 	}
 #pragma endregion
-	
+
 	if (!climbing)
 	{
 		vy += SIMON_GRAVITY * dt;
@@ -253,15 +262,15 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 			collect_start = 0;
 		}
 #pragma endregion
-{
+		{
 			vector<LPCOLLISIONEVENT> coEvents;
 
 			vector<LPCOLLISIONEVENT> coEventsResult;
 
 			coEvents.clear();
 			// turn off collision when die 
-			
-				CalcPotentialCollisions(colliable_objects, coEvents);
+
+			CalcPotentialCollisions(colliable_objects, coEvents);
 
 
 
@@ -391,10 +400,10 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 						}
 
 					}
-					else if ((dynamic_cast<Ghost *>(e->obj) || dynamic_cast<Panther *>(e->obj) || dynamic_cast<Fishmen *>(e->obj)|| dynamic_cast<Bat *>(e->obj) || dynamic_cast<Fireball *>(e->obj))&&untouchable == 0 )
+					else if ((dynamic_cast<Ghost *>(e->obj) || dynamic_cast<Panther *>(e->obj) || dynamic_cast<Fishmen *>(e->obj) || dynamic_cast<Bat *>(e->obj) || dynamic_cast<Fireball *>(e->obj)) && untouchable == 0)
 					{
-						if(nx!=0)
-						takedamage(10,-nx);
+						if (nx != 0)
+							takedamage(10, -nx);
 						else
 							takedamage(10, 1);
 						if (dynamic_cast<Bat *>(e->obj))
@@ -438,7 +447,7 @@ void Simon::Render()
 	int alpha = 255;
 	if (untouchable == 1)
 		alpha = 170;
-	 if (vy < 0)
+	if (vy < 0)
 	{
 		ani = SIMON_ANI_JUMP;
 	}
@@ -465,7 +474,7 @@ void Simon::Render()
 		else
 			ani = SIMON_ANI_WALKING;
 	}
-	
+
 	if (jumpingmono || jumpingplex)
 	{
 		if (attacking)
@@ -512,7 +521,7 @@ void Simon::Render()
 		ani = SIMON_ANI_GOUP;
 	if (hurting)
 		ani = SIMON_ANI_TAKEDAMAGE;
-	if (Health<=0)
+	if (Health <= 0)
 	{
 		ani = SIMON_ANI_DIE;
 		DebugOut(L"ani :%d --", ani);
@@ -525,9 +534,9 @@ void Simon::Render()
 			animations[SIMON_ANI_GODOWN]->GetFrame(1)->GetSprite()->Draw(x, y, alpha, nx);
 		return;
 	}
-	if (ani == SIMON_ANI_DIE &&animations[ani]->GetCurrentFrame() == 1&& animations[SIMON_ANI_DIE]->GetFrame(1)->GetSprite()->GetId() == 1026)
+	if (ani == SIMON_ANI_DIE && animations[ani]->GetCurrentFrame() == 1 && animations[SIMON_ANI_DIE]->GetFrame(1)->GetSprite()->GetId() == 1026)
 	{
-		animations[ani]->GetFrame(1)->GetSprite()->Draw(x, y, alpha,nx);
+		animations[ani]->GetFrame(1)->GetSprite()->Draw(x, y, alpha, nx);
 		return;
 	}
 	animations[ani]->Render(x, y, alpha, nx);
@@ -572,8 +581,8 @@ void Simon::collisionwithSmallItem(CGameObject * si)
 	case Const_Value::small_item_type::sworditem: //sword
 		lh->SetState(ITEM_STATE_UNACTIVE);
 		lh->SetPosition(0 - SWORD_BBOX_WIDTH, 0);
-		if(currentsubwepond == Const_Value::Weapond::sword)
-		this->currentsubWeapondTurn += 5;
+		if (currentsubwepond == Const_Value::Weapond::sword)
+			this->currentsubWeapondTurn += 5;
 		else
 			this->currentsubWeapondTurn = 5;
 		currentsubwepond = Const_Value::Weapond::sword;
@@ -590,11 +599,34 @@ void Simon::collisionwithSmallItem(CGameObject * si)
 	case Const_Value::whitemoneybag:
 	case Const_Value::redmoneybag:
 	case Const_Value::bluemoneybag:
+	{
+		int randnum = rand() % 4;
+		switch (randnum)
+		{
+		case 0:
+			money += 100;
+			listeffect->push_back(new Effect(Const_Value::effect_type::money100, lh->getx() + 30, lh->gety(), 0, 0));
+			break;
+		case 1:
+			money += 400;
+			listeffect->push_back(new Effect(Const_Value::effect_type::money400, lh->getx() + 30, lh->gety(), 0, 0));
+			break;
+		case 2:
+			money += 700;
+			listeffect->push_back(new Effect(Const_Value::effect_type::money700, lh->getx() + 30, lh->gety(), 0, 0));
+			break;
+		case 3:
+			money += 1000;
+			listeffect->push_back(new Effect(Const_Value::effect_type::money1000, lh->getx() + 30, lh->gety(), 0, 0));
+			break;
+		default:
+			money += 0;
+			break;
+		}
 		lh->SetState(ITEM_STATE_UNACTIVE);
 		lh->SetPosition(0 - MONEYBAG_BBOX_WIDTH, 0);
-		money += 100;
 		break;
-
+	}
 	default:
 		break;
 	}
@@ -602,12 +634,12 @@ void Simon::collisionwithSmallItem(CGameObject * si)
 
 void Simon::resetAnimation()
 {
-	
+
 	animations[SIMON_ANI_ATTACK]->reset();
 	animations[SIMON_ANI_GOUP_ATTACK]->reset();
 	animations[SIMON_ANI_GODOWN_ATTACK]->reset();
 	animations[SIMON_ANI_SIT_ATTACK]->reset();
-	
+
 	attack_start = 0;
 	attacking = false;
 }
@@ -657,7 +689,7 @@ void Simon::comeback()
 
 void Simon::StartAttack()
 {
-	if (!attacking && !collecting&&!hurting) {
+	if (!attacking && !collecting && !hurting) {
 		resetAnimation();
 		attacking = true;
 		attack_start = GetTickCount();

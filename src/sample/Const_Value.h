@@ -44,10 +44,10 @@ public:
 #define ID_TEX_FIREBALL		23
 #define ID_TEX_AXE			24
 #define ID_TEX_HOLYWATER	25
-
-#define MAP1					"content\\tilemap\\map1.txt"
-#define MAP2					"content\\tilemap\\map2.txt"
-#define MAP3					"content\\tilemap\\map3.txt"
+#define ID_TEX_EFFECT		26
+#define MAP1				"content\\tilemap\\map1.txt"
+#define MAP2				"content\\tilemap\\map2.txt"
+#define MAP3				"content\\tilemap\\map3.txt"
 
 #define OFFSET_Y		100
 #pragma endregion
@@ -157,6 +157,7 @@ static enum Weapond { whip, sword, axe,holywater };
 #define FISHMEN_DX_LIMIT 140 
 #define FISHMEN_DX_ATTACK_LIMIT 130 
 #define FISHMEN_DY_JUMP 270
+#define WATER_LEVEL_HEIGHT	389
 
 #define FISHMEN_ZONE_1_LEFT 0.0f
 #define FISHMEN_ZONE_1_RIGHT 128.0f
@@ -198,13 +199,9 @@ static enum Weapond { whip, sword, axe,holywater };
 #define HOLYWATER_SPEED_X 0.22f
 #define HOLYWATER_SPEED_Y 0.18f
 #define HOLYWATER_GRAVITY 0.001f
-#define GHOST_BBOX_WIDTH	34
-#define GHOST_BBOX_HEIGHT	30
+#define HOLYWATER_BBOX_WIDTH	34
+#define HOLYWATER_BBOX_HEIGHT	30
 #pragma endregion
-
-
-
-
 #pragma endregion
 #pragma region backgroundobject
 
@@ -286,5 +283,11 @@ static enum Weapond { whip, sword, axe,holywater };
 #define DOOR_OPEN_ANI_TIME			3000
 
 #pragma endregion
+#pragma region effect
+	static enum effect_type {money100,money400,money700,money1000,broken,sparks,water};
+#define TIME_ACTIVE 300
+#define EFFECT_GRAVITY 0.001
+#pragma endregion
+
 };
 

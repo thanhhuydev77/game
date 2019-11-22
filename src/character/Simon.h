@@ -67,10 +67,11 @@ class Simon : public CGameObject
 		int currentsubWeapondTurn;
 		int currentsubwepond;
 		int dofirst;
-		Simon();
+		vector<LPGAMEOBJECT> *listeffect;
+		Simon(vector<LPGAMEOBJECT> *listeffect);
 public:
 	void setclimbingdistance(int cd) { climbbing_distance = cd; }
-	static Simon* getinstance();
+	static Simon* getinstance(vector<LPGAMEOBJECT> *listeffect);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *colliable_objects = NULL);
 	virtual void Render();
 	
@@ -118,9 +119,6 @@ public:
 	int getcurrentsubWeapond() { return currentsubwepond; }
 	int getcurrentsubWeapondTurn() { return currentsubWeapondTurn; }
 	void setcurrentsubWeapondTurnDesc();
-	int getx() { return x; }
-	int gety() { return y; }
-	int getVx() { return (int)vx; };
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom);
 };
 

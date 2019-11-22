@@ -25,6 +25,7 @@
 #include "../enemies/Fishmen.h"
 #include "../weapon/Axe.h"
 #include "../weapon/Holy_Water.h"
+#include "../effect/Effect.h"
 
 using namespace std;
 
@@ -58,7 +59,7 @@ private:
 	int CountEnemyBat;
 	CInvisibleObject* typestairstart ;
 	vector<LPGAMEOBJECT> allfireball;  //all object
-
+	vector<LPGAMEOBJECT> listeffect;
 	vector<LPGAMEOBJECT> objects;  //all object
 	vector<LPGAMEOBJECT> BratizerObjects; //all bratizer
 	vector<LPGAMEOBJECT> coObjects;//all object except simon

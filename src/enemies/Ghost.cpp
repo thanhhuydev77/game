@@ -117,4 +117,5 @@ void Ghost::Render()
 		animations[1]->Render(x + 7, y + 7, 255);
 	else
 		animations[0]->Render(x, y, 255, nx);
+	RenderBoundingBox();
 }

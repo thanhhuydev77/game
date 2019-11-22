@@ -31,10 +31,17 @@ void BoundItem::Render()
 		//int ani = 0;
 		// animations 2 is flame
 		if (disappearing)
-			if(Type == Const_Value::bound_item_type::Bratizer)
-			animations[Const_Value::bound_item_type::flame]->Render(x+7, y+7, 255);
+		{
+			if (Type == Const_Value::bound_item_type::Bratizer)
+			{
+				animations[Const_Value::bound_item_type::flame]->Render(x + 7, y + 7, 255);
+			}
 			else
-				animations[Const_Value::bound_item_type::flame]->Render(x , y, 255);
+				if (Type == Const_Value::bound_item_type::candle)
+				{
+					animations[Const_Value::bound_item_type::flame]->Render(x, y, 255);
+				}
+		}
 		else
 		animations[Type]->Render(x, y, 255);
 		
@@ -45,6 +52,7 @@ void BoundItem::Render()
 
 void BoundItem::start_disappear()
 {
+	//animations[Const_Value::bound_item_type::flame]->reset();
 	disappearing = true;
 	disappear_start = GetTickCount();
 }
@@ -66,7 +74,7 @@ void BoundItem::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void BoundItem::GetBoundingBox(float & l, float & t, float & r, float & b)
 {
 	int width, height;
-	if (state == ITEM_STATE_ACTIVE)
+	if (!disappearing && state == ITEM_STATE_ACTIVE || ((Type == Const_Value::bound_item_type::Bratizer || Type == Const_Value::bound_item_type::candle) && state == ITEM_STATE_ACTIVE) )
 	{
 		switch (Type)
 		{
@@ -118,6 +126,5 @@ void BoundItem::GetBoundingBox(float & l, float & t, float & r, float & b)
 		t = 0;
 		r = 0;
 		b = 0;
-		return;
 	}
 }
