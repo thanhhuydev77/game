@@ -85,7 +85,10 @@ void Panther::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			disappear_start = 0;
 			Health -= 1;
 			if (subItem != nullptr)
+			{
 				subItem->SetState(ITEM_STATE_ACTIVE);
+				subItem->SetPosition(x, y - 10);
+			}
 		}
 	}
 	float DistanceLimit;

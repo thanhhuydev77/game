@@ -66,7 +66,7 @@ void Sword::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			attack_start = 0;
 			state = WEPOND_STATE_UNACTIVE;
 			waiting = false;
-			DebugOut(L"ketthuc \n");
+			//DebugOut(L"ketthuc \n");
 		}
 		else
 		{
@@ -76,7 +76,7 @@ void Sword::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				waiting = false;
 				state = WEPOND_STATE_ACTIVE;
 				vx = nx * SWORD_FLY_SPEED;
-				DebugOut(L"batdau \n");
+				//DebugOut(L"batdau \n");
 			}
 			//waiting 200ms before transit
 			else
@@ -84,11 +84,11 @@ void Sword::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				state = WEPOND_STATE_UNACTIVE;
 				vx = 0;
 				waiting = true;
-				DebugOut(L"cho \n");
+				//DebugOut(L"cho \n");
 			}
 		}
 	}
-	DebugOut(L"state sword :%d \n",state);
+	//DebugOut(L"state sword :%d \n",state);
 }
 
 void Sword::reset()
@@ -101,7 +101,7 @@ void Sword::reset()
 
 void Sword::Render()
 {
-	DebugOut(L"state sword render :%d \n", state);
+	//DebugOut(L"state sword render :%d \n", state);
 	if (state == WEPOND_STATE_ACTIVE)
 	{
 		animations[0]->Render(x, y, 255, nx);//

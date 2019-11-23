@@ -67,21 +67,31 @@ class Simon : public CGameObject
 		int currentsubWeapondTurn;
 		int currentsubwepond;
 		int dofirst;
+		bool invisible;
+		DWORD startinvisible;
+		bool pausing;
+		DWORD pause_start;
+		bool doubleshot;
 		vector<LPGAMEOBJECT> *listeffect;
 		Simon(vector<LPGAMEOBJECT> *listeffect);
+		bool destroyall;
 public:
 	void setclimbingdistance(int cd) { climbbing_distance = cd; }
 	static Simon* getinstance(vector<LPGAMEOBJECT> *listeffect);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *colliable_objects = NULL);
 	virtual void Render();
-	
+	bool isdoubleshot() { return doubleshot; }
+	bool isdestroyall() { return destroyall; }
+	void setdestroyall(bool is) { destroyall = is; }
 	bool isattacking() { return attacking; }
-	
+	void startInvisible(){ invisible = true; startinvisible = GetTickCount(); }
+	void startPause() { pausing = true; pause_start = GetTickCount(); }
 	bool iscollecting() { return collecting; }
 	void setclimbing(bool is) { climbing = is; if(!is) canclimbdown = canclimbup = false;
 	}
+	bool ispause() { return pausing; }
 	bool ishurting() { return hurting; }
-	void takedamage(int damage,int direct );
+	void takedamage(int damage, int direct);
 	bool isgameover() { return NumofLife <= 0; }
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount(); }
 	void StartHurting(int direct ) { hurting = 1; hurt_start = GetTickCount(); temp_nx = direct; }
@@ -119,6 +129,7 @@ public:
 	int getcurrentsubWeapond() { return currentsubwepond; }
 	int getcurrentsubWeapondTurn() { return currentsubWeapondTurn; }
 	void setcurrentsubWeapondTurnDesc();
+	void collisionwithenemy(vector<LPGAMEOBJECT> *list);
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom);
 };
 

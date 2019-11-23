@@ -52,11 +52,12 @@ public:
 #define OFFSET_Y		100
 #pragma endregion
 #pragma region Simon
+#define DEADSTAGE					2000
 #define SIMON_UNTOUCHABLE_TIME		2000
 #define SIMON_TIME_ATTACK_OFF		40
 #define SIMON_TIME_COLLECT			1000
 #define SIMON_WALKING_SPEED			0.09f 
-#define SIMON_JUMP_SPEED_Y			0.26f
+#define SIMON_JUMP_SPEED_Y			0.28f
 #define SIMON_JUMP_SPEED_X			0.08f
 #define SIMON_HURT_SPEED_X			0.04f
 #define SIMON_HURT_SPEED_Y			0.20f
@@ -206,7 +207,7 @@ static enum Weapond { whip, sword, axe,holywater };
 #pragma region backgroundobject
 
 	static enum in_obj_type { Brick, endmap1, stairup, stairdown, map2to3_p1, map2to3_p2, map3to2_p1, map3to2_p2 };
-	static enum small_item_type { smallheart, largeheart, whippowerup, holywateritem, sworditem, axeitem, redmoneybag, bluemoneybag, whitemoneybag };
+	static enum small_item_type { smallheart, largeheart, whippowerup, holywateritem, sworditem, axeitem, redmoneybag, bluemoneybag, whitemoneybag,cross, stopwatch,invisiblepot, doubleshot};
 	static enum bound_item_type { Bratizer, candle, breakableBrick, BreakableBlock, flame };
 	static enum static_obj_type { Door };
 #define BRATIZER_STATE_ACTIVE		1
@@ -280,6 +281,14 @@ static enum Weapond { whip, sword, axe,holywater };
 #define AXE_BBOX_HEIGHT				28
 #define MONEYBAG_BBOX_WIDTH			28
 #define MONEYBAG_BBOX_HEIGHT		28
+#define CROSS_BBOX_WIDTH			32
+#define CROSS_BBOX_HEIGHT			32
+#define DOUBLESHOT_BBOX_WIDTH		28
+#define DOUBLESHOT_BBOX_HEIGHT		28
+#define INVISIBLEPOT_BBOX_WIDTH		29
+#define INVISIBLEPOT_BBOX_HEIGHT	36
+#define STOPWATCH_BBOX_WIDTH		30
+#define STOPWATCH_BBOX_HEIGHT		32
 #define DOOR_OPEN_ANI_TIME			3000
 
 #pragma endregion

@@ -126,17 +126,12 @@ void CGameObject::RenderBoundingBox()
 
 	GetBoundingBox(l, t, r, b);
 	
-	/*rect.left = 0;
-	rect.top = 0;
-	rect.right = (int)r - (int)l;
-	rect.bottom = (int)b - (int)t;*/
-
 	rect.left = l;
 	rect.top = t;
 	rect.right = r;
 	rect.bottom = b;
 
-	CGame::GetInstance()->Draw(x, y, bbox, rect.left, rect.top, rect.right, rect.bottom,120);
+	CGame::GetInstance()->Draw(x, y, bbox, rect.left, rect.top, rect.right, rect.bottom,0);
 }
 
 void CGameObject::AddAnimation(int aniId)

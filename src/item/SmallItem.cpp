@@ -132,6 +132,22 @@ void SmallItem::GetBoundingBox(float & l, float & t, float & r, float & b)
 		width = MONEYBAG_BBOX_WIDTH;
 		height = MONEYBAG_BBOX_HEIGHT;
 		break;
+	case Const_Value::small_item_type::cross:
+		width = CROSS_BBOX_WIDTH;
+		height = CROSS_BBOX_HEIGHT;
+		break;
+	case Const_Value::small_item_type::doubleshot:
+		width = DOUBLESHOT_BBOX_WIDTH;
+		height = DOUBLESHOT_BBOX_HEIGHT;
+		break;
+	case Const_Value::small_item_type::invisiblepot:
+		width = INVISIBLEPOT_BBOX_WIDTH;
+		height = INVISIBLEPOT_BBOX_HEIGHT;
+		break;
+	case Const_Value::small_item_type::stopwatch:
+		width =	STOPWATCH_BBOX_WIDTH;
+		height = STOPWATCH_BBOX_HEIGHT;
+		break;
 	default:
 		width = SMALL_HEART_BBOX_WIDTH;
 		height = SMALL_HEART_BBOX_HEIGHT;

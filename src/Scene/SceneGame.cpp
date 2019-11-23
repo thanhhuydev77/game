@@ -96,7 +96,7 @@ void SceneGame::collisionweapond()
 	//if (simon->getcurrentWeapond() == Const_Value::Weapond::whip && whip->GetState() == WHIP_STATE_ACTIVE);
 	CGameObject *weapond;
 	bool resetsword = false;
-	DebugOut(L"\n type:%d \n\n", simon->getcurrentWeapond());
+	//DebugOut(L"\n type:%d \n\n", simon->getcurrentWeapond());
 	switch (simon->getcurrentWeapond())
 	{
 	case Const_Value::Weapond::whip:
@@ -184,7 +184,7 @@ void SceneGame::collisionweapond()
 				if (makeitem == 1)
 				{
 					sm = new SmallItem();
-					int randtype = rand() % 9;
+					int randtype = rand() % 12;
 					sm->setType(randtype);
 					float x, y;
 					enemy->GetPosition(x, y);
@@ -616,6 +616,12 @@ void SceneGame::Update(DWORD dt)
 #pragma endregion
 
 #pragma region update object
+	if (simon->isdestroyall())
+	{
+		for (UINT i = 0; i < allEnemies.size(); i++)
+			allEnemies[i]->takedamage();
+		simon->setdestroyall(false);
+	}
 	for (unsigned int i = 0; i < allEnemies.size(); i++)
 	{
 		if (dynamic_cast<Ghost*>(allEnemies[i]))
@@ -624,6 +630,7 @@ void SceneGame::Update(DWORD dt)
 			{
 				if(allEnemies[i]->GetState() == ENEMY_STATE_LIVE)
 				coObjects.push_back(allEnemies[i]);
+				if(!simon->ispause() && !simon->iscollecting())
 				allEnemies[i]->Update(dt, &BrickObjects);
 			}
 			else
@@ -639,6 +646,7 @@ void SceneGame::Update(DWORD dt)
 			{
 				if (allEnemies[i]->GetState() == ENEMY_STATE_LIVE)
 				coObjects.push_back(allEnemies[i]);
+				if (!simon->ispause() && !simon->iscollecting())
 				allEnemies[i]->Update(dt, &BrickObjects);
 			}
 			else
@@ -654,6 +662,7 @@ void SceneGame::Update(DWORD dt)
 			{
 				if (allEnemies[i]->GetState() == ENEMY_STATE_LIVE)
 				coObjects.push_back(allEnemies[i]);
+				if (!simon->ispause() && !simon->iscollecting())
 				allEnemies[i]->Update(dt, &BrickObjects);
 			}
 			else
@@ -668,6 +677,7 @@ void SceneGame::Update(DWORD dt)
 				{
 					if (allEnemies[i]->GetState() == ENEMY_STATE_LIVE)
 					coObjects.push_back(allEnemies[i]);
+					if (!simon->ispause() && !simon->iscollecting())
 					allEnemies[i]->Update(dt, &BrickObjects);
 				}
 				else
@@ -701,6 +711,7 @@ void SceneGame::Update(DWORD dt)
 	}
 	for (unsigned int i = 0; i < allfireball.size(); i++)
 	{
+		if (!simon->ispause() && !simon->iscollecting())
 		allfireball[i]->Update(dt);
 	}
 	for (unsigned int i = 0; i < listeffect.size(); i++)

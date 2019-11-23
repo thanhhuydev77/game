@@ -48,6 +48,16 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 		untouchable_start = 0;
 		untouchable = 0;
 	}
+	if (GetTickCount() - startinvisible > 5000)
+	{
+		startinvisible = 0;
+		invisible = false;
+	}
+	if (GetTickCount() - pause_start > 5000)
+	{
+		pausing = false;
+		
+	}
 #pragma region hurting
 	if (GetTickCount() - hurt_start > SIMON_JUMP_TIME)
 	{
@@ -85,6 +95,14 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 			}
 		}
 	}
+	if (y > DEADSTAGE)
+	{
+		if (NumofLife >= 1)
+		{
+			comeback();
+			NumofLife--;
+		}
+	}
 	if (GetTickCount() - timeDie > 2000 && timeDie != 0)
 	{
 		if (NumofLife >= 1)
@@ -115,7 +133,14 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 	else {
 		vy = 0;
 	}
-
+	vector<LPGAMEOBJECT> list_enemy;
+	list_enemy.clear();
+	for (UINT i = 0; i < colliable_objects->size(); i++)
+		if (dynamic_cast<Ghost*>(colliable_objects->at(i))|| dynamic_cast<Bat*>(colliable_objects->at(i))|| dynamic_cast<Panther*>(colliable_objects->at(i))|| dynamic_cast<Fishmen*>(colliable_objects->at(i)))
+			list_enemy.push_back(colliable_objects->at(i));
+	
+	
+	
 	if (autoclimbing || autowalking)
 	{
 		//start autoclimb when not auto walk
@@ -400,7 +425,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 						}
 
 					}
-					else if ((dynamic_cast<Ghost *>(e->obj) || dynamic_cast<Panther *>(e->obj) || dynamic_cast<Fishmen *>(e->obj) || dynamic_cast<Bat *>(e->obj) || dynamic_cast<Fireball *>(e->obj)) && untouchable == 0)
+					/*else if ((dynamic_cast<Ghost *>(e->obj) || dynamic_cast<Panther *>(e->obj) || dynamic_cast<Fishmen *>(e->obj) || dynamic_cast<Bat *>(e->obj) || dynamic_cast<Fireball *>(e->obj)) && untouchable == 0)
 					{
 						if (nx != 0)
 							takedamage(10, -nx);
@@ -408,11 +433,13 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 							takedamage(10, 1);
 						if (dynamic_cast<Bat *>(e->obj))
 							dynamic_cast<Bat *>(e->obj)->takedamage();
-					}
+					}*/
 				}
 			}
 			// clean up collision events
+			
 			for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
+
 		}
 
 #pragma endregion
@@ -437,7 +464,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 	}
 
 #pragma endregion
-
+collisionwithenemy(&list_enemy);
 	DebugOut(L"health :%d \n", Health);
 }
 
@@ -447,6 +474,8 @@ void Simon::Render()
 	int alpha = 255;
 	if (untouchable == 1)
 		alpha = 170;
+	if (invisible)
+		alpha = 40;
 	if (vy < 0)
 	{
 		ani = SIMON_ANI_JUMP;
@@ -524,7 +553,7 @@ void Simon::Render()
 	if (Health <= 0)
 	{
 		ani = SIMON_ANI_DIE;
-		DebugOut(L"ani :%d --", ani);
+		//DebugOut(L"ani :%d --", ani);
 	}
 	if (state == SIMON_STATE_STANDING_ONSTAIR && !attacking)
 	{
@@ -541,12 +570,36 @@ void Simon::Render()
 	}
 	animations[ani]->Render(x, y, alpha, nx);
 	RenderBoundingBox();
-	DebugOut(L"ani :%d --", ani);
+	//DebugOut(L"ani :%d --", ani);
 }
 
 void Simon::setcurrentsubWeapondTurnDesc()
 {
 	if (currentsubWeapondTurn >= 1) currentsubWeapondTurn--; else currentsubWeapondTurn = 0;
+}
+
+void Simon::collisionwithenemy(vector<LPGAMEOBJECT> *list)
+{
+	vector<LPCOLLISIONEVENT> coEvents;
+
+	vector<LPCOLLISIONEVENT> coEventsResult;
+	CalcPotentialCollisions(list, coEvents);
+	float min_tx, min_ty, nx = 0, ny;
+	FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny);
+	for (UINT i = 0; i < coEventsResult.size(); i++)
+	{
+		LPCOLLISIONEVENT e = coEventsResult[i];
+		if (!untouchable && !invisible)
+		{
+			if (nx != 0)
+				takedamage(10, -nx);
+			else
+				takedamage(10, 1);
+			if (dynamic_cast<Bat *>(e->obj))
+				dynamic_cast<Bat *>(e->obj)->takedamage();
+		}
+	}
+	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 }
 
 void Simon::collisionwithSmallItem(CGameObject * si)
@@ -627,6 +680,25 @@ void Simon::collisionwithSmallItem(CGameObject * si)
 		lh->SetPosition(0 - MONEYBAG_BBOX_WIDTH, 0);
 		break;
 	}
+	case Const_Value::small_item_type::cross:
+		lh->SetState(ITEM_STATE_UNACTIVE);
+		lh->SetPosition(0 - CROSS_BBOX_WIDTH, 0);
+		destroyall = true;
+		break;
+	case Const_Value::small_item_type::invisiblepot:
+		lh->SetState(ITEM_STATE_UNACTIVE);
+		lh->SetPosition(0 - INVISIBLEPOT_BBOX_WIDTH, 0);
+		startInvisible();
+		break;
+	case Const_Value::small_item_type::stopwatch:
+		lh->SetState(ITEM_STATE_UNACTIVE);
+		lh->SetPosition(0 - STOPWATCH_BBOX_WIDTH, 0);
+		startPause();
+		break;
+	case Const_Value::small_item_type::doubleshot:
+		lh->SetState(ITEM_STATE_UNACTIVE);
+		lh->SetPosition(0 - DOUBLESHOT_BBOX_WIDTH, 0);
+		doubleshot = true;
 	default:
 		break;
 	}

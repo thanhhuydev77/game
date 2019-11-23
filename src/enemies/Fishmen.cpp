@@ -199,7 +199,7 @@ void Fishmen::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 		XAfter = x;
 		XaccumulationAttack += abs(XAfter - XBefore);
-		DebugOut(L"y :%d,vy :%d \n", (int)y, (int)vy);
+		//DebugOut(L"y :%d,vy :%d \n", (int)y, (int)vy);
 	}
 }
 
