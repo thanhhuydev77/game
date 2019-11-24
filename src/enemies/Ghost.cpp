@@ -72,7 +72,7 @@ void Ghost::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
 	coEvents.clear();
-	CalcPotentialCollisions(&listObject_Brick, coEvents); // Lấy danh sách các va chạm 
+	CalcPotentialCollisions(&listObject_Brick, coEvents); 
 	if (coEvents.size() == 0)
 	{
 		y += dy;

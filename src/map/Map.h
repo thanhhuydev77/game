@@ -12,6 +12,7 @@
 #include "../sample/Endpoint.h"
 #include "../camera/Camera.h"
 #include "../item/StaticObject.h"
+#include "../sample/Grid.h"
 class Map
 {
 private:
@@ -21,6 +22,7 @@ private:
 		int iditem;
 		int left;
 		int top;
+		vector<int> grid;
 	};
 	vector<saveobject> arrobjects;
 	TileSet *ts;
@@ -51,8 +53,8 @@ public:
 	vector<LPGAMEOBJECT> getallstairpoint();
 	vector<LPGAMEOBJECT> getallstaticObject();
 	void loaditems();
-	void loadStaticObject(int id, int top, int left);
-	void loadinvisibleobjects(int id,int direct,int top, int left, int width, int height);
+	void loadStaticObject(int id, int top, int left, vector<int> ligrid);
+	void loadinvisibleobjects(int id,int direct,int top, int left, int width, int height,vector<int> ligrid);
 	Map (string filePath,int idtex);
 	Map* GetMap();
 	int GetWidth();

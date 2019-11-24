@@ -44,6 +44,7 @@ public:
 	int state;
 	int level;
 	DWORD dt; 
+	vector<int> listGrid;
 	vector<LPANIMATION> animations;
 
 public: 
@@ -54,7 +55,8 @@ public:
 	void GetSpeed(float &vx, float &vy) { vx = this->vx; vy = this->vy; }
 	int GetDirect() { return nx; };
 	int GetState() { return this->state; }
-
+	void setlistgrid(vector<int> lis) { listGrid = lis; }
+	vector<int> getlistgrid() { return listGrid; }
 	int getlevel(){ return level; }
 	void RenderBoundingBox();
 	bool CheckOverLap(LPGAMEOBJECT coO);

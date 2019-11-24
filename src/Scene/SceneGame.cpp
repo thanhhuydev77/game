@@ -531,16 +531,29 @@ void SceneGame::Update(DWORD dt)
 		}
 #pragma endregion
 #pragma region create panther
-		if (REGION_CREATE_PANTHER_LEFT > simon->getx() || simon->getx() > REGION_CREATE_PANTHER_RIGHT)
+		DebugOut(L"camx:%d", Camera::getInstance()->Getx());
+		//go to panther area from right and left
+		if ((Camera::getInstance()->Getx()+500 >= 1275&& Camera::getInstance()->Getx()+500 < 1300 && simon->getVx()>=0) || (Camera::getInstance()->Getx() < 2015&& Camera::getInstance()->Getx() > 2000 && simon->getVx() <= 0))
 		{
 			if (CountEnemyPanther == 0) // không còn Panther nào sống thì mới dc tạo lại cả 3
 			{
 
 				int directionPanther = abs(REGION_CREATE_PANTHER_LEFT - simon->getx()) < abs(REGION_CREATE_PANTHER_RIGHT - simon->getx()) ? -1 : 1; // hướng mặt của Panther quay về hướng simon
-				allEnemies.push_back(new Panther(1398.0f, OFFSET_Y + 0.0f, directionPanther, directionPanther == -1 ? 20.0f : 9.0f, simon));
-				allEnemies.push_back(new Panther(1783.0f, OFFSET_Y + 6.0f, directionPanther, directionPanther == -1 ? 278.0f : 180.0f, simon));
-				allEnemies.push_back(new Panther(1923.0f, OFFSET_Y + 0.0f, directionPanther, directionPanther == -1 ? 68.0f : 66.0f, simon));
+				allEnemies.push_back(new Panther(1398.0f, OFFSET_Y + 159.0f, directionPanther, directionPanther == -1 ? 20.0f : 9.0f, simon));
+				allEnemies.push_back(new Panther(1783.0f, OFFSET_Y + 94.f, directionPanther, directionPanther == -1 ? 278.0f : 180.0f, simon));
+				allEnemies.push_back(new Panther(1923.0f, OFFSET_Y + 159.0f, directionPanther, directionPanther == -1 ? 68.0f : 66.0f, simon));
 				CountEnemyPanther += 3;
+			}
+		}
+		else if ((Camera::getInstance()->Getx() + 500 < 1270 || Camera::getInstance()->Getx() > 2100))
+		{
+			for (unsigned int i = 0; i < allEnemies.size(); i++)
+			{
+				if (dynamic_cast<Panther*>(allEnemies[i]))
+				{
+						allEnemies.erase(allEnemies.begin() + i);
+						CountEnemyPanther--;
+				}
 			}
 		}
 #pragma endregion
@@ -616,6 +629,20 @@ void SceneGame::Update(DWORD dt)
 #pragma endregion
 
 #pragma region update object
+	//resetlist();
+	DebugOut(L"%d", (currentGrids == Grid::getInstace()->checkingrid()));
+	if ((currentGrids != Grid::getInstace()->checkingrid()))
+	{
+			objects = this->getallobjects();
+			BrickObjects = this->getallHidenObjects();
+			BratizerObjects = this->getBratizerobjects();
+			ItemObjects = this->getItemobjects();
+			//coObjects = this->getallHidenObjects();
+			allStaticObject = getallStaticObject();
+			BratizerandItemObjects = this->getBratizerobjects();
+			currentGrids = Grid::getInstace()->checkingrid();
+	}
+	DebugOut(L"object:%d-brick:%d-bratizer:%d-item:%d-allstatic:%d-ghost:%d-panther:%d",objects.size(),BrickObjects.size(),BratizerObjects.size(),ItemObjects.size(),allStaticObject.size(),CountEnemyGhost,CountEnemyPanther);
 	if (simon->isdestroyall())
 	{
 		for (UINT i = 0; i < allEnemies.size(); i++)
@@ -736,6 +763,8 @@ void SceneGame::Update(DWORD dt)
 
 void SceneGame::LoadContent(int map)
 {
+	Camera::getInstance()->Setsize(mapwidth, SCREEN_HEIGHT);
+	currentGrids.clear();
 	games = CGame::GetInstance();
 	CTextures * textures = CTextures::GetInstance();
 	textures->loadcontent();
@@ -773,7 +802,9 @@ void SceneGame::LoadContent(int map)
 	holywater = new Holy_Water(simon);
 	objects.push_back(holywater);
 	allfireball.push_back(new Fireball(1000, simon->gety(), -1));
-	Camera::getInstance()->Setsize(mapwidth, SCREEN_HEIGHT);
+	currentGrids = Grid::getInstace()->checkingrid();
+	
+	
 }
 
 void SceneGame::Draw()
@@ -788,6 +819,11 @@ void SceneGame::Draw()
 		allfireball[i]->Render();
 	for (unsigned int i = 0; i < listeffect.size(); i++)
 		listeffect[i]->Render();
+	simon->Render();
+	whip->Render();
+	sword->Render();
+	axe->Render();
+	holywater->Render();
 
 
 }

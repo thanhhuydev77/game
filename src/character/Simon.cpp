@@ -136,7 +136,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 	vector<LPGAMEOBJECT> list_enemy;
 	list_enemy.clear();
 	for (UINT i = 0; i < colliable_objects->size(); i++)
-		if (dynamic_cast<Ghost*>(colliable_objects->at(i))|| dynamic_cast<Bat*>(colliable_objects->at(i))|| dynamic_cast<Panther*>(colliable_objects->at(i))|| dynamic_cast<Fishmen*>(colliable_objects->at(i)))
+		if (dynamic_cast<Ghost*>(colliable_objects->at(i))|| dynamic_cast<Bat*>(colliable_objects->at(i))|| dynamic_cast<Panther*>(colliable_objects->at(i))|| dynamic_cast<Fishmen*>(colliable_objects->at(i))|| dynamic_cast<Fireball*>(colliable_objects->at(i)))
 			list_enemy.push_back(colliable_objects->at(i));
 	
 	
@@ -338,8 +338,10 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 						switch (dynamic_cast<CInvisibleObject *>(e->obj)->Gettype())
 						{
 						case Const_Value::in_obj_type::Brick:
-							x += min_tx * dx + nx * 0.1f;		// nx*0.5f : need to push out a bit to avoid overlapping next frame
-							y += min_ty * dy + ny * 0.1f;
+							if(hurting)
+								x+= min_tx * dx + nx * 0.6f;
+							x += min_tx * dx + nx * 0.4f;		// nx*0.5f : need to push out a bit to avoid overlapping next frame
+							y += min_ty * dy + ny * 0.4f;
 
 							if (nx != 0)
 							{
@@ -400,6 +402,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 						}
 
 					}
+					//only allow go to right when meet door
 					else if (dynamic_cast<StaticObject *>(e->obj) && nx == -1)
 					{
 						startAutowalk(-nx, x + 120);
@@ -699,6 +702,13 @@ void Simon::collisionwithSmallItem(CGameObject * si)
 		lh->SetState(ITEM_STATE_UNACTIVE);
 		lh->SetPosition(0 - DOUBLESHOT_BBOX_WIDTH, 0);
 		doubleshot = true;
+		break;
+	case Const_Value::small_item_type::chicken:
+		lh->SetState(ITEM_STATE_UNACTIVE);
+		lh->SetPosition(0 - CHICKEN_BBOX_WIDTH, 0);
+		Health = (Health + 30 > 100) ?100 :(Health + 30);
+		doubleshot = true;
+		break;
 	default:
 		break;
 	}
@@ -748,7 +758,7 @@ void Simon::setcanclimb(bool icanclimb, bool up)
 
 void Simon::comeback()
 {
-	x = Camera::getInstance()->Getx() + 100;
+	x = 0;
 	y = OFFSET_Y;
 	Health = 100;
 	resetToDefault();

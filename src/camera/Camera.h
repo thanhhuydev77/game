@@ -25,7 +25,7 @@ public:
 	void setactivearea(vector<int> a) { activearea = a; }
 	void nextarea();
 	Camera();
-	void reset() { currentarea = 0; };
+	void reset() { currentarea = 0; camx = 0; camy = 0; };
 	void setcurrentarea(int a) { currentarea = a; }
 	void Setsize(int width, int height);
 	void Update(DWORD dt,CGameObject *Simon);

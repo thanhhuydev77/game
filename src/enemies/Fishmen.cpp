@@ -43,7 +43,7 @@ void Fishmen::takedamage()
 
 void Fishmen::Attack()
 {
-	//chua co thi tao moi --ban dau
+	//init when null
 	if (Fire == NULL)
 	{
 		Fire = new Fireball(x + 10, y + 3, nx);
@@ -53,7 +53,6 @@ void Fishmen::Attack()
 	if (dynamic_cast<Fireball*>(Fire)->isFinish())
 	{
 		dynamic_cast<Fireball*>(Fire)->restart(x + 10, y + 3, nx);
-		//listWeaponOfEnemy->push_back(Fire);
 	}
 	else
 		return;
@@ -164,10 +163,10 @@ void Fishmen::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			y += dy;
 		}
 
-		if (!isAttacking) // đang tấn công thì vẫn cho trọng lực kéo xuống
+		if (!isAttacking) 
 		{
 			bool isCollisionDirectionX = false;
-			for (UINT i = 0; i < coEventsResult.size(); i++) // không cho fishmen vượt qua gạch loại nhỏ theo trục x
+			for (UINT i = 0; i < coEventsResult.size(); i++) 
 			{
 				if (coEventsResult[i]->nx != 0)
 				{
@@ -180,7 +179,7 @@ void Fishmen::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				}
 			}
 
-			if (!isCollisionDirectionX) // ko va chạm với trục x 
+			if (!isCollisionDirectionX) 
 				x += dx;
 		}
 

@@ -63,10 +63,10 @@ void Bat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 	y += dy;
 	x += dx;
-	if (x <= 3034 || x >= 4092)
+	/*if (x <= 3034 || x >= 4092)
 	{
 		Health = 0;
-	}
+	}*/
 }
 
 void Bat::GetBoundingBox(float & left, float & top, float & right, float & bottom)

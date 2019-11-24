@@ -148,6 +148,10 @@ void SmallItem::GetBoundingBox(float & l, float & t, float & r, float & b)
 		width =	STOPWATCH_BBOX_WIDTH;
 		height = STOPWATCH_BBOX_HEIGHT;
 		break;
+	case Const_Value::small_item_type::chicken:
+		width = CHICKEN_BBOX_WIDTH;
+		height = CHICKEN_BBOX_HEIGHT;
+		break;
 	default:
 		width = SMALL_HEART_BBOX_WIDTH;
 		height = SMALL_HEART_BBOX_HEIGHT;

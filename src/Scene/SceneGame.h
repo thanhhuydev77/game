@@ -50,7 +50,7 @@ private:
 	int CountEnemyGhost;
 	int CountEnemyFishmen;
 	bool isAllowCreateBat;
-
+	vector<int> currentGrids;
 	DWORD TimeCreateFishmen;
 	DWORD TimeWaitCreateFishmen;
 

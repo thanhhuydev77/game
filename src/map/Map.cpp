@@ -6,46 +6,96 @@
 
 vector<LPGAMEOBJECT> Map::getallObject()
 {
-	return objects;
+	vector<LPGAMEOBJECT> result;
+	for (int i = 0; i < objects.size(); i++)
+	{
+		if (Grid::getInstace()->isincurrentGrid(objects[i]))
+			result.push_back(objects[i]);
+	}
+	return result;
+	//return objects;
 }
 
 vector<LPGAMEOBJECT> Map::getallHidenObject()
 {
-	return allHidenObject;
+	vector<LPGAMEOBJECT> result;
+	for (int i = 0; i < allHidenObject.size(); i++)
+	{
+		if (Grid::getInstace()->isincurrentGrid(allHidenObject[i]))
+			result.push_back(allHidenObject[i]);
+	}
+	return result;
 }
 
 vector<LPGAMEOBJECT> Map::getBratizersObject()
 {
-	return Bratizerobjects;
+	vector<LPGAMEOBJECT> result;
+	for (int i = 0; i < Bratizerobjects.size(); i++)
+	{
+		if (Grid::getInstace()->isincurrentGrid(Bratizerobjects[i]))
+			result.push_back(Bratizerobjects[i]);
+	}
+	return result;
+	//return Bratizerobjects;
 }
 
 vector<LPGAMEOBJECT> Map::getItemsObject()
 {
-	return itemsobjects;
+	vector<LPGAMEOBJECT> result;
+	for (int i = 0; i < itemsobjects.size(); i++)
+	{
+		if (Grid::getInstace()->isincurrentGrid(itemsobjects[i]))
+			result.push_back(itemsobjects[i]);
+	}
+	return result;
+	//return itemsobjects;
 }
 
 vector<LPGAMEOBJECT> Map::getallbrickandpoint()
 {
-	return allbrickandpoint;
+	vector<LPGAMEOBJECT> result;
+	for (int i = 0; i < allbrickandpoint.size(); i++)
+	{
+		if (Grid::getInstace()->isincurrentGrid(allbrickandpoint[i]))
+			result.push_back(allbrickandpoint[i]);
+	}
+	return result;
+	//return allbrickandpoint;
 }
 
 vector<LPGAMEOBJECT> Map::getallstairpoint()
 {
-	return allstairpoint;
+	vector<LPGAMEOBJECT> result;
+	for (int i = 0; i < allstairpoint.size(); i++)
+	{
+		if (Grid::getInstace()->isincurrentGrid(allstairpoint[i]))
+			result.push_back(allstairpoint[i]);
+	}
+	return result;
+	//return allstairpoint;
 }
 
 vector<LPGAMEOBJECT> Map::getallstaticObject()
 {
-	return allstaticObject;
+	vector<LPGAMEOBJECT> result;
+	for (int i = 0; i < allstaticObject.size(); i++)
+	{
+		if (Grid::getInstace()->isincurrentGrid(allstaticObject[i]))
+			result.push_back(allstaticObject[i]);
+	}
+	return result;
+	//return allstaticObject;
 }
 
 void Map::loaditems()
 {
 	for (int i = 0; i < arrobjects.size(); i++)
 	{
+
 		bra = new BoundItem();
 		bra->setType(arrobjects[i].id);
 		bra->SetPosition(arrobjects[i].left, arrobjects[i].top + OFFSET_Y);
+		bra->setlistgrid(arrobjects[i].grid);
 		Bratizerobjects.push_back(bra);
 		objects.push_back(bra);
 		if (bra->getType() == Const_Value::bound_item_type::BreakableBlock || bra->getType() == Const_Value::bound_item_type::breakableBrick)
@@ -54,6 +104,7 @@ void Map::loaditems()
 		}
 		smallitem = new SmallItem();
 		smallitem->setType(arrobjects[i].iditem);
+		smallitem->setlistgrid(arrobjects[i].grid);
 		smallitem->SetPosition(arrobjects[i].left, arrobjects[i].top + OFFSET_Y);
 		itemsobjects.push_back(smallitem);
 		objects.push_back(smallitem);
@@ -61,13 +112,14 @@ void Map::loaditems()
 
 	}
 }
-
-void Map::loadStaticObject(int id, int left, int top)
+//chua xu ly
+void Map::loadStaticObject(int id, int left, int top, vector<int> ligrid)
 {
 	StaticObject *st_obj;
 	st_obj = new StaticObject();
 	//st_obj->setDirect(direct);
 	st_obj->setType(id);
+	st_obj->setlistgrid(ligrid);
 
 	st_obj->SetPosition(left, top + OFFSET_Y);
 	//allHidenObject.push_back(in_obj);
@@ -75,15 +127,15 @@ void Map::loadStaticObject(int id, int left, int top)
 	allstaticObject.push_back(st_obj);
 	objects.push_back(st_obj);
 }
-
-void Map::loadinvisibleobjects(int id, int direct, int top, int left, int width, int height)
+//chua xu ly
+void Map::loadinvisibleobjects(int id, int direct, int top, int left, int width, int height,vector<int> ligrid)
 {
 
 	CInvisibleObject *in_obj;
 	in_obj = new CInvisibleObject();
 	in_obj->setDirect(direct);
 	in_obj->Settype(id);
-	
+	in_obj->setlistgrid(ligrid);
 	if (id == 0)
 		allbrickandpoint.push_back(in_obj);
 	else
@@ -124,14 +176,34 @@ Map::Map(string filePath, int idtex)
 		//load tileset
 		ts = new TileSet(mapname, tileWidth, tileHeight, imagesource, imageWidth, imageHeight);
 		ts->LoadTileSet(idtex, offset);
+
+		//load grid info
+		int numofgrid;
+		infile >> numofgrid;
+		for (int i = 0; i < numofgrid; i++)
+		{
+			int id, left, right;
+			infile >> id >> left >> right;
+			Grid::getInstace()->insertlistgrid(id, left, right);
+			//them vao grid
+		}
 		//load visible object
 		infile >> numobject;
 		for (int i = 0; i < numobject; i++)
 		{
 			{
-				int id, iditem, left, top;
-				infile >> id >> iditem >> left >> top;
-				saveobject obj{ id,iditem,left,top };
+				int id, iditem, left, top,numgrid;
+				infile >> id >> iditem >> left >> top>>numgrid;
+				vector<int> ligrid;
+				ligrid.clear();
+				for (int i = 0; i < numgrid; i++)
+				{
+					int idgrid;
+						infile >> idgrid;
+
+						ligrid.push_back(idgrid);
+				}
+				saveobject obj{ id,iditem,left,top,ligrid};
 				arrobjects.push_back(obj);
 			}
 		}
@@ -140,18 +212,35 @@ Map::Map(string filePath, int idtex)
 		infile >> numofobjects;
 		for (int i = 0; i < numofobjects; i++)
 		{
-			int id, direct, top, left, width, height;
-			infile >> id >> direct >> top >> left >> width >> height;
-			loadinvisibleobjects(id, direct, top, left, width, height);
+			int id, direct, top, left, width, height,numgrid;
+			infile >> id >> direct >> top >> left >> width >> height>>numgrid;
+			vector<int> ligrid;
+			for (int i = 0; i < numgrid; i++)
+			{
+				int idgrid;
+				infile >> idgrid;
+
+				ligrid.push_back(idgrid);
+			}
+			loadinvisibleobjects(id, direct, top, left, width, height,ligrid);
 
 		}
+		//load static object
 		int numofstaticobjects;
 		infile >> numofstaticobjects;
 		for (int i = 0; i < numofstaticobjects; i++)
 		{
-			int id,left,top;
-			infile >> id >> left >> top ;
-			loadStaticObject(id,left,top);
+			int id,left,top,numgrid;
+			infile >> id >> left >> top>>numgrid;
+			vector<int> ligrid;
+			for (int i = 0; i < numgrid; i++)
+			{
+				int idgrid;
+				infile >> idgrid;
+
+				ligrid.push_back(idgrid);
+			}
+			loadStaticObject(id,left,top,ligrid);
 		}
 		int numarea;
 		infile >> numarea;
@@ -161,6 +250,7 @@ Map::Map(string filePath, int idtex)
 			infile >> area;
 			activearea.push_back(area);
 		}
+
 		for (int i = 0; i < maheight*mawidth; i++)
 		{
 			int mapindex;

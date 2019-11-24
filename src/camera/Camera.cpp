@@ -97,9 +97,9 @@ RECT Camera::GetBound()
 	RECT bound;
 
 	bound.left	 = camx;
-	bound.right  = bound.left + mWidth;
+	bound.right  = bound.left + CAMERA_WIDTH;
 	bound.top	 = camy;
-	bound.bottom = bound.top + mHeight;
+	bound.bottom = bound.top + CAMERA_HEIGHT;
 
 	return bound;
 }

@@ -16,7 +16,8 @@ Panther::Panther(float X, float Y, int Direction, float autoGoX_Distance, CGameO
 	nx = Direction;
 	x = X;
 	y = Y;
-	AutoGoX_Backup_X = x;
+	AutoGoX = x;
+	originalX = x;
 	AutoGoX_Distance = autoGoX_Distance;
 
 	isSitting = 1;
@@ -76,7 +77,10 @@ void Panther::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		vy += PANTHER_GRAVITY_JUMPING * dt;
 	}
 	else
-		vy += PANTHER_GRAVITY * dt;// Simple fall down
+		if (isRunning)
+			vy += PANTHER_GRAVITY * dt;
+		else
+		vy += 0;
 	if (disappearing)
 	{
 		if (GetTickCount() - disappear_start > 300)
@@ -100,17 +104,15 @@ void Panther::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		isSitting = false;
 		isRunning = true;
-		// chuyển qua trạng thái chạy
+		
 		Run();
 		isStart = 1;
 		isAutoGoX = 1;
 	}
-	if (abs(x - simon->getx()) > 2000)
+	if (abs(x - originalX) > PANTHER_RUN_RACE)
 	{
 		takedamage();
 	}
-	/*if (isRunning)
-		Run();*/
 #pragma region collision with ground
 
 	vector<LPGAMEOBJECT> listObject_Brick;
@@ -141,14 +143,14 @@ void Panther::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			vy = 0; 
 			if (isJumping)
 			{
-				isJumping = false; // kết thúc nhảy
-				if (x < simon->getx()) // simon ở bên phải
+				isJumping = false;
+				if (x < simon->getx()) 
 				{
-					this->nx = 1; // đổi hướng panther qua phải 
+					this->nx = 1; 
 				}
 				else
 				{
-					this->nx = -1; // đổi hướng panther qua trái
+					this->nx = -1; 
 				}
 				Run();
 			}
@@ -161,13 +163,13 @@ void Panther::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 #pragma endregion
 	if (isAutoGoX == true)
 	{
-		if (abs(x - AutoGoX_Backup_X) >= AutoGoX_Distance)
+		if (abs(x - AutoGoX) >= AutoGoX_Distance)
 		{
-			x = x - (abs(x - AutoGoX_Backup_X) - AutoGoX_Distance);
+			x = x - (abs(x - AutoGoX) - AutoGoX_Distance);
 			isAutoGoX = false;
 			vx = 0;
 
-			Jump(); // Sau khi chạy xong thì nhảy
+			Jump(); 
 
 		}
 	}

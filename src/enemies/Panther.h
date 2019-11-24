@@ -9,9 +9,10 @@ class Panther :
 	bool isRunning;
 	bool isJumping;
 	bool isStart;
-	float AutoGoX_Distance; // khoảng cách cần chạy
+	float AutoGoX_Distance; 
 	bool isAutoGoX;
-	float AutoGoX_Backup_X;
+	float originalX;
+	float AutoGoX;
 	CGameObject * simon;
 	CGameObject *subItem;
 

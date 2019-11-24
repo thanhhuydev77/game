@@ -135,6 +135,7 @@ static enum Weapond { whip, sword, axe,holywater };
 #define PANTHER_SPEED_RUNNING 0.18f
 #define PANTHER_BBOX_WIDTH	66
 #define PANTHER_BBOX_HEIGHT	27
+#define PANTHER_RUN_RACE		1000
 #pragma endregion
 #pragma region bat
 #define BAT_AREA_LEFT				3166
@@ -207,7 +208,7 @@ static enum Weapond { whip, sword, axe,holywater };
 #pragma region backgroundobject
 
 	static enum in_obj_type { Brick, endmap1, stairup, stairdown, map2to3_p1, map2to3_p2, map3to2_p1, map3to2_p2 };
-	static enum small_item_type { smallheart, largeheart, whippowerup, holywateritem, sworditem, axeitem, redmoneybag, bluemoneybag, whitemoneybag,cross, stopwatch,invisiblepot, doubleshot};
+	static enum small_item_type { smallheart, largeheart, whippowerup, holywateritem, sworditem, axeitem, redmoneybag, bluemoneybag, whitemoneybag,cross, stopwatch,invisiblepot, doubleshot,chicken};
 	static enum bound_item_type { Bratizer, candle, breakableBrick, BreakableBlock, flame };
 	static enum static_obj_type { Door };
 #define BRATIZER_STATE_ACTIVE		1
@@ -289,6 +290,8 @@ static enum Weapond { whip, sword, axe,holywater };
 #define INVISIBLEPOT_BBOX_HEIGHT	36
 #define STOPWATCH_BBOX_WIDTH		30
 #define STOPWATCH_BBOX_HEIGHT		32
+#define CHICKEN_BBOX_WIDTH			32
+#define CHICKEN_BBOX_HEIGHT			26
 #define DOOR_OPEN_ANI_TIME			3000
 
 #pragma endregion
