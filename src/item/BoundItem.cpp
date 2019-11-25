@@ -66,6 +66,8 @@ void BoundItem::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			disappearing = false;
 			disappear_start = 0;
 			state = ITEM_STATE_UNACTIVE;
+			x = -100;
+
 			subItem->SetState(ITEM_STATE_ACTIVE);
 		}
 	}

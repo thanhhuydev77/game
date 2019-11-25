@@ -338,11 +338,17 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 						switch (dynamic_cast<CInvisibleObject *>(e->obj)->Gettype())
 						{
 						case Const_Value::in_obj_type::Brick:
-							if(hurting)
-								x+= min_tx * dx + nx * 0.6f;
-							x += min_tx * dx + nx * 0.4f;		// nx*0.5f : need to push out a bit to avoid overlapping next frame
-							y += min_ty * dy + ny * 0.4f;
+							if (hurting)
+							{
+								x += -this->nx * vx;
 
+								//y += min_ty * dy + ny * 0.4f;
+							}
+							else
+							{
+								x += min_tx * dx + nx * 0.4f;		// nx*0.5f : need to push out a bit to avoid overlapping next frame
+								y += min_ty * dy + ny * 0.4f;
+							}
 							if (nx != 0)
 							{
 								resetToDefault();
@@ -613,21 +619,21 @@ void Simon::collisionwithSmallItem(CGameObject * si)
 
 	case Const_Value::small_item_type::smallheart: //small heart
 		lh->SetState(ITEM_STATE_UNACTIVE);
-		lh->SetPosition(0 - SMALL_HEART_BBOX_WIDTH, 0);
+		lh->SetPosition(-100 - SMALL_HEART_BBOX_WIDTH, 0);
 		break;
 	case Const_Value::small_item_type::largeheart: //large heart
 		lh->SetState(ITEM_STATE_UNACTIVE);
-		lh->SetPosition(0 - LARGE_HEART_BBOX_WIDTH, 0);
+		lh->SetPosition(-100 - LARGE_HEART_BBOX_WIDTH, 0);
 		break;
 	case Const_Value::small_item_type::whippowerup: // whip power up
 		lh->SetState(ITEM_STATE_UNACTIVE);
-		lh->SetPosition(0 - WHIP_POWER_UP_BBOX_WIDTH, 0);
+		lh->SetPosition(-100 - WHIP_POWER_UP_BBOX_WIDTH, 0);
 		this->StartCollect();
 		this->Upgrate();
 		break;
 	case Const_Value::holywateritem: // holy water
 		lh->SetState(ITEM_STATE_UNACTIVE);
-		lh->SetPosition(0 - HOLYWATER_BBOX_WIDTH, 0);
+		lh->SetPosition(-100 - HOLYWATER_BBOX_WIDTH, 0);
 		if (currentsubwepond == Const_Value::Weapond::holywater)
 			this->currentsubWeapondTurn += 5;
 		else
@@ -636,7 +642,7 @@ void Simon::collisionwithSmallItem(CGameObject * si)
 		break;
 	case Const_Value::small_item_type::sworditem: //sword
 		lh->SetState(ITEM_STATE_UNACTIVE);
-		lh->SetPosition(0 - SWORD_BBOX_WIDTH, 0);
+		lh->SetPosition(-100 - SWORD_BBOX_WIDTH, 0);
 		if (currentsubwepond == Const_Value::Weapond::sword)
 			this->currentsubWeapondTurn += 5;
 		else
@@ -645,7 +651,7 @@ void Simon::collisionwithSmallItem(CGameObject * si)
 		break;
 	case Const_Value::small_item_type::axeitem:
 		lh->SetState(ITEM_STATE_UNACTIVE);
-		lh->SetPosition(0 - AXE_BBOX_WIDTH, 0);
+		lh->SetPosition(-100 - AXE_BBOX_WIDTH, 0);
 		if (currentsubwepond == Const_Value::Weapond::axe)
 			this->currentsubWeapondTurn += 5;
 		else
@@ -680,32 +686,32 @@ void Simon::collisionwithSmallItem(CGameObject * si)
 			break;
 		}
 		lh->SetState(ITEM_STATE_UNACTIVE);
-		lh->SetPosition(0 - MONEYBAG_BBOX_WIDTH, 0);
+		lh->SetPosition(-100 - MONEYBAG_BBOX_WIDTH, 0);
 		break;
 	}
 	case Const_Value::small_item_type::cross:
 		lh->SetState(ITEM_STATE_UNACTIVE);
-		lh->SetPosition(0 - CROSS_BBOX_WIDTH, 0);
+		lh->SetPosition(-100 - CROSS_BBOX_WIDTH, 0);
 		destroyall = true;
 		break;
 	case Const_Value::small_item_type::invisiblepot:
 		lh->SetState(ITEM_STATE_UNACTIVE);
-		lh->SetPosition(0 - INVISIBLEPOT_BBOX_WIDTH, 0);
+		lh->SetPosition(-100 - INVISIBLEPOT_BBOX_WIDTH, 0);
 		startInvisible();
 		break;
 	case Const_Value::small_item_type::stopwatch:
 		lh->SetState(ITEM_STATE_UNACTIVE);
-		lh->SetPosition(0 - STOPWATCH_BBOX_WIDTH, 0);
+		lh->SetPosition(-100 - STOPWATCH_BBOX_WIDTH, 0);
 		startPause();
 		break;
 	case Const_Value::small_item_type::doubleshot:
 		lh->SetState(ITEM_STATE_UNACTIVE);
-		lh->SetPosition(0 - DOUBLESHOT_BBOX_WIDTH, 0);
+		lh->SetPosition(-100 - DOUBLESHOT_BBOX_WIDTH, 0);
 		doubleshot = true;
 		break;
 	case Const_Value::small_item_type::chicken:
 		lh->SetState(ITEM_STATE_UNACTIVE);
-		lh->SetPosition(0 - CHICKEN_BBOX_WIDTH, 0);
+		lh->SetPosition(-100 - CHICKEN_BBOX_WIDTH, 0);
 		Health = (Health + 30 > 100) ?100 :(Health + 30);
 		doubleshot = true;
 		break;

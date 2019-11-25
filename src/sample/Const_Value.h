@@ -149,7 +149,7 @@ static enum Weapond { whip, sword, axe,holywater };
 #define DeltaY 20
 #pragma endregion
 #pragma region fishmen
-#define FISHMEN_BBOX_WIDTH				34
+#define FISHMEN_BBOX_WIDTH				38
 #define FISHMEN_BBOX_HEIGHT				66
 #define FISHMEN_TIME_LIMIT_WAIT_AFTER_ATTACK 700
 #define FISHMEN_GRAVITY 0.0015f
