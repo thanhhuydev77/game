@@ -27,7 +27,7 @@ vector<LPGAMEOBJECT> Map::getallHidenObject()
 	return result;
 }
 
-vector<LPGAMEOBJECT> Map::getBratizersObject()
+vector<LPGAMEOBJECT> Map::getBoundObject()
 {
 	vector<LPGAMEOBJECT> result;
 	for (int i = 0; i < Bratizerobjects.size(); i++)

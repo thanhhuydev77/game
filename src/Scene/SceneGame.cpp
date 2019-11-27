@@ -31,9 +31,9 @@ vector<LPGAMEOBJECT> SceneGame::getallHidenObjects()
 	return mmap->getallHidenObject();
 }
 
-vector<LPGAMEOBJECT> SceneGame::getBratizerobjects()
+vector<LPGAMEOBJECT> SceneGame::getBoundobjects()
 {
-	return mmap->getBratizersObject();
+	return mmap->getBoundObject();
 }
 
 vector<LPGAMEOBJECT> SceneGame::getItemobjects()
@@ -68,8 +68,8 @@ int SceneGame::getmapwidth()
 
 void SceneGame::resetlist()
 {
-	this->BratizerandItemObjects.clear();
-	this->BratizerObjects.clear();
+	this->BoundandItemObjects.clear();
+	this->BoundObjects.clear();
 	this->BrickObjects.clear();
 	this->coObjects.clear();
 	this->objects.clear();
@@ -93,10 +93,9 @@ SceneGame::~SceneGame()
 
 void SceneGame::collisionweapond()
 {
-	//if (simon->getcurrentWeapond() == Const_Value::Weapond::whip && whip->GetState() == WHIP_STATE_ACTIVE);
 	CGameObject *weapond;
 	bool resetsword = false;
-	//DebugOut(L"\n type:%d \n\n", simon->getcurrentWeapond());
+	//determine the current weapond
 	switch (simon->getcurrentWeapond())
 	{
 	case Const_Value::Weapond::whip:
@@ -116,32 +115,32 @@ void SceneGame::collisionweapond()
 		weapond = whip;
 		break;
 	}
-	for (UINT i = 0; i < BratizerandItemObjects.size(); i++)
+	for (UINT i = 0; i < BoundandItemObjects.size(); i++)
 	{
-		if (dynamic_cast<BoundItem *>(BratizerandItemObjects.at(i)))
+		if (dynamic_cast<BoundItem *>(BoundandItemObjects.at(i)))
 		{
-			BoundItem *bratizer = dynamic_cast<BoundItem *>(BratizerandItemObjects.at(i));
-			if (weapond->CheckOverLap(bratizer))
+			BoundItem *bounditem = dynamic_cast<BoundItem *>(BoundandItemObjects.at(i));
+			if (weapond->CheckOverLap(bounditem))
 			{
 				
-				bratizer->start_disappear();
-				if(bratizer->getType() == Const_Value::bound_item_type::Bratizer || bratizer->getType() == Const_Value::bound_item_type::candle)
-				listeffect.push_back(new Effect(Const_Value::effect_type::sparks, bratizer->getx(), bratizer->gety(), 0.0f, 0.0f));
-				if (bratizer->getType() == Const_Value::bound_item_type::breakableBrick)
+				bounditem->start_disappear();
+				if(bounditem->getType() == Const_Value::bound_item_type::Bratizer || bounditem->getType() == Const_Value::bound_item_type::candle)
+				listeffect.push_back(new Effect(Const_Value::effect_type::sparks, bounditem->getx(), bounditem->gety(), 0.0f, 0.0f));
+				if (bounditem->getType() == Const_Value::bound_item_type::breakableBrick)
 				{
-					listeffect.push_back(new Effect(Const_Value::effect_type::broken, bratizer->getx(), bratizer->gety(),-0.125f,0.0f));
-					listeffect.push_back(new Effect(Const_Value::effect_type::broken, bratizer->getx(), bratizer->gety(), -0.1125f,0.2f));
-					listeffect.push_back(new Effect(Const_Value::effect_type::broken, bratizer->getx(), bratizer->gety(), 0.1125f,0.2f));
-					listeffect.push_back(new Effect(Const_Value::effect_type::broken, bratizer->getx(), bratizer->gety(), 0.125f,0.0f));
+					listeffect.push_back(new Effect(Const_Value::effect_type::broken, bounditem->getx(), bounditem->gety(),-0.125f,0.0f));
+					listeffect.push_back(new Effect(Const_Value::effect_type::broken, bounditem->getx(), bounditem->gety(), -0.1125f,0.2f));
+					listeffect.push_back(new Effect(Const_Value::effect_type::broken, bounditem->getx(), bounditem->gety(), 0.1125f,0.2f));
+					listeffect.push_back(new Effect(Const_Value::effect_type::broken, bounditem->getx(), bounditem->gety(), 0.125f,0.0f));
 				}
-				if (bratizer->getType() == Const_Value::bound_item_type::BreakableBlock)
+				if (bounditem->getType() == Const_Value::bound_item_type::BreakableBlock)
 				{
-					listeffect.push_back(new Effect(Const_Value::effect_type::broken, bratizer->getx(), bratizer->gety()+20, -0.125f, -0.15f));
-					listeffect.push_back(new Effect(Const_Value::effect_type::broken, bratizer->getx(), bratizer->gety()+20, -0.125f, -0.08f));
-					listeffect.push_back(new Effect(Const_Value::effect_type::broken, bratizer->getx(), bratizer->gety()+20, -0.125f, 0.15f));
-					listeffect.push_back(new Effect(Const_Value::effect_type::broken, bratizer->getx(), bratizer->gety()+20, -0.125f, 0.08f));
-					listeffect.push_back(new Effect(Const_Value::effect_type::broken, bratizer->getx(), bratizer->gety() + 20, 0.125f, -0.15f));
-					listeffect.push_back(new Effect(Const_Value::effect_type::broken, bratizer->getx(), bratizer->gety() + 20, 0.125f, 0.08f));
+					listeffect.push_back(new Effect(Const_Value::effect_type::broken, bounditem->getx(), bounditem->gety()+20, -0.125f, -0.15f));
+					listeffect.push_back(new Effect(Const_Value::effect_type::broken, bounditem->getx(), bounditem->gety()+20, -0.125f, -0.08f));
+					listeffect.push_back(new Effect(Const_Value::effect_type::broken, bounditem->getx(), bounditem->gety()+20, -0.125f, 0.15f));
+					listeffect.push_back(new Effect(Const_Value::effect_type::broken, bounditem->getx(), bounditem->gety()+20, -0.125f, 0.08f));
+					listeffect.push_back(new Effect(Const_Value::effect_type::broken, bounditem->getx(), bounditem->gety() + 20, 0.125f, -0.15f));
+					listeffect.push_back(new Effect(Const_Value::effect_type::broken, bounditem->getx(), bounditem->gety() + 20, 0.125f, 0.08f));
 					
 				}
 				if (resetsword)
@@ -154,6 +153,7 @@ void SceneGame::collisionweapond()
 	{
 		int type = 0;
 		CGameObject *enemy = NULL;
+		//determine enemy's type
 		if (dynamic_cast<Ghost *>(allEnemies.at(i)))
 		{
 			enemy = dynamic_cast<Ghost *>(allEnemies.at(i));
@@ -255,6 +255,7 @@ void SceneGame::Update(DWORD dt)
 			int type = dynamic_cast<CInvisibleObject*>(allStairpoint.at(i))->Gettype();
 			if (type == Const_Value::in_obj_type::stairup)
 			{
+				simon->setnumstep(0);
 				simon->setcanclimb(true, true);
 				simon->setcanclimb(false, false);
 				typestairstart = dynamic_cast<CInvisibleObject*>(allStairpoint.at(i));
@@ -262,6 +263,7 @@ void SceneGame::Update(DWORD dt)
 			}
 			else if (type == Const_Value::in_obj_type::stairdown) // stair down
 			{
+				simon->setnumstep(0);
 				simon->setcanclimb(true, false);
 				simon->setcanclimb(false, true);
 				typestairstart = dynamic_cast<CInvisibleObject*>(allStairpoint.at(i));
@@ -308,62 +310,77 @@ void SceneGame::Update(DWORD dt)
 				//meetting stairdown
 				if (type == Const_Value::in_obj_type::stairdown)
 				{
+					
 					simon->startAutoClimb(-stair->getDirect(), b);
 					simon->setTempny(2);
 					int optionx = (stair->getDirect() == 1) ? 0 : 20;
 					simon->startAutowalk(-stair->getDirect(), l - SIMON_SMALL_BBOX_WIDTH + optionx);
 					simon->setTempnx(-stair->getDirect());
+					changemap = false;
 				}
 				//meeting stairup
 				else if (type == Const_Value::in_obj_type::stairup)
 				{
+					
 					simon->startAutoClimb(stair->getDirect(), b);
 					simon->setTempny(3);
 					int optionx = (stair->getDirect() == 1) ? 0 : 20;
 					simon->startAutowalk(-stair->getDirect(), l - SIMON_SMALL_BBOX_WIDTH + optionx);
 					simon->setTempnx(-stair->getDirect());
+					changemap = false;
 				}
 				else if (type == Const_Value::in_obj_type::map2to3_p1)
 				{
+					changemap = true;
 					resetlist();
 					Camera::getInstance()->reset();
 					this->LoadContent(3);
+					simon->SetPosition(127.0f, OFFSET_Y + 0.0f);
+					
 					//simon->SetPosition(x, 0.0f);
 					//simon->setstateendmap1(false);
-					simon->SetPosition(127.0f, OFFSET_Y + 0.0f);
+					
 					break;
 				}
 				else if (type == Const_Value::in_obj_type::map2to3_p2)
 				{
-
+					changemap = true;
 					resetlist();
 					Camera::getInstance()->reset();
 					this->LoadContent(3);
 					simon->SetPosition(770.0f, OFFSET_Y + 0.0f);
+					
+					
 					//simon->setstateendmap1(false);
 					break;
 				}
 				else if (type == Const_Value::in_obj_type::map3to2_p1)
 				{
+					changemap = true;
 					resetlist();
 					Camera::getInstance()->setcurrentarea(1);
 					Camera::getInstance()->SetPosition(3072, 0);
 					this->LoadContent(2);
+					simon->SetPosition(3160.0f, OFFSET_Y + 290.0f);
+					
+					
+					
 
 					//simon->SetPosition(x, 0.0f);
 					//simon->setstateendmap1(false);
-					simon->SetPosition(3160.0f, OFFSET_Y + 290.0f);
+					
 					break;
 				}
 				else if (type == Const_Value::in_obj_type::map3to2_p2)
 				{
-
+					changemap = true;
 					resetlist();
 					Camera::getInstance()->setcurrentarea(1);
 					Camera::getInstance()->SetPosition(3072, 0);
+					
 					this->LoadContent(2);
-
 					simon->SetPosition(3806.0f, OFFSET_Y + 290.0f);
+					
 					//simon->setstateendmap1(false);
 					break;
 				}
@@ -374,7 +391,7 @@ void SceneGame::Update(DWORD dt)
 				//meetting stairup
 				if (typestairstart->Gettype() == Const_Value::in_obj_type::stairup)
 				{
-
+					
 					simon->startAutoClimb(typestairstart->getDirect(), b);
 					simon->setTempny(3);
 					int optionx = (typestairstart->getDirect() == 1) ? 0 : 20;
@@ -385,9 +402,10 @@ void SceneGame::Update(DWORD dt)
 				//meeting stairdown
 				else if (typestairstart->Gettype() == Const_Value::in_obj_type::stairdown)
 				{
-					simon->startAutoClimb(-typestairstart->getDirect(), b + 4.0f);
+					
+					simon->startAutoClimb(-typestairstart->getDirect(), b -4.0f);
 					simon->setTempny(2);
-					int optionx = (typestairstart->getDirect() == 1) ? 0 : 20;
+					int optionx = (typestairstart->getDirect() == 1) ? 0 : 30;
 					simon->startAutowalk(-typestairstart->getDirect(), l - SIMON_SMALL_BBOX_WIDTH + optionx);
 					simon->setTempnx(typestairstart->getDirect());
 				}
@@ -473,6 +491,7 @@ void SceneGame::Update(DWORD dt)
 						//up ground
 					case 0:
 					{
+						
 						if (simon->getx() < GHOST_AREA_3_COLUMN1)
 						{
 							allEnemies.push_back(new Ghost(Camera::getInstance()->Getx() + Camera::getInstance()->GetWidth(), OFFSET_Y + 185 - GHOST_BBOX_HEIGHT, -1));
@@ -481,7 +500,7 @@ void SceneGame::Update(DWORD dt)
 						}
 						if (simon->getx() > GHOST_AREA_3_COLUMN2)
 						{
-							allEnemies.push_back(new Ghost(Camera::getInstance()->Getx(), OFFSET_Y + 185 - GHOST_BBOX_HEIGHT, -1));
+							allEnemies.push_back(new Ghost(Camera::getInstance()->Getx()-GHOST_BBOX_WIDTH, OFFSET_Y + 185 - GHOST_BBOX_HEIGHT, -1));
 							CountEnemyGhost++;
 							break;
 						}
@@ -490,7 +509,7 @@ void SceneGame::Update(DWORD dt)
 
 						}
 					}
-
+					//down ground
 					case 1:
 					{
 						if (simon->getVx() > 0)
@@ -508,12 +527,12 @@ void SceneGame::Update(DWORD dt)
 							else
 							{
 								int randm = rand() % 2;
-								if (randm == 0) // đi từ bên trái
+								if (randm == 0)  //from left
 								{
 									allEnemies.push_back(new Ghost(Camera::getInstance()->Getx() + Camera::getInstance()->GetWidth(), groundY - GHOST_BBOX_HEIGHT - 2, -1));
 									CountEnemyGhost++;
 								}
-								else // đi từ bên phải
+								else // from right
 								{
 									allEnemies.push_back(new Ghost(Camera::getInstance()->Getx(), groundY - GHOST_BBOX_HEIGHT - 2, 1));
 									CountEnemyGhost++;
@@ -531,14 +550,14 @@ void SceneGame::Update(DWORD dt)
 		}
 #pragma endregion
 #pragma region create panther
-		DebugOut(L"camx:%d", Camera::getInstance()->Getx());
+		//DebugOut(L"camx:%d", Camera::getInstance()->Getx());
 		//go to panther area from right and left
-		if ((Camera::getInstance()->Getx()+500 >= 1275&& Camera::getInstance()->Getx()+500 < 1300 && simon->getVx()>=0) || (Camera::getInstance()->Getx() < 2015&& Camera::getInstance()->Getx() > 2000 && simon->getVx() <= 0))
+		if ((Camera::getInstance()->Getx() >= 775 && Camera::getInstance()->Getx() < 800 )|| (Camera::getInstance()->Getx() < 2015 && Camera::getInstance()->Getx() > 2000))
 		{
-			if (CountEnemyPanther == 0) // không còn Panther nào sống thì mới dc tạo lại cả 3
+			if (CountEnemyPanther == 0) //whenever die all-->create all
 			{
 
-				int directionPanther = abs(REGION_CREATE_PANTHER_LEFT - simon->getx()) < abs(REGION_CREATE_PANTHER_RIGHT - simon->getx()) ? -1 : 1; // hướng mặt của Panther quay về hướng simon
+				int directionPanther = abs(REGION_CREATE_PANTHER_LEFT - simon->getx()) < abs(REGION_CREATE_PANTHER_RIGHT - simon->getx()) ? -1 : 1; 
 				allEnemies.push_back(new Panther(1398.0f, OFFSET_Y + 159.0f, directionPanther, directionPanther == -1 ? 20.0f : 9.0f, simon));
 				allEnemies.push_back(new Panther(1783.0f, OFFSET_Y + 94.f, directionPanther, directionPanther == -1 ? 278.0f : 180.0f, simon));
 				allEnemies.push_back(new Panther(1923.0f, OFFSET_Y + 159.0f, directionPanther, directionPanther == -1 ? 68.0f : 66.0f, simon));
@@ -579,9 +598,9 @@ void SceneGame::Update(DWORD dt)
 		if (CountEnemyFishmen < 2)
 		{
 			DWORD now = GetTickCount();
-			if (now - TimeCreateFishmen >= TimeWaitCreateFishmen) // đủ thời gian chờ
+			if (now - TimeCreateFishmen >= TimeWaitCreateFishmen) // enough time to create
 			{
-				TimeCreateFishmen = now; // đặt lại thời gian đã tạo
+				TimeCreateFishmen = now; // reset time
 				float vtx = 0;
 				#pragma region depend on simon location to create where fishmen at 
 				if (FISHMEN_ZONE_1_LEFT < simon->getx() && simon->getx() <= FISHMEN_ZONE_1_RIGHT)
@@ -629,20 +648,19 @@ void SceneGame::Update(DWORD dt)
 #pragma endregion
 
 #pragma region update object
-	//resetlist();
-	DebugOut(L"%d", (currentGrids == Grid::getInstace()->checkingrid()));
+	
 	if ((currentGrids != Grid::getInstace()->checkingrid()))
 	{
 			objects = this->getallobjects();
 			BrickObjects = this->getallHidenObjects();
-			BratizerObjects = this->getBratizerobjects();
+			BoundObjects = this->getBoundobjects();
 			ItemObjects = this->getItemobjects();
 			//coObjects = this->getallHidenObjects();
 			allStaticObject = getallStaticObject();
-			BratizerandItemObjects = this->getBratizerobjects();
+			BoundandItemObjects = this->getBoundobjects();
 			currentGrids = Grid::getInstace()->checkingrid();
 	}
-	DebugOut(L"object:%d-brick:%d-bratizer:%d-item:%d-allstatic:%d-ghost:%d-panther:%d",objects.size(),BrickObjects.size(),BratizerObjects.size(),ItemObjects.size(),allStaticObject.size(),CountEnemyGhost,CountEnemyPanther);
+	//DebugOut(L"object:%d-brick:%d-bratizer:%d-item:%d-allstatic:%d-ghost:%d-panther:%d",objects.size(),BrickObjects.size(),BratizerObjects.size(),ItemObjects.size(),allStaticObject.size(),CountEnemyGhost,CountEnemyPanther);
 	if (simon->isdestroyall())
 	{
 		for (UINT i = 0; i < allEnemies.size(); i++)
@@ -723,9 +741,9 @@ void SceneGame::Update(DWORD dt)
 	}
 	for (unsigned int i = 0; i < ItemObjects.size(); i++)
 		ItemObjects[i]->Update(dt, &BrickObjects);
-	for (unsigned int i = 0; i < BratizerObjects.size(); i++)
+	for (unsigned int i = 0; i < BoundObjects.size(); i++)
 	{
-		BratizerObjects[i]->Update(dt);
+		BoundObjects[i]->Update(dt);
 	}
 	for (unsigned int i = 0; i < ItemObjects.size(); i++)
 	{
@@ -773,11 +791,11 @@ void SceneGame::LoadContent(int map)
 	typestairstart = new CInvisibleObject();
 	objects = this->getallobjects();
 	BrickObjects = this->getallHidenObjects();
-	BratizerObjects = this->getBratizerobjects();
+	BoundObjects = this->getBoundobjects();
 	ItemObjects = this->getItemobjects();
 	coObjects = this->getallHidenObjects();
 	allStaticObject = getallStaticObject();
-	BratizerandItemObjects = this->getBratizerobjects();
+	BoundandItemObjects = this->getBoundobjects();
 
 	//for (unsigned int i = 0; i < ItemObjects.size(); i++)
 	//{
@@ -809,7 +827,8 @@ void SceneGame::LoadContent(int map)
 
 void SceneGame::Draw()
 {
-
+	if (simon->Gameover())
+		return;
 	this->RenderBackground();
 	for (unsigned int i = 0; i < objects.size(); i++)
 		objects[i]->Render();
@@ -907,19 +926,27 @@ void SceneGame::OnKeyDown(int KeyCode)
 		{
 			if (!simon->isclimbing())
 			{
+				simon->setnumstep(0);
+				simon->resetlengthstair();
 				float l, t, r, b;
 				typestairstart->GetBoundingBox(l, t, r, b);
 				simon->setTempny(2);
+
+				simon->setstairinfo(typestairstart->Gettype(), typestairstart->getDirect());
 				//climb to left
 				if (typestairstart->getDirect() == -1)
 				{
 					simon->startAutowalk(-1, l - (SIMON_BIG_BBOX_WIDTH - SIMON_SMALL_BBOX_WIDTH) / 2);
+					simon->settempxy(l-20, b);
+					
 					simon->startAutoClimb(-1, b);
 				}
 				//climb to right
 				else
 				{
+					simon->settempxy(l-7, b);
 					simon->startAutowalk(1, r - SIMON_SMALL_BBOX_WIDTH - (SIMON_BIG_BBOX_WIDTH - SIMON_SMALL_BBOX_WIDTH) / 2);
+					//simon->setstairinfo(typestairstart->Gettype(), typestairstart->getDirect());
 					simon->startAutoClimb(1, b);
 				}
 
@@ -932,19 +959,25 @@ void SceneGame::OnKeyDown(int KeyCode)
 
 			if (!simon->isclimbing())
 			{
+				simon->setnumstep(0);
+				simon->resetlengthstair();
 				float l, t, r, b;
 				typestairstart->GetBoundingBox(l, t, r, b);
 				simon->setTempny(3);
+				simon->setstairinfo(typestairstart->Gettype(), typestairstart->getDirect());
 				//climb down to left
 				if (typestairstart->getDirect() == -1)
 				{
 					simon->startAutowalk(-1, l - (SIMON_BIG_BBOX_WIDTH - SIMON_SMALL_BBOX_WIDTH) / 2);
+					simon->settempxy(l-23,b+16);
+					
 					simon->startAutoClimb(1, b + 16);
 				}
 				//climb down to right
 				else
 				{
 					simon->startAutowalk(1, l - (SIMON_BIG_BBOX_WIDTH - SIMON_SMALL_BBOX_WIDTH) / 2);
+					simon->settempxy(l,b+16);
 					simon->startAutoClimb(-1, b + 16);
 				}
 			}
@@ -956,7 +989,24 @@ void SceneGame::OnKeyDown(int KeyCode)
 
 void SceneGame::OnKeyUp(int keyCode)
 {
-
+	if (simon->isclimbing() && !simon->inAutoMode() &&!changemap)
+	{
+		float x, y,numstep;
+		simon->gettempxy(x, y);
+		
+		numstep = simon->getnumstep();
+		int i = 0;
+		if (typestairstart->Gettype() == Const_Value::in_obj_type::stairup)
+			i = 1;
+		else if (typestairstart->Gettype() == Const_Value::in_obj_type::stairdown)
+			i = -1;
+		//simon and stair have the same direction
+		simon->SetPosition(x + 16 *numstep*typestairstart->getDirect(), y-SIMON_BIG_BBOX_HEIGHT - 16 *numstep*i);
+		DebugOut(L"%d",(int)numstep);
+		float x1, y1;
+		simon->GetPosition(x1, y1);
+		DebugOut(L"simonx,y:%f-%f", x1, y1);
+	}
 }
 
 void SceneGame::KeyState(BYTE * states)

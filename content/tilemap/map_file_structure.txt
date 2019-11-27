@@ -4,14 +4,19 @@ tileheight: <tileheight>
 source: <source file bitmap> <height> and <width> of bitmap
 width: <width of matrix>
 height: <height of matrix>
+<number of grid>
+<id grid1><grid left><grid right>
 
 <number of visible object(2)>  items
-<id object1> <id sub object1> <x> <y>
-<id object2> <id sub object2> <x> <y>
+<id object1> <id sub object1> <x> <y> <number of grid><grid id>
+<id object2> <id sub object2> <x> <y> <number of grid><grid id>
 
 <number of invisible object(1)> brick,endpoint,...
-<id object1> <direct(1:right 0:left)> <x> <y> <width> <height>
+<id object1> <direct(1:right 0:left)> <x> <y> <width> <height><number of grid><grid id>
 
 <number of static object>
-<id> <x> <y> 
+<id> <x> <y> <number of grid><grid id>
+<number of camera region restricion>
+<region1>
+
 <matrix of map>

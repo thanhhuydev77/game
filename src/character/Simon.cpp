@@ -20,14 +20,15 @@ void Simon::takedamage(int damage, int direct)
 		timeDie = GetTickCount();
 
 }
+
 Simon::Simon(vector<LPGAMEOBJECT> *listeffect)
 {
 	LoadResourceHelper::Loadspritefromfile("content\\characters\\player\\player_sprites.txt", ID_TEX_SIMON);
 	LoadResourceHelper::Loadanimationfromfile("content\\characters\\player\\player_ani\\allani.txt", this);
 	Health = 100;
 	level = 1;
-	currentsubWeapondTurn = 5;
-	currentsubwepond = 3;
+	currentsubWeapondTurn = 0;
+	currentsubwepond = 0;
 	NumofLife = 3;
 	timeDie = 0;
 	this->listeffect = listeffect;
@@ -56,7 +57,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 	if (GetTickCount() - pause_start > 5000)
 	{
 		pausing = false;
-		
+
 	}
 #pragma region hurting
 	if (GetTickCount() - hurt_start > SIMON_JUMP_TIME)
@@ -110,6 +111,10 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 			comeback();
 			NumofLife--;
 		}
+		else
+		{
+			isGameOver = true;
+		}
 	}
 	/*if (!Camera::getInstance()->checkInCamera(x, y, x + SIMON_SMALL_BBOX_WIDTH, y + SIMON_SMALL_BBOX_HEIGHT))
 	{
@@ -136,11 +141,11 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 	vector<LPGAMEOBJECT> list_enemy;
 	list_enemy.clear();
 	for (UINT i = 0; i < colliable_objects->size(); i++)
-		if (dynamic_cast<Ghost*>(colliable_objects->at(i))|| dynamic_cast<Bat*>(colliable_objects->at(i))|| dynamic_cast<Panther*>(colliable_objects->at(i))|| dynamic_cast<Fishmen*>(colliable_objects->at(i))|| dynamic_cast<Fireball*>(colliable_objects->at(i)))
+		if (dynamic_cast<Ghost*>(colliable_objects->at(i)) || dynamic_cast<Bat*>(colliable_objects->at(i)) || dynamic_cast<Panther*>(colliable_objects->at(i)) || dynamic_cast<Fishmen*>(colliable_objects->at(i)) || dynamic_cast<Fireball*>(colliable_objects->at(i)))
 			list_enemy.push_back(colliable_objects->at(i));
-	
-	
-	
+
+
+
 	if (autoclimbing || autowalking)
 	{
 		//start autoclimb when not auto walk
@@ -446,7 +451,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 				}
 			}
 			// clean up collision events
-			
+
 			for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 
 		}
@@ -473,8 +478,8 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 	}
 
 #pragma endregion
-collisionwithenemy(&list_enemy);
-	DebugOut(L"health :%d \n", Health);
+	collisionwithenemy(&list_enemy);
+	//DebugOut(L"health :%d \n", Health);
 }
 
 void Simon::Render()
@@ -534,16 +539,6 @@ void Simon::Render()
 				ani = SIMON_ANI_ATTACK;
 		}
 	}
-	/*if (attacking) {
-		if (climbing && nx == climb_direct)
-			ani = SIMON_ANI_GOUP_ATTACK;
-		else if (climbing && nx != climb_direct)
-			ani = SIMON_ANI_GODOWN_ATTACK;
-		else
-			ani = SIMON_ANI_ATTACK;
-	}*/
-	/*if (jumping)
-		ani = SIMON_ANI_JUMP;*/
 	if (state == SIMON_STATE_SIT)
 	{
 		if (attacking)
@@ -584,7 +579,10 @@ void Simon::Render()
 
 void Simon::setcurrentsubWeapondTurnDesc()
 {
-	if (currentsubWeapondTurn >= 1) currentsubWeapondTurn--; else currentsubWeapondTurn = 0;
+	if (currentsubWeapondTurn >= 1)
+		currentsubWeapondTurn--;
+	else
+		currentsubWeapondTurn = 0;
 }
 
 void Simon::collisionwithenemy(vector<LPGAMEOBJECT> *list)
@@ -712,7 +710,7 @@ void Simon::collisionwithSmallItem(CGameObject * si)
 	case Const_Value::small_item_type::chicken:
 		lh->SetState(ITEM_STATE_UNACTIVE);
 		lh->SetPosition(-100 - CHICKEN_BBOX_WIDTH, 0);
-		Health = (Health + 30 > 100) ?100 :(Health + 30);
+		Health = (Health + 30 > 100) ? 100 : (Health + 30);
 		doubleshot = true;
 		break;
 	default:
@@ -764,8 +762,8 @@ void Simon::setcanclimb(bool icanclimb, bool up)
 
 void Simon::comeback()
 {
-	x = 0;
-	y = OFFSET_Y;
+	x = Camera::getInstance()->Getx();
+	y = OFFSET_Y+SIMON_BIG_BBOX_HEIGHT;
 	Health = 100;
 	resetToDefault();
 	vx = 0;
@@ -849,8 +847,9 @@ void Simon::startAutoClimb(int lastdirect, float targetY)
 {
 	if (!autowalking)
 		dofirst = 2;
-	tempx = x;
-	tempy = y;
+
+	//tempx = x;
+	//tempy = y;
 	autoclimbing = true;
 	//this->targetX = targetX;
 	//temp_ny = (y + SIMON_BIG_BBOX_HEIGHT > targetY) ? -1 : 1;
@@ -871,11 +870,16 @@ void Simon::startclimbdown()
 		state = SIMON_STATE_GODOWN;
 		x -= climb_direct * 1.0f;
 		y += 1.0f;
-		/*if ((int)(tempy - y) % 4 == 0)
+		if (Typestairstart == Const_Value::in_obj_type::stairdown)
 		{
-			x = tempx;
-			y = tempy;
-		}*/
+			lengthstair += 1.0f;
+			numstep = lengthstair / 16;
+		}
+		else
+		{
+			lengthstair -= 1.0f;
+			numstep = lengthstair / 16;
+		}
 	}
 }
 
@@ -888,11 +892,16 @@ void Simon::startclimbup()
 		state = SIMON_STATE_GOUP;
 		x += climb_direct * 1.0f;
 		y -= 1.0f;
-		/*if ((int)(y - tempy) % 4 == 0)
+		if (Typestairstart == Const_Value::in_obj_type::stairup)
 		{
-			x = tempx;
-			y = tempy;
-		}*/
+			lengthstair += 1.0f;
+			numstep = lengthstair / 16;
+		}
+		else
+		{
+			lengthstair -= 1.0f;
+			numstep = lengthstair / 16;
+		}
 	}
 }
 

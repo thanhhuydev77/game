@@ -17,7 +17,6 @@
 #include "../Scene/SceneExample.h"
 #include "../Scene/SceneManager.h"
 #include "../camera/Camera.h"
-#include "Scene2.h"
 #include "../enemies/Ghost.h"
 #include "../enemies/Panther.h"
 #include "../enemies/Bat.h"
@@ -53,7 +52,7 @@ private:
 	vector<int> currentGrids;
 	DWORD TimeCreateFishmen;
 	DWORD TimeWaitCreateFishmen;
-
+	bool changemap;
 	DWORD TimeCreateBat; 
 	DWORD TimeWaitCreateBat; 
 	int CountEnemyBat;
@@ -61,22 +60,22 @@ private:
 	vector<LPGAMEOBJECT> allfireball;  //all object
 	vector<LPGAMEOBJECT> listeffect;
 	vector<LPGAMEOBJECT> objects;  //all object
-	vector<LPGAMEOBJECT> BratizerObjects; //all bratizer
+	vector<LPGAMEOBJECT> BoundObjects; //all bratizer
 	vector<LPGAMEOBJECT> coObjects;//all object except simon
 	vector<LPGAMEOBJECT> ItemObjects; //all item object
 	vector<LPGAMEOBJECT> BrickObjects; // all brick 
 	vector<LPGAMEOBJECT> BrickandpointObjects; // all brick and point
-	vector<LPGAMEOBJECT> BratizerandItemObjects; //all bratizers and items
+	vector<LPGAMEOBJECT> BoundandItemObjects; //all bratizers and items
 	vector<LPGAMEOBJECT> allStairpoint; // all stair point
 	vector<LPGAMEOBJECT> allStaticObject;
-	vector<LPGAMEOBJECT> allEnemies;
+	vector<LPGAMEOBJECT> allEnemies; 
 
 	
 public:
 	SceneGame();
 	void loadmap(int map);
 	vector<LPGAMEOBJECT> getallHidenObjects();
-	vector<LPGAMEOBJECT> getBratizerobjects();
+	vector<LPGAMEOBJECT> getBoundobjects();
 	vector<LPGAMEOBJECT> getItemobjects();
 	vector<LPGAMEOBJECT> getallobjects();
 	vector<LPGAMEOBJECT> getallBrickandpointObjects();

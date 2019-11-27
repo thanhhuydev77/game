@@ -100,6 +100,7 @@ void Panther::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		DistanceLimit = 177;
 	else
 		DistanceLimit = 130;
+	//condition to start
 	if (isStart == 0 && abs(simon->getx() -x) <= DistanceLimit)
 	{
 		isSitting = false;
@@ -109,10 +110,10 @@ void Panther::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		isStart = 1;
 		isAutoGoX = 1;
 	}
-	if (abs(x - originalX) > PANTHER_RUN_RACE)
+	/*if (abs(x - originalX) > PANTHER_RUN_RACE)
 	{
 		takedamage();
-	}
+	}*/
 #pragma region collision with ground
 
 	vector<LPGAMEOBJECT> listObject_Brick;
@@ -168,9 +169,7 @@ void Panther::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			x = x - (abs(x - AutoGoX) - AutoGoX_Distance);
 			isAutoGoX = false;
 			vx = 0;
-
 			Jump(); 
-
 		}
 	}
 	
@@ -188,9 +187,6 @@ void Panther::Render()
 {
 	if (Health <= 0)
 		return;
-	/*if (disappearing)
-		animations[1]->Render(x + 7, y + 7, 255);
-	else*/
 	if (disappearing)
 	{
 		animations[3]->Render(x + 20, y, 255);

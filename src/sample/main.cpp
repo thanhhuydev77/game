@@ -11,7 +11,6 @@
 #include "../Scene/SceneManager.h"
 #include "../Scene/SceneGame.h"
 #include"../Scene/SceneExample.h"
-#include "../Scene/Scene2.h"
 SceneGame *scene1;
 
 CGame *game;
@@ -59,7 +58,7 @@ void LoadResources()
 {
 	scenemanager = SceneManager::getInstance();
 	scenemanager->ReplaceScene(new SceneGame());
-	scenemanager->GetCurrentScene()->LoadContent(3);
+	scenemanager->GetCurrentScene()->LoadContent(1);
 }
 
 /*

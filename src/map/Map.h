@@ -47,7 +47,7 @@ public:
 	Map();
 	vector<LPGAMEOBJECT> getallObject();
 	vector<LPGAMEOBJECT> getallHidenObject();
-	vector<LPGAMEOBJECT> getBratizersObject();
+	vector<LPGAMEOBJECT> getBoundObject();
 	vector<LPGAMEOBJECT> getItemsObject();
 	vector<LPGAMEOBJECT> getallbrickandpoint();
 	vector<LPGAMEOBJECT> getallstairpoint();
