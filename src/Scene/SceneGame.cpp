@@ -439,7 +439,26 @@ void SceneGame::Update(DWORD dt)
 #pragma endregion
 	// item falling and stop when on stair
 #pragma region create ghost
-	if (currentMap == 2)
+	bool cancreateghost = false, cancreatepanther = false, cancreatebat= false, cancreatefishman= false;
+	for (int i = 0; i < allStairpoint.size(); i++)
+	{
+		if (simon->CheckOverLap(allStairpoint[i]) )
+		{
+			if(dynamic_cast<CInvisibleObject*>(allStairpoint[i])->Gettype() == Const_Value::in_obj_type::ghostzone)
+				cancreateghost = true;
+			else
+			if (dynamic_cast<CInvisibleObject*>(allStairpoint[i])->Gettype() == Const_Value::in_obj_type::pantherzone)
+				cancreatepanther = true;
+			else
+			if (dynamic_cast<CInvisibleObject*>(allStairpoint[i])->Gettype() == Const_Value::in_obj_type::batzone)
+				cancreatebat = true;
+			else
+			if (dynamic_cast<CInvisibleObject*>(allStairpoint[i])->Gettype() == Const_Value::in_obj_type::fishmanzone)
+				cancreatefishman = true;
+			
+		}
+	}
+	if (cancreateghost)
 	{
 		if (GetTickCount() - timecreatGhost > 1000)
 		{
@@ -473,7 +492,7 @@ void SceneGame::Update(DWORD dt)
 						else // đi từ bên phải
 						{
 							CountEnemyGhost++;
-						ghost = new Ghost(Camera::getInstance()->Getx(), groundY - GHOST_BBOX_HEIGHT - 2, 1);
+							ghost = new Ghost(Camera::getInstance()->Getx(), groundY - GHOST_BBOX_HEIGHT - 2, 1);
 						}
 
 					}
@@ -491,7 +510,7 @@ void SceneGame::Update(DWORD dt)
 						//up ground
 					case 0:
 					{
-						
+
 						if (simon->getx() < GHOST_AREA_3_COLUMN1)
 						{
 							allEnemies.push_back(new Ghost(Camera::getInstance()->Getx() + Camera::getInstance()->GetWidth(), OFFSET_Y + 185 - GHOST_BBOX_HEIGHT, -1));
@@ -500,7 +519,7 @@ void SceneGame::Update(DWORD dt)
 						}
 						if (simon->getx() > GHOST_AREA_3_COLUMN2)
 						{
-							allEnemies.push_back(new Ghost(Camera::getInstance()->Getx()-GHOST_BBOX_WIDTH, OFFSET_Y + 185 - GHOST_BBOX_HEIGHT, -1));
+							allEnemies.push_back(new Ghost(Camera::getInstance()->Getx() - GHOST_BBOX_WIDTH, OFFSET_Y + 185 - GHOST_BBOX_HEIGHT, -1));
 							CountEnemyGhost++;
 							break;
 						}
@@ -548,16 +567,20 @@ void SceneGame::Update(DWORD dt)
 				}
 			}
 		}
+	}
+	DebugOut(L"ghost: %d --", cancreateghost);
 #pragma endregion
 #pragma region create panther
 		//DebugOut(L"camx:%d", Camera::getInstance()->Getx());
 		//go to panther area from right and left
-		if ((Camera::getInstance()->Getx() >= 775 && Camera::getInstance()->Getx() < 800 )|| (Camera::getInstance()->Getx() < 2015 && Camera::getInstance()->Getx() > 2000))
+	if (cancreatepanther)
+	{
+		if ((Camera::getInstance()->Getx() >= 775 && Camera::getInstance()->Getx() < 800) || (Camera::getInstance()->Getx() < 2015 && Camera::getInstance()->Getx() > 2000))
 		{
 			if (CountEnemyPanther == 0) //whenever die all-->create all
 			{
 
-				int directionPanther = abs(REGION_CREATE_PANTHER_LEFT - simon->getx()) < abs(REGION_CREATE_PANTHER_RIGHT - simon->getx()) ? -1 : 1; 
+				int directionPanther = abs(REGION_CREATE_PANTHER_LEFT - simon->getx()) < abs(REGION_CREATE_PANTHER_RIGHT - simon->getx()) ? -1 : 1;
 				allEnemies.push_back(new Panther(1398.0f, OFFSET_Y + 159.0f, directionPanther, directionPanther == -1 ? 20.0f : 9.0f, simon));
 				allEnemies.push_back(new Panther(1783.0f, OFFSET_Y + 94.f, directionPanther, directionPanther == -1 ? 278.0f : 180.0f, simon));
 				allEnemies.push_back(new Panther(1923.0f, OFFSET_Y + 159.0f, directionPanther, directionPanther == -1 ? 68.0f : 66.0f, simon));
@@ -570,13 +593,16 @@ void SceneGame::Update(DWORD dt)
 			{
 				if (dynamic_cast<Panther*>(allEnemies[i]))
 				{
-						allEnemies.erase(allEnemies.begin() + i);
-						CountEnemyPanther--;
+					allEnemies.erase(allEnemies.begin() + i);
+					CountEnemyPanther--;
 				}
 			}
 		}
+	}
 #pragma endregion
 #pragma region create bat
+	if (cancreatebat)
+	{
 		if (simon->getx() > BAT_AREA_LEFT && simon->getx() < BAT_AREA_RIGHT)
 		{
 			DWORD now = GetTickCount();
@@ -593,7 +619,7 @@ void SceneGame::Update(DWORD dt)
 	}
 #pragma endregion
 #pragma region create fishmen
-	if (currentMap == 3)
+	if (cancreatefishman)
 	{
 		if (CountEnemyFishmen < 2)
 		{
@@ -827,6 +853,8 @@ void SceneGame::LoadContent(int map)
 
 void SceneGame::Draw()
 {
+	
+	
 	if (simon->Gameover())
 		return;
 	this->RenderBackground();

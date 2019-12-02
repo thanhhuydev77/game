@@ -207,7 +207,7 @@ static enum Weapond { whip, sword, axe,holywater };
 #pragma endregion
 #pragma region backgroundobject
 
-	static enum in_obj_type { Brick, endmap1, stairup, stairdown, map2to3_p1, map2to3_p2, map3to2_p1, map3to2_p2 };
+	static enum in_obj_type { Brick, endmap1, stairup, stairdown, map2to3_p1, map2to3_p2, map3to2_p1, map3to2_p2,ghostzone,pantherzone,batzone,fishmanzone};
 	static enum small_item_type { smallheart, largeheart, whippowerup, holywateritem, sworditem, axeitem, redmoneybag, bluemoneybag, whitemoneybag,cross, stopwatch,invisiblepot, doubleshot,chicken};
 	static enum bound_item_type { Bratizer, candle, breakableBrick, BreakableBlock, flame };
 	static enum static_obj_type { Door };
