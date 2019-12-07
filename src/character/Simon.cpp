@@ -25,12 +25,9 @@ Simon::Simon(vector<LPGAMEOBJECT> *listeffect)
 {
 	LoadResourceHelper::Loadspritefromfile("content\\characters\\player\\player_sprites.txt", ID_TEX_SIMON);
 	LoadResourceHelper::Loadanimationfromfile("content\\characters\\player\\player_ani\\allani.txt", this);
-	Health = 100;
-	level = 1;
-	currentsubWeapondTurn = 0;
-	currentsubwepond = 0;
-	NumofLife = 3;
-	timeDie = 0;
+	Health = SIMON_DEFAULT_HEALTH;
+	level = SIMON_DEFAULT_LEVEL;
+	NumofLife = SIMON_DEFAULT_TIME_COMEBACK;
 	this->listeffect = listeffect;
 }
 
@@ -49,15 +46,30 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 		untouchable_start = 0;
 		untouchable = 0;
 	}
-	if (GetTickCount() - startinvisible > 5000)
+	if (GetTickCount() - startinvisible > SIMON_INVISIBLE_TIME)
 	{
 		startinvisible = 0;
 		invisible = false;
 	}
-	if (GetTickCount() - pause_start > 5000)
+	if (GetTickCount() - pause_start > SIMON_CLOCKUP_TIME)
 	{
 		pausing = false;
 
+	}
+	if (collectingcross)
+	{
+		if (GetTickCount() - timecross > SIMON_CROSSING_TIME)
+		{
+			collectingcross = false;
+			destroyall = false;
+			timecross = 0;
+		}
+		else
+		{
+			if(dt%2 == 0)
+			destroyall = !destroyall;
+			DebugOut(L"whiting\n");
+		}
 	}
 #pragma region hurting
 	if (GetTickCount() - hurt_start > SIMON_JUMP_TIME)
@@ -104,7 +116,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 			NumofLife--;
 		}
 	}
-	if (GetTickCount() - timeDie > 2000 && timeDie != 0)
+	if (GetTickCount() - timeDie > DEADSTAGE && timeDie != 0)
 	{
 		if (NumofLife >= 1)
 		{
@@ -116,14 +128,6 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 			isGameOver = true;
 		}
 	}
-	/*if (!Camera::getInstance()->checkInCamera(x, y, x + SIMON_SMALL_BBOX_WIDTH, y + SIMON_SMALL_BBOX_HEIGHT))
-	{
-		if (NumofLife >= 1)
-		{
-			comeback();
-			NumofLife--;
-		}
-	}*/
 	if (Health <= 0)
 	{
 		state = SIMON_STATE_DIE;
@@ -690,7 +694,7 @@ void Simon::collisionwithSmallItem(CGameObject * si)
 	case Const_Value::small_item_type::cross:
 		lh->SetState(ITEM_STATE_UNACTIVE);
 		lh->SetPosition(-100 - CROSS_BBOX_WIDTH, 0);
-		destroyall = true;
+		startcollectCross();
 		break;
 	case Const_Value::small_item_type::invisiblepot:
 		lh->SetState(ITEM_STATE_UNACTIVE);

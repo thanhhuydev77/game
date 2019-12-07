@@ -21,9 +21,6 @@ void SceneGame::loadmap(int map)
 		mmap = new Map(MAP1, ID_TEX_MAP1);
 		break;
 	}
-	currentMap = map;
-
-
 }
 
 vector<LPGAMEOBJECT> SceneGame::getallHidenObjects()
@@ -568,7 +565,7 @@ void SceneGame::Update(DWORD dt)
 			}
 		}
 	}
-	DebugOut(L"ghost: %d --", cancreateghost);
+	//DebugOut(L"ghost: %d --", cancreateghost);
 #pragma endregion
 #pragma region create panther
 		//DebugOut(L"camx:%d", Camera::getInstance()->Getx());
@@ -690,8 +687,8 @@ void SceneGame::Update(DWORD dt)
 	if (simon->isdestroyall())
 	{
 		for (UINT i = 0; i < allEnemies.size(); i++)
-			allEnemies[i]->takedamage();
-		simon->setdestroyall(false);
+			allEnemies[i]->SetState(ENEMY_STATE_DIE);
+		//simon->setdestroyall(false);
 	}
 	for (unsigned int i = 0; i < allEnemies.size(); i++)
 	{
@@ -834,7 +831,7 @@ void SceneGame::LoadContent(int map)
 	float x, y;
 	BrickObjects.at(0)->GetPosition(x, y);
 	groundY = y;
-	simon->SetPosition(x,y - SIMON_BIG_BBOX_HEIGHT - 1);
+	simon->SetPosition(1900,y - SIMON_BIG_BBOX_HEIGHT - 1);
 	objects.push_back(simon);
 	//init sword and whip
 	sword = new Sword(simon);
@@ -854,9 +851,10 @@ void SceneGame::LoadContent(int map)
 void SceneGame::Draw()
 {
 	
-	
-	if (simon->Gameover())
+	DebugOut(L"\ncrossing-%d", simon->isdestroyall());
+	if (simon->Gameover()|| simon->isdestroyall())
 		return;
+	
 	this->RenderBackground();
 	for (unsigned int i = 0; i < objects.size(); i++)
 		objects[i]->Render();
@@ -1030,10 +1028,10 @@ void SceneGame::OnKeyUp(int keyCode)
 			i = -1;
 		//simon and stair have the same direction
 		simon->SetPosition(x + 16 *numstep*typestairstart->getDirect(), y-SIMON_BIG_BBOX_HEIGHT - 16 *numstep*i);
-		DebugOut(L"%d",(int)numstep);
+		//DebugOut(L"%d",(int)numstep);
 		float x1, y1;
 		simon->GetPosition(x1, y1);
-		DebugOut(L"simonx,y:%f-%f", x1, y1);
+		//DebugOut(L"simonx,y:%f-%f", x1, y1);
 	}
 }
 

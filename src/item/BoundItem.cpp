@@ -6,10 +6,7 @@ BoundItem::BoundItem()
 
 	LoadResourceHelper::Loadspritefromfile("content\\tilemap\\bratizer_sprites.txt", ID_TEX_BITEM);
 	LoadResourceHelper::Loadanimationfromfile("content\\tilemap\\bratizer_ani.txt", this);
-
-
-	Type = 0;
-	this->AddAnimation(602);
+	//this->AddAnimation(602);
 	this->state = BRATIZER_STATE_ACTIVE;
 }
 
@@ -61,12 +58,12 @@ void BoundItem::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	if (disappearing)
 	{
-		if (GetTickCount() - disappear_start > 300)
+		if (GetTickCount() - disappear_start > ITEM_TIME_DISAPPREARENCE)
 		{
 			disappearing = false;
 			disappear_start = 0;
 			state = ITEM_STATE_UNACTIVE;
-			x = -100;
+			x = 0;
 
 			subItem->SetState(ITEM_STATE_ACTIVE);
 		}

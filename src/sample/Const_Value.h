@@ -54,6 +54,13 @@ public:
 #pragma region Simon
 #define DEADSTAGE					2000
 #define SIMON_UNTOUCHABLE_TIME		2000
+#define SIMON_INVISIBLE_TIME		5000
+#define SIMON_CLOCKUP_TIME			5000
+#define SIMON_CROSSING_TIME			1000
+#define SIMON_DEFAULT_HEALTH		100
+#define SIMON_DEFAULT_LEVEL			1
+#define SIMON_DEFAULT_TIME_COMEBACK	3
+
 #define SIMON_TIME_ATTACK_OFF		40
 #define SIMON_TIME_COLLECT			1000
 #define SIMON_WALKING_SPEED			0.11f 
@@ -265,6 +272,7 @@ static enum Weapond { whip, sword, axe,holywater };
 #pragma endregion
 #pragma region item
 #define ITEM_TIME_APPREARENCE		3000
+#define ITEM_TIME_DISAPPREARENCE	300
 #define ITEM_STATE_ACTIVE			1
 #define ITEM_STATE_UNACTIVE			0
 #define ITEM_GRAVITY				0.04f

@@ -29,6 +29,7 @@ class Simon : public CGameObject
 	int stairdirect;
 	bool isGameOver;
 	int numstep;
+	bool collectingcross;
 	bool onGround;
 	bool standingonstair;
 	bool autowalking;
@@ -43,6 +44,7 @@ class Simon : public CGameObject
 	bool canclimbdown;
 	bool hurting;
 	int Hurtdirect;
+	DWORD timecross;
 	DWORD timeDie;
 	DWORD hurt_start;
 	DWORD untouchable_start;
@@ -108,6 +110,7 @@ public:
 	bool iscanclimbup() { return canclimbup; }
 	bool iscanclimbdown() { return canclimbdown; }
 	bool attacwhenjump;
+	void startcollectCross() { timecross = GetTickCount(); collectingcross = true; }
 	void SetState(int state);
 	void setcanclimb(bool icanclimb, bool up);
 	bool inAutoMode() { return (autoclimbing || autowalking); }
