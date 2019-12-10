@@ -119,26 +119,26 @@ void SceneGame::collisionweapond()
 			BoundItem *bounditem = dynamic_cast<BoundItem *>(BoundandItemObjects.at(i));
 			if (weapond->CheckOverLap(bounditem))
 			{
-				
+
 				bounditem->start_disappear();
-				if(bounditem->getType() == Const_Value::bound_item_type::Bratizer || bounditem->getType() == Const_Value::bound_item_type::candle)
-				listeffect.push_back(new Effect(Const_Value::effect_type::sparks, bounditem->getx(), bounditem->gety(), 0.0f, 0.0f));
+				if (bounditem->getType() == Const_Value::bound_item_type::Bratizer || bounditem->getType() == Const_Value::bound_item_type::candle)
+					listeffect.push_back(new Effect(Const_Value::effect_type::sparks, bounditem->getx(), bounditem->gety(), 0.0f, 0.0f));
 				if (bounditem->getType() == Const_Value::bound_item_type::breakableBrick)
 				{
-					listeffect.push_back(new Effect(Const_Value::effect_type::broken, bounditem->getx(), bounditem->gety(),-0.125f,0.0f));
-					listeffect.push_back(new Effect(Const_Value::effect_type::broken, bounditem->getx(), bounditem->gety(), -0.1125f,0.2f));
-					listeffect.push_back(new Effect(Const_Value::effect_type::broken, bounditem->getx(), bounditem->gety(), 0.1125f,0.2f));
-					listeffect.push_back(new Effect(Const_Value::effect_type::broken, bounditem->getx(), bounditem->gety(), 0.125f,0.0f));
+					listeffect.push_back(new Effect(Const_Value::effect_type::broken, bounditem->getx(), bounditem->gety(), -0.125f, 0.0f));
+					listeffect.push_back(new Effect(Const_Value::effect_type::broken, bounditem->getx(), bounditem->gety(), -0.1125f, 0.2f));
+					listeffect.push_back(new Effect(Const_Value::effect_type::broken, bounditem->getx(), bounditem->gety(), 0.1125f, 0.2f));
+					listeffect.push_back(new Effect(Const_Value::effect_type::broken, bounditem->getx(), bounditem->gety(), 0.125f, 0.0f));
 				}
 				if (bounditem->getType() == Const_Value::bound_item_type::BreakableBlock)
 				{
-					listeffect.push_back(new Effect(Const_Value::effect_type::broken, bounditem->getx(), bounditem->gety()+20, -0.125f, -0.15f));
-					listeffect.push_back(new Effect(Const_Value::effect_type::broken, bounditem->getx(), bounditem->gety()+20, -0.125f, -0.08f));
-					listeffect.push_back(new Effect(Const_Value::effect_type::broken, bounditem->getx(), bounditem->gety()+20, -0.125f, 0.15f));
-					listeffect.push_back(new Effect(Const_Value::effect_type::broken, bounditem->getx(), bounditem->gety()+20, -0.125f, 0.08f));
+					listeffect.push_back(new Effect(Const_Value::effect_type::broken, bounditem->getx(), bounditem->gety() + 20, -0.125f, -0.15f));
+					listeffect.push_back(new Effect(Const_Value::effect_type::broken, bounditem->getx(), bounditem->gety() + 20, -0.125f, -0.08f));
+					listeffect.push_back(new Effect(Const_Value::effect_type::broken, bounditem->getx(), bounditem->gety() + 20, -0.125f, 0.15f));
+					listeffect.push_back(new Effect(Const_Value::effect_type::broken, bounditem->getx(), bounditem->gety() + 20, -0.125f, 0.08f));
 					listeffect.push_back(new Effect(Const_Value::effect_type::broken, bounditem->getx(), bounditem->gety() + 20, 0.125f, -0.15f));
 					listeffect.push_back(new Effect(Const_Value::effect_type::broken, bounditem->getx(), bounditem->gety() + 20, 0.125f, 0.08f));
-					
+
 				}
 				if (resetsword)
 					sword->reset();
@@ -171,11 +171,16 @@ void SceneGame::collisionweapond()
 			enemy = dynamic_cast<Fishmen *>(allEnemies.at(i));
 			type = 4;
 		}
+		if (dynamic_cast<Boss *>(allEnemies.at(i)))
+		{
+			enemy = dynamic_cast<Boss *>(allEnemies.at(i));
+			type = 5;
+		}
 
 		if (enemy != nullptr)
-			if (weapond->CheckOverLap(enemy) && enemy->GetState() == ENEMY_STATE_LIVE)
+			if (weapond->CheckOverLap(enemy) && (enemy->GetState() == ENEMY_STATE_LIVE || enemy->GetState() == BOSS_STATE_WAKE))
 			{
-				
+
 				int makeitem = rand() % 6;
 				SmallItem *sm = nullptr;
 				if (makeitem == 1)
@@ -193,16 +198,16 @@ void SceneGame::collisionweapond()
 				switch (type)
 				{
 				case 1:
-					if(makeitem == 1)
-					dynamic_cast<Ghost*>(enemy)->addSubItem(sm);
+					if (makeitem == 1)
+						dynamic_cast<Ghost*>(enemy)->addSubItem(sm);
 					dynamic_cast<Ghost*>(enemy)->takedamage();
-					listeffect.push_back(new Effect(Const_Value::effect_type::sparks, enemy->getx(), enemy->gety()+10, 0.0f, 0.0f));
+					listeffect.push_back(new Effect(Const_Value::effect_type::sparks, enemy->getx(), enemy->gety() + 10, 0.0f, 0.0f));
 					break;
 				case 2:
 					if (makeitem == 1)
 						dynamic_cast<Panther*>(enemy)->addSubItem(sm);
 					dynamic_cast<Panther*>(enemy)->takedamage();
-					listeffect.push_back(new Effect(Const_Value::effect_type::sparks, enemy->getx()+20, enemy->gety(), 0.0f, 0.0f));
+					listeffect.push_back(new Effect(Const_Value::effect_type::sparks, enemy->getx() + 20, enemy->gety(), 0.0f, 0.0f));
 					break;
 				case 3:
 					if (makeitem == 1)
@@ -216,28 +221,37 @@ void SceneGame::collisionweapond()
 					dynamic_cast<Fishmen*>(enemy)->takedamage();
 					listeffect.push_back(new Effect(Const_Value::effect_type::sparks, enemy->getx(), enemy->gety() + 10, 0.0f, 0.0f));
 					break;
+				case 5:
+					if (GetTickCount() - lasttimedamage > 1000)
+					{
+						dynamic_cast<Boss*>(enemy)->takedamage(1*simon->damageshot());
+						lasttimedamage = GetTickCount();
+						listeffect.push_back(new Effect(Const_Value::effect_type::sparks, enemy->getx(), enemy->gety() + 10, 0.0f, 0.0f));
+					}
+					return;
+					break;
 				default:
 					break;
 				}
-				
+
 				if (resetsword)
 					sword->reset();
 				break;
 			}
 	}
 
-	
+
 }
 
 SceneGame::SceneGame()
 {
 	//LoadContent();
-	
+
 }
 
 void SceneGame::Update(DWORD dt)
 {
-	
+
 	coObjects = this->getallBrickandpointObjects();
 #pragma region checkoverlap with stair point --> can climb
 
@@ -292,7 +306,17 @@ void SceneGame::Update(DWORD dt)
 				//simon->setstateendmap1(false);
 				break;
 			}
-
+			else if (type == Const_Value::in_obj_type::createboss) // create boss
+			{
+				boss->SetState(BOSS_STATE_SLEEP);
+				break;
+			}
+			else if (type == Const_Value::in_obj_type::activeboss) // create boss
+			{
+				boss->startup();
+				Camera::getInstance()->SetFollowtoSimon(false);
+				break;
+			}
 		}
 		//climbing and meet a stair point
 		else if (simon->isclimbing() && simon->CheckOverLap(allStairpoint.at(i)))
@@ -307,7 +331,7 @@ void SceneGame::Update(DWORD dt)
 				//meetting stairdown
 				if (type == Const_Value::in_obj_type::stairdown)
 				{
-					
+
 					simon->startAutoClimb(-stair->getDirect(), b);
 					simon->setTempny(2);
 					int optionx = (stair->getDirect() == 1) ? 0 : 20;
@@ -318,7 +342,7 @@ void SceneGame::Update(DWORD dt)
 				//meeting stairup
 				else if (type == Const_Value::in_obj_type::stairup)
 				{
-					
+
 					simon->startAutoClimb(stair->getDirect(), b);
 					simon->setTempny(3);
 					int optionx = (stair->getDirect() == 1) ? 0 : 20;
@@ -333,10 +357,10 @@ void SceneGame::Update(DWORD dt)
 					Camera::getInstance()->reset();
 					this->LoadContent(3);
 					simon->SetPosition(127.0f, OFFSET_Y + 0.0f);
-					
+
 					//simon->SetPosition(x, 0.0f);
 					//simon->setstateendmap1(false);
-					
+
 					break;
 				}
 				else if (type == Const_Value::in_obj_type::map2to3_p2)
@@ -346,8 +370,8 @@ void SceneGame::Update(DWORD dt)
 					Camera::getInstance()->reset();
 					this->LoadContent(3);
 					simon->SetPosition(770.0f, OFFSET_Y + 0.0f);
-					
-					
+
+
 					//simon->setstateendmap1(false);
 					break;
 				}
@@ -359,13 +383,13 @@ void SceneGame::Update(DWORD dt)
 					Camera::getInstance()->SetPosition(3072, 0);
 					this->LoadContent(2);
 					simon->SetPosition(3160.0f, OFFSET_Y + 290.0f);
-					
-					
-					
+
+
+
 
 					//simon->SetPosition(x, 0.0f);
 					//simon->setstateendmap1(false);
-					
+
 					break;
 				}
 				else if (type == Const_Value::in_obj_type::map3to2_p2)
@@ -374,10 +398,10 @@ void SceneGame::Update(DWORD dt)
 					resetlist();
 					Camera::getInstance()->setcurrentarea(1);
 					Camera::getInstance()->SetPosition(3072, 0);
-					
+
 					this->LoadContent(2);
 					simon->SetPosition(3806.0f, OFFSET_Y + 290.0f);
-					
+
 					//simon->setstateendmap1(false);
 					break;
 				}
@@ -388,7 +412,7 @@ void SceneGame::Update(DWORD dt)
 				//meetting stairup
 				if (typestairstart->Gettype() == Const_Value::in_obj_type::stairup)
 				{
-					
+
 					simon->startAutoClimb(typestairstart->getDirect(), b);
 					simon->setTempny(3);
 					int optionx = (typestairstart->getDirect() == 1) ? 0 : 20;
@@ -399,8 +423,8 @@ void SceneGame::Update(DWORD dt)
 				//meeting stairdown
 				else if (typestairstart->Gettype() == Const_Value::in_obj_type::stairdown)
 				{
-					
-					simon->startAutoClimb(-typestairstart->getDirect(), b -4.0f);
+
+					simon->startAutoClimb(-typestairstart->getDirect(), b - 4.0f);
 					simon->setTempny(2);
 					int optionx = (typestairstart->getDirect() == 1) ? 0 : 30;
 					simon->startAutowalk(-typestairstart->getDirect(), l - SIMON_SMALL_BBOX_WIDTH + optionx);
@@ -425,34 +449,28 @@ void SceneGame::Update(DWORD dt)
 		}
 	}
 
-	/*DebugOut(L"canclimb up: %d --", simon->iscanclimbup());
-	DebugOut(L"canclimb down: %d --", simon->iscanclimbdown());
-	DebugOut(L"climbing: %d --", simon->isclimbing());
-	DebugOut(L"type stair start: %d --", typestairstart->Gettype());
-	DebugOut(L"type stair start direct: %d --", typestairstart->getDirect());
-	DebugOut(L"simon direct: %d --", simon->GetDirect());*/
-	/*DebugOut(L"simon istattacking: %d --", simon->isattacking());*/
+	
 
 #pragma endregion
 	// item falling and stop when on stair
 #pragma region create ghost
-	bool cancreateghost = false, cancreatepanther = false, cancreatebat= false, cancreatefishman= false;
+	bool cancreateghost = false, cancreatepanther = false, cancreatebat = false, cancreatefishman = false;
 	for (int i = 0; i < allStairpoint.size(); i++)
 	{
-		if (simon->CheckOverLap(allStairpoint[i]) )
+		if (simon->CheckOverLap(allStairpoint[i]))
 		{
-			if(dynamic_cast<CInvisibleObject*>(allStairpoint[i])->Gettype() == Const_Value::in_obj_type::ghostzone)
+			if (dynamic_cast<CInvisibleObject*>(allStairpoint[i])->Gettype() == Const_Value::in_obj_type::ghostzone)
 				cancreateghost = true;
 			else
-			if (dynamic_cast<CInvisibleObject*>(allStairpoint[i])->Gettype() == Const_Value::in_obj_type::pantherzone)
-				cancreatepanther = true;
-			else
-			if (dynamic_cast<CInvisibleObject*>(allStairpoint[i])->Gettype() == Const_Value::in_obj_type::batzone)
-				cancreatebat = true;
-			else
-			if (dynamic_cast<CInvisibleObject*>(allStairpoint[i])->Gettype() == Const_Value::in_obj_type::fishmanzone)
-				cancreatefishman = true;
-			
+				if (dynamic_cast<CInvisibleObject*>(allStairpoint[i])->Gettype() == Const_Value::in_obj_type::pantherzone)
+					cancreatepanther = true;
+				else
+					if (dynamic_cast<CInvisibleObject*>(allStairpoint[i])->Gettype() == Const_Value::in_obj_type::batzone)
+						cancreatebat = true;
+					else
+						if (dynamic_cast<CInvisibleObject*>(allStairpoint[i])->Gettype() == Const_Value::in_obj_type::fishmanzone)
+							cancreatefishman = true;
+
 		}
 	}
 	if (cancreateghost)
@@ -498,7 +516,7 @@ void SceneGame::Update(DWORD dt)
 			}
 			else if (simon->getx() >= GHOST_ACTIVE_AREA_3_LEFT && simon->getx() < GHOST_ACTIVE_AREA_3_RIGHT)
 			{
-				if (allEnemies.size() < 3)
+				if (CountEnemyGhost < 3)
 				{
 					int random = rand() % 2;
 					//Ghost *ghost;
@@ -625,7 +643,7 @@ void SceneGame::Update(DWORD dt)
 			{
 				TimeCreateFishmen = now; // reset time
 				float vtx = 0;
-				#pragma region depend on simon location to create where fishmen at 
+#pragma region depend on simon location to create where fishmen at 
 				if (FISHMEN_ZONE_1_LEFT < simon->getx() && simon->getx() <= FISHMEN_ZONE_1_RIGHT)
 				{
 					vtx = (rand() % 2) ? (FISHMEN_POS_3) : (FISHMEN_POS_4);
@@ -661,7 +679,7 @@ void SceneGame::Update(DWORD dt)
 #pragma endregion
 				float vty = FISHMEN_POS_Y;
 				int directionFishmen = vtx < simon->getx() ? 1 : -1;
-				allEnemies.push_back(new Fishmen(vtx, vty, directionFishmen, simon, &allfireball,&listeffect));
+				allEnemies.push_back(new Fishmen(vtx, vty, directionFishmen, simon, &allfireball, &listeffect));
 				CountEnemyFishmen++;
 
 				TimeWaitCreateFishmen = 2000 + (rand() % 2000);
@@ -671,23 +689,25 @@ void SceneGame::Update(DWORD dt)
 #pragma endregion
 
 #pragma region update object
-	
 	if ((currentGrids != Grid::getInstace()->checkingrid()))
 	{
-			objects = this->getallobjects();
-			BrickObjects = this->getallHidenObjects();
-			BoundObjects = this->getBoundobjects();
-			ItemObjects = this->getItemobjects();
-			//coObjects = this->getallHidenObjects();
-			allStaticObject = getallStaticObject();
-			BoundandItemObjects = this->getBoundobjects();
-			currentGrids = Grid::getInstace()->checkingrid();
+		objects = this->getallobjects();
+		objects.push_back(smb);
+		BrickObjects = this->getallHidenObjects();
+		BoundObjects = this->getBoundobjects();
+		ItemObjects = this->getItemobjects();
+			ItemObjects.push_back(smb);
+		//coObjects = this->getallHidenObjects();
+		allStaticObject = getallStaticObject();
+		BoundandItemObjects = this->getBoundobjects();
+		currentGrids = Grid::getInstace()->checkingrid();
 	}
 	//DebugOut(L"object:%d-brick:%d-bratizer:%d-item:%d-allstatic:%d-ghost:%d-panther:%d",objects.size(),BrickObjects.size(),BratizerObjects.size(),ItemObjects.size(),allStaticObject.size(),CountEnemyGhost,CountEnemyPanther);
 	if (simon->isdestroyall())
 	{
 		for (UINT i = 0; i < allEnemies.size(); i++)
-			allEnemies[i]->SetState(ENEMY_STATE_DIE);
+			if(!dynamic_cast<Boss*>(allEnemies[i]))
+			allEnemies[i]->takedamage();
 		//simon->setdestroyall(false);
 	}
 	for (unsigned int i = 0; i < allEnemies.size(); i++)
@@ -696,10 +716,10 @@ void SceneGame::Update(DWORD dt)
 		{
 			if (!dynamic_cast<Ghost*>(allEnemies[i])->Isdied())
 			{
-				if(allEnemies[i]->GetState() == ENEMY_STATE_LIVE)
-				coObjects.push_back(allEnemies[i]);
-				if(!simon->ispause() && !simon->iscollecting())
-				allEnemies[i]->Update(dt, &BrickObjects);
+				if (allEnemies[i]->GetState() == ENEMY_STATE_LIVE)
+					coObjects.push_back(allEnemies[i]);
+				if (!simon->ispause() && !simon->iscollecting())
+					allEnemies[i]->Update(dt, &BrickObjects);
 			}
 			else
 			{
@@ -707,55 +727,58 @@ void SceneGame::Update(DWORD dt)
 				CountEnemyGhost--;
 				//delete(allEnemies[i]);
 			}
-		}else
-		if (dynamic_cast<Panther*>(allEnemies[i]))
-		{
-			if (!dynamic_cast<Panther*>(allEnemies[i])->Isdied())
+		}
+		else
+			if (dynamic_cast<Panther*>(allEnemies[i]))
 			{
-				if (allEnemies[i]->GetState() == ENEMY_STATE_LIVE)
-				coObjects.push_back(allEnemies[i]);
-				if (!simon->ispause() && !simon->iscollecting())
-				allEnemies[i]->Update(dt, &BrickObjects);
-			}
-			else
-			{
-				allEnemies.erase(allEnemies.begin() + i);
-				CountEnemyPanther--;
-				//delete(allEnemies[i]);
-			}
-		}else
-		if (dynamic_cast<Bat*>(allEnemies[i]))
-		{
-			if (!dynamic_cast<Bat*>(allEnemies[i])->Isdied())
-			{
-				if (allEnemies[i]->GetState() == ENEMY_STATE_LIVE)
-				coObjects.push_back(allEnemies[i]);
-				if (!simon->ispause() && !simon->iscollecting())
-				allEnemies[i]->Update(dt, &BrickObjects);
-			}
-			else
-			{
-				allEnemies.erase(allEnemies.begin() + i);
-				//delete(allEnemies[i]);
-			}
-		} else
-		if (dynamic_cast<Fishmen*>(allEnemies[i]))
-			{
-				if (!dynamic_cast<Fishmen*>(allEnemies[i])->Isdied())
+				if (!dynamic_cast<Panther*>(allEnemies[i])->Isdied())
 				{
 					if (allEnemies[i]->GetState() == ENEMY_STATE_LIVE)
-					coObjects.push_back(allEnemies[i]);
+						coObjects.push_back(allEnemies[i]);
 					if (!simon->ispause() && !simon->iscollecting())
-					allEnemies[i]->Update(dt, &BrickObjects);
+						allEnemies[i]->Update(dt, &BrickObjects);
 				}
 				else
 				{
 					allEnemies.erase(allEnemies.begin() + i);
-					CountEnemyFishmen--;
+					CountEnemyPanther--;
 					//delete(allEnemies[i]);
 				}
 			}
-		
+			else
+				if (dynamic_cast<Bat*>(allEnemies[i]))
+				{
+					if (!dynamic_cast<Bat*>(allEnemies[i])->Isdied())
+					{
+						if (allEnemies[i]->GetState() == ENEMY_STATE_LIVE)
+							coObjects.push_back(allEnemies[i]);
+						if (!simon->ispause() && !simon->iscollecting())
+							allEnemies[i]->Update(dt, &BrickObjects);
+					}
+					else
+					{
+						allEnemies.erase(allEnemies.begin() + i);
+						//delete(allEnemies[i]);
+					}
+				}
+				else
+					if (dynamic_cast<Fishmen*>(allEnemies[i]))
+					{
+						if (!dynamic_cast<Fishmen*>(allEnemies[i])->Isdied())
+						{
+							if (allEnemies[i]->GetState() == ENEMY_STATE_LIVE)
+								coObjects.push_back(allEnemies[i]);
+							if (!simon->ispause() && !simon->iscollecting())
+								allEnemies[i]->Update(dt, &BrickObjects);
+						}
+						else
+						{
+							allEnemies.erase(allEnemies.begin() + i);
+							CountEnemyFishmen--;
+							//delete(allEnemies[i]);
+						}
+					}
+
 	}
 	for (UINT i = 0; i < allfireball.size(); i++)
 	{
@@ -763,7 +786,11 @@ void SceneGame::Update(DWORD dt)
 			coObjects.push_back(allfireball[i]);
 	}
 	for (unsigned int i = 0; i < ItemObjects.size(); i++)
+	{
+		
 		ItemObjects[i]->Update(dt, &BrickObjects);
+
+	}
 	for (unsigned int i = 0; i < BoundObjects.size(); i++)
 	{
 		BoundObjects[i]->Update(dt);
@@ -780,25 +807,27 @@ void SceneGame::Update(DWORD dt)
 	for (unsigned int i = 0; i < allfireball.size(); i++)
 	{
 		if (!simon->ispause() && !simon->iscollecting())
-		allfireball[i]->Update(dt);
+			allfireball[i]->Update(dt);
 	}
 	for (unsigned int i = 0; i < listeffect.size(); i++)
 	{
-		if(!dynamic_cast<Effect*>(listeffect[i])->Isfinish())
-		listeffect[i]->Update(dt);
+		if (!dynamic_cast<Effect*>(listeffect[i])->Isfinish())
+			listeffect[i]->Update(dt);
 		else
 		{
 			listeffect.erase(listeffect.begin() + i);
 		}
 	}
+	coObjects.push_back(boss);
 	simon->Update(dt, &coObjects);
 	collisionweapond();
 	whip->Update(dt);
 	sword->Update(dt);
 	axe->Update(dt);
+	boss->Update(dt);
 	holywater->Update(dt, &BrickObjects);
 	Camera::getInstance()->Update(dt, simon);
-	
+
 #pragma endregion
 }
 
@@ -831,7 +860,7 @@ void SceneGame::LoadContent(int map)
 	float x, y;
 	BrickObjects.at(0)->GetPosition(x, y);
 	groundY = y;
-	simon->SetPosition(1900,y - SIMON_BIG_BBOX_HEIGHT - 1);
+	simon->SetPosition(2900, 120);
 	objects.push_back(simon);
 	//init sword and whip
 	sword = new Sword(simon);
@@ -843,18 +872,25 @@ void SceneGame::LoadContent(int map)
 	holywater = new Holy_Water(simon);
 	objects.push_back(holywater);
 	allfireball.push_back(new Fireball(1000, simon->gety(), -1));
+	boss = new Boss(simon, &allfireball);
+	smb = new SmallItem();
+	smb->setType(Const_Value::small_item_type::ball);
+	smb->SetState(ITEM_STATE_UNACTIVE);
+	boss->addSubItem(smb);
+	ItemObjects.push_back(smb);
+	allEnemies.push_back(boss);
 	currentGrids = Grid::getInstace()->checkingrid();
-	
-	
+
+
 }
 
 void SceneGame::Draw()
 {
-	
-	DebugOut(L"\ncrossing-%d", simon->isdestroyall());
-	if (simon->Gameover()|| simon->isdestroyall())
+
+	//DebugOut(L"\ncrossing-%d", simon->isdestroyall());
+	if (simon->Gameover() || simon->isdestroyall())
 		return;
-	
+
 	this->RenderBackground();
 	for (unsigned int i = 0; i < objects.size(); i++)
 		objects[i]->Render();
@@ -864,10 +900,12 @@ void SceneGame::Draw()
 		allfireball[i]->Render();
 	for (unsigned int i = 0; i < listeffect.size(); i++)
 		listeffect[i]->Render();
+
 	simon->Render();
 	whip->Render();
 	sword->Render();
 	axe->Render();
+	boss->Render();
 	holywater->Render();
 
 
@@ -896,7 +934,7 @@ void SceneGame::OnKeyDown(int KeyCode)
 	case DIK_A:
 		//using knife
 		CGameObject *weapond;
-		
+
 		if (games->IsKeyDown(DIK_UP) && simon->getcurrentsubWeapondTurn() >= 1)
 		{
 			switch (simon->getcurrentsubWeapond())
@@ -931,14 +969,14 @@ void SceneGame::OnKeyDown(int KeyCode)
 			default:
 				break;
 			}
-			
+
 
 		}
 		//using whip 
 		else
 		{
 			//animation with whip
-			if (!simon->iscollecting() )
+			if (!simon->iscollecting())
 			{
 				simon->StartAttack();
 				whip->StartAttack();
@@ -963,14 +1001,14 @@ void SceneGame::OnKeyDown(int KeyCode)
 				if (typestairstart->getDirect() == -1)
 				{
 					simon->startAutowalk(-1, l - (SIMON_BIG_BBOX_WIDTH - SIMON_SMALL_BBOX_WIDTH) / 2);
-					simon->settempxy(l-20, b);
-					
+					simon->settempxy(l - 20, b);
+
 					simon->startAutoClimb(-1, b);
 				}
 				//climb to right
 				else
 				{
-					simon->settempxy(l-7, b);
+					simon->settempxy(l - 7, b);
 					simon->startAutowalk(1, r - SIMON_SMALL_BBOX_WIDTH - (SIMON_BIG_BBOX_WIDTH - SIMON_SMALL_BBOX_WIDTH) / 2);
 					//simon->setstairinfo(typestairstart->Gettype(), typestairstart->getDirect());
 					simon->startAutoClimb(1, b);
@@ -995,31 +1033,39 @@ void SceneGame::OnKeyDown(int KeyCode)
 				if (typestairstart->getDirect() == -1)
 				{
 					simon->startAutowalk(-1, l - (SIMON_BIG_BBOX_WIDTH - SIMON_SMALL_BBOX_WIDTH) / 2);
-					simon->settempxy(l-23,b+16);
-					
+					simon->settempxy(l - 23, b + 16);
+
 					simon->startAutoClimb(1, b + 16);
 				}
 				//climb down to right
 				else
 				{
 					simon->startAutowalk(1, l - (SIMON_BIG_BBOX_WIDTH - SIMON_SMALL_BBOX_WIDTH) / 2);
-					simon->settempxy(l,b+16);
+					simon->settempxy(l, b + 16);
 					simon->startAutoClimb(-1, b + 16);
 				}
 			}
 		}
 		break;
 
+	case DIK_F1:
+	{
+		
+		Camera::getInstance()->setcurrentarea(2);
+		simon->SetPosition(5267,140);
+		break;
 	}
+	}
+	
 }
 
 void SceneGame::OnKeyUp(int keyCode)
 {
-	if (simon->isclimbing() && !simon->inAutoMode() &&!changemap)
+	if (simon->isclimbing() && !simon->inAutoMode() && !changemap)
 	{
-		float x, y,numstep;
+		float x, y, numstep;
 		simon->gettempxy(x, y);
-		
+
 		numstep = simon->getnumstep();
 		int i = 0;
 		if (typestairstart->Gettype() == Const_Value::in_obj_type::stairup)
@@ -1027,7 +1073,7 @@ void SceneGame::OnKeyUp(int keyCode)
 		else if (typestairstart->Gettype() == Const_Value::in_obj_type::stairdown)
 			i = -1;
 		//simon and stair have the same direction
-		simon->SetPosition(x + 16 *numstep*typestairstart->getDirect(), y-SIMON_BIG_BBOX_HEIGHT - 16 *numstep*i);
+		simon->SetPosition(x + 16 * numstep*typestairstart->getDirect(), y - SIMON_BIG_BBOX_HEIGHT - 16 * numstep*i);
 		//DebugOut(L"%d",(int)numstep);
 		float x1, y1;
 		simon->GetPosition(x1, y1);

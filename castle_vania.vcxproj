@@ -133,6 +133,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\boss\Boss.h" />
     <ClInclude Include="src\sample\Grid.h" />
     <ClInclude Include="src\weapon\Holy_Water.h" />
     <ClInclude Include="src\weapon\Axe.h" />
@@ -171,6 +172,7 @@
     <ClInclude Include="src\item\StaticObject.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\boss\Boss.cpp" />
     <ClCompile Include="src\sample\Grid.cpp" />
     <ClCompile Include="src\weapon\Holy_Water.cpp" />
     <ClCompile Include="src\weapon\Axe.cpp" />

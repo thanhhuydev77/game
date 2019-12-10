@@ -261,6 +261,7 @@ Map::Map(string filePath, int idtex)
 	}
 	infile.close();
 	loaditems();
+	Camera::getInstance()->Setsize(GetWidth(),GetHeight());
 	Camera::getInstance()->setactivearea(activearea);
 }
 

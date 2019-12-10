@@ -45,6 +45,8 @@ public:
 #define ID_TEX_AXE			24
 #define ID_TEX_HOLYWATER	25
 #define ID_TEX_EFFECT		26
+#define ID_TEX_BOSS			27
+#define ID_TEX_BALL			28
 #define MAP1				"content\\tilemap\\map1.txt"
 #define MAP2				"content\\tilemap\\map2.txt"
 #define MAP3				"content\\tilemap\\map3.txt"
@@ -57,7 +59,7 @@ public:
 #define SIMON_INVISIBLE_TIME		5000
 #define SIMON_CLOCKUP_TIME			5000
 #define SIMON_CROSSING_TIME			1000
-#define SIMON_DEFAULT_HEALTH		100
+#define SIMON_DEFAULT_HEALTH		16
 #define SIMON_DEFAULT_LEVEL			1
 #define SIMON_DEFAULT_TIME_COMEBACK	3
 
@@ -214,8 +216,8 @@ static enum Weapond { whip, sword, axe,holywater };
 #pragma endregion
 #pragma region backgroundobject
 
-	static enum in_obj_type { Brick, endmap1, stairup, stairdown, map2to3_p1, map2to3_p2, map3to2_p1, map3to2_p2,ghostzone,pantherzone,batzone,fishmanzone};
-	static enum small_item_type { smallheart, largeheart, whippowerup, holywateritem, sworditem, axeitem, redmoneybag, bluemoneybag, whitemoneybag,cross, stopwatch,invisiblepot, doubleshot,chicken};
+	static enum in_obj_type { Brick, endmap1, stairup, stairdown, map2to3_p1, map2to3_p2, map3to2_p1, map3to2_p2,ghostzone,pantherzone,batzone,fishmanzone,createboss,activeboss};
+	static enum small_item_type { smallheart, largeheart, whippowerup, holywateritem, sworditem, axeitem, redmoneybag, bluemoneybag, whitemoneybag,cross, stopwatch,invisiblepot, doubleshot,chicken,ball};
 	static enum bound_item_type { Bratizer, candle, breakableBrick, BreakableBlock, flame };
 	static enum static_obj_type { Door };
 #define BRATIZER_STATE_ACTIVE		1
@@ -307,6 +309,30 @@ static enum Weapond { whip, sword, axe,holywater };
 	static enum effect_type {money100,money400,money700,money1000,broken,sparks,water};
 #define TIME_ACTIVE 300
 #define EFFECT_GRAVITY 0.001
+#pragma endregion
+#pragma region boss
+
+#define PHANTOMBAT_DEFAULT_X 5295.0f
+#define PHANTOMBAT_DEFAULT_Y 110.0f
+#define PHANTOMBAT_DEFAULT_HEALTH 16 
+#define PHANTOMBAT_BOUNDARY_START_STAIGHT_LEFT 5178
+#define PHANTOMBAT_BOUNDARY_START_STAIGHT_RIGHT 5492
+
+#define BOSS_STATE_UNACTIVE	0
+#define BOSS_STATE_SLEEP	1
+#define BOSS_STATE_WAKE		2
+
+
+
+#define BOSS_PROCESS_START_1 1 // lúc bắt đầu, Bat di chuyển xuống
+#define BOSS_PROCESS_START_2 2 // lúc bắt đầu, Bat di chuyển đến cửa sổ (nửa vòng cung)
+#define BOSS_PROCESS_CURVES 3 // lúc di chuyển theo vòng cung
+#define BOSS_PROCESS_STRAIGHT_1 4 // xử lí di chuyển thẳng lần 1
+#define BOSS_PROCESS_STRAIGHT_2 5 // xử lí di chuyển thẳng lần 2
+#define BOSS_PROCESS_ATTACK 6 // xử lí tấn công
+
+#define BOSS_BBOX_WIDTH		98
+#define BOSS_BBOX_HEIGHT	46
 #pragma endregion
 
 };

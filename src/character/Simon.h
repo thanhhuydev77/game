@@ -19,6 +19,7 @@
 #include "../enemies/Ghost.h"
 #include "../enemies/Panther.h"
 #include "../weapon/Axe.h"
+#include "../boss/Boss.h"
 using namespace std;
 class Simon : public CGameObject
 {
@@ -144,6 +145,7 @@ public:
 	void resetlengthstair() { lengthstair = 0; }
 	void collisionwithenemy(vector<LPGAMEOBJECT> *list);
 	bool Gameover() { return isGameOver; }
+	int damageshot();
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom);
 };
 

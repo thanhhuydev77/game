@@ -22,6 +22,7 @@ class Camera
 
 public:
 	static Camera *getInstance();
+	float getstarpositionofcurrentarea();
 	void setactivearea(vector<int> a) { activearea = a; }
 	void nextarea();
 	Camera();
@@ -38,6 +39,7 @@ public:
 	int GetHeight();
 	bool checkInCamera(RECT a);
 	bool checkInCamera(float t,float l,float r,float b);
+	bool checkOutCamera(float t, float l, float r, float b);
 	void start_auto();
 	bool isautogo() { return autotransiting; }
 	D3DXVECTOR3 GetPosition();

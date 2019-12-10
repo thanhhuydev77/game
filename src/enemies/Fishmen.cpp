@@ -48,11 +48,13 @@ void Fishmen::Attack()
 	{
 		Fire = new Fireball(x + 10, y + 3, nx);
 		listWeaponOfEnemy->push_back(Fire);
+		dynamic_cast<Fireball*>(Fire)->setspeed(0.12);
 	}
 	//co roi nhung da ket thuc roi
 	if (dynamic_cast<Fireball*>(Fire)->isFinish())
 	{
 		dynamic_cast<Fireball*>(Fire)->restart(x + 10, y + 3, nx);
+		dynamic_cast<Fireball*>(Fire)->setspeed(0.12);
 	}
 	else
 		return;

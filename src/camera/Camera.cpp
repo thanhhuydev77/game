@@ -7,6 +7,11 @@ Camera * Camera::getInstance()
 	return _instance;
 }
 
+float Camera::getstarpositionofcurrentarea()
+{
+	return activearea[currentarea];
+}
+
 void Camera::nextarea()
 {
 	des = camx + 250;
@@ -131,6 +136,26 @@ bool Camera::checkInCamera(float t, float l, float r, float b)
 	a.right = r;
 	a.bottom = b;
 	return checkInCamera(a);
+}
+
+bool Camera::checkOutCamera(float l, float t, float r, float b)
+{
+	RECT a;
+	a.top = t;
+	a.left = l;
+	a.right = r;
+	a.bottom = b;
+
+	if (a.left < camx)
+		return false;
+	else if (a.right> camx + CAMERA_WIDTH)
+		return false;
+	else if (a.top < OFFSET_Y)
+		return false;
+	else if (a.bottom > OFFSET_Y+this->mHeight)
+		return false;
+
+	return true;
 }
 
 void Camera::start_auto()

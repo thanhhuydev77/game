@@ -37,6 +37,7 @@
     <ClInclude Include="src\weapon\Axe.h" />
     <ClInclude Include="src\weapon\Holy_Water.h" />
     <ClInclude Include="src\sample\Grid.h" />
+    <ClInclude Include="src\boss\Boss.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header">
@@ -87,6 +88,7 @@
     <ClCompile Include="src\weapon\Axe.cpp" />
     <ClCompile Include="src\weapon\Holy_Water.cpp" />
     <ClCompile Include="src\sample\Grid.cpp" />
+    <ClCompile Include="src\boss\Boss.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="content\textures\bbox.png" />

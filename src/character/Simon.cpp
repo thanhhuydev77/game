@@ -39,8 +39,13 @@ Simon * Simon::getinstance(vector<LPGAMEOBJECT> *listeffect)
 
 void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 {
-
+	
 	CGameObject::Update(dt);
+	if (x<Camera::getInstance()->Getx())
+	{
+		x += 1.0f;
+		return;
+	}
 	if (GetTickCount() - untouchable_start > SIMON_UNTOUCHABLE_TIME)
 	{
 		untouchable_start = 0;
@@ -145,7 +150,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 	vector<LPGAMEOBJECT> list_enemy;
 	list_enemy.clear();
 	for (UINT i = 0; i < colliable_objects->size(); i++)
-		if (dynamic_cast<Ghost*>(colliable_objects->at(i)) || dynamic_cast<Bat*>(colliable_objects->at(i)) || dynamic_cast<Panther*>(colliable_objects->at(i)) || dynamic_cast<Fishmen*>(colliable_objects->at(i)) || dynamic_cast<Fireball*>(colliable_objects->at(i)))
+		if (dynamic_cast<Ghost*>(colliable_objects->at(i)) || dynamic_cast<Bat*>(colliable_objects->at(i)) || dynamic_cast<Panther*>(colliable_objects->at(i)) || dynamic_cast<Fishmen*>(colliable_objects->at(i)) || dynamic_cast<Fireball*>(colliable_objects->at(i))|| dynamic_cast<Boss*>(colliable_objects->at(i)))
 			list_enemy.push_back(colliable_objects->at(i));
 
 
@@ -482,6 +487,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 	}
 
 #pragma endregion
+
 	collisionwithenemy(&list_enemy);
 	//DebugOut(L"health :%d \n", Health);
 }
@@ -602,12 +608,22 @@ void Simon::collisionwithenemy(vector<LPGAMEOBJECT> *list)
 		LPCOLLISIONEVENT e = coEventsResult[i];
 		if (!untouchable && !invisible)
 		{
-			if (nx != 0)
-				takedamage(10, -nx);
+			if (dynamic_cast<Boss*>(e->obj))
+			{
+				if (nx != 0)
+					takedamage(2, -nx);
+				else
+					takedamage(2, 1);
+			}
 			else
-				takedamage(10, 1);
-			if (dynamic_cast<Bat *>(e->obj))
-				dynamic_cast<Bat *>(e->obj)->takedamage();
+			{
+				if (nx != 0)
+					takedamage(1, -nx);
+				else
+					takedamage(1, 1);
+				if (dynamic_cast<Bat *>(e->obj))
+					dynamic_cast<Bat *>(e->obj)->takedamage();
+			}
 		}
 	}
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
@@ -717,6 +733,11 @@ void Simon::collisionwithSmallItem(CGameObject * si)
 		Health = (Health + 30 > 100) ? 100 : (Health + 30);
 		doubleshot = true;
 		break;
+	case Const_Value::small_item_type::ball:
+		lh->SetState(ITEM_STATE_UNACTIVE);
+		lh->SetPosition(-100 - AXE_BBOX_WIDTH, 0);
+		isGameOver = true;
+		break;
 	default:
 		break;
 	}
@@ -766,8 +787,11 @@ void Simon::setcanclimb(bool icanclimb, bool up)
 
 void Simon::comeback()
 {
-	x = Camera::getInstance()->Getx();
-	y = OFFSET_Y+SIMON_BIG_BBOX_HEIGHT;
+	DebugOut(L"\nsimon die");
+	x = Camera::getInstance()->getstarpositionofcurrentarea();
+	Camera::getInstance()->SetFollowtoSimon(true);
+	y = OFFSET_Y;
+	
 	Health = 100;
 	resetToDefault();
 	vx = 0;
@@ -922,6 +946,14 @@ void Simon::Upgrate()
 int Simon::GetDirect()
 {
 	return nx;
+}
+
+int Simon::damageshot()
+{
+	int shot = 1;
+	if (doubleshot)
+		shot = 2;
+	return shot;
 }
 
 void Simon::GetBoundingBox(float & left, float & top, float & right, float & bottom)

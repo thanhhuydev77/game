@@ -14,6 +14,7 @@ void SmallItem::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if (state == ITEM_STATE_UNACTIVE)
 	{
 		OrginalX = x;
+		if(!Type == Const_Value::small_item_type::ball)
 		appear_start = GetTickCount();
 		if(Type == Const_Value::small_item_type::smallheart)
 		vx = SMALL_HEART_SPEED_X;
@@ -22,7 +23,7 @@ void SmallItem::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		if (appear_start == 0)
 			appear_start = GetTickCount();
-		if (GetTickCount() - appear_start > ITEM_TIME_APPREARENCE)
+		if (GetTickCount() - appear_start > ITEM_TIME_APPREARENCE &&Type != Const_Value::ball)
 		{
 			state = ITEM_STATE_UNACTIVE;
 			return;
@@ -65,10 +66,15 @@ void SmallItem::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			for (UINT i = 0; i < coEventsResult.size(); i++)
 			{
 				LPCOLLISIONEVENT e = coEventsResult[i];
-				if (dynamic_cast<CInvisibleObject *>(e->obj) && dynamic_cast<CInvisibleObject *>(e->obj)->Gettype() == Const_Value::Brick)
+				if (dynamic_cast<CInvisibleObject *>(e->obj) && (dynamic_cast<CInvisibleObject *>(e->obj)->Gettype() == Const_Value::Brick || dynamic_cast<BoundItem *>(e->obj)))
 				{
 					vx = 0;
 					y += min_ty * dy + ny * 0.1f;
+					if (Type == Const_Value::small_item_type::ball)
+					{
+						if (ny != 0) vy = -(vy/2);
+					}
+					else
 					if (ny != 0) vy = 0;
 				}
 				else if (dynamic_cast<CInvisibleObject *>(e->obj))

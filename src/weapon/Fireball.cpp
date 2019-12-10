@@ -2,32 +2,41 @@
 
 
 
-Fireball::Fireball(float x, float y, int direct)
+Fireball::Fireball(float x, float y, int direct, float angle)
 {
 	LoadResourceHelper::Loadspritefromfile("content\\characters\\player\\Fireball\\Fireball_sprite.txt", ID_TEX_FIREBALL);
 	LoadResourceHelper::Loadanimationfromfile("content\\characters\\player\\Fireball\\Fireball_ani.txt", this);
 	this->x = x;
 	this->y = y;
+	this->angle = angle;
 	this->nx = direct;
-	vx = nx*FIREBALL_SPEED;
+	speed = 0;
 }
 
+
+void Fireball::setspeed(float s)
+{
+	 speed = s;
+	 vx = nx * speed;
+	 vy = angle * speed;
+}
 
 Fireball::~Fireball()
 {
 }
 
-void Fireball::restart(float x, float y, int direct)
+void Fireball::restart(float x, float y, int direct, float angle)
 {
 	this->x = x;
 	this->y = y;
+	this->angle = angle;
 	this->nx = direct;
-	vx = nx * FIREBALL_SPEED;
 	isfinish = false;
 }
 
 void Fireball::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	
 	CGameObject::Update(dt);
 	if (isfinish)
 		return;

@@ -25,7 +25,7 @@
 #include "../weapon/Axe.h"
 #include "../weapon/Holy_Water.h"
 #include "../effect/Effect.h"
-
+#include "../boss/Boss.h"
 using namespace std;
 
 class SceneGame : public Scene
@@ -36,6 +36,9 @@ private:
 	CGame *games;
 	Simon *simon;
 	Whip  *whip;
+
+	Boss *boss;
+	SmallItem *smb;
 	Axe *axe;
 	Holy_Water *holywater;
 	Map * mmap;
@@ -50,6 +53,7 @@ private:
 	int CountEnemyFishmen;
 	bool isAllowCreateBat;
 	vector<int> currentGrids;
+	DWORD lasttimedamage;
 	DWORD TimeCreateFishmen;
 	DWORD TimeWaitCreateFishmen;
 	bool changemap;
