@@ -40,6 +40,7 @@
     <ClInclude Include="src\boss\Boss.h" />
     <ClInclude Include="src\sample\Board.h" />
     <ClInclude Include="src\sample\Sound.h" />
+    <ClInclude Include="src\Scene\SceneIntro.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header">
@@ -93,6 +94,7 @@
     <ClCompile Include="src\boss\Boss.cpp" />
     <ClCompile Include="src\sample\Board.cpp" />
     <ClCompile Include="src\sample\Sound.cpp" />
+    <ClCompile Include="src\Scene\SceneIntro.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="content\textures\bbox.png" />

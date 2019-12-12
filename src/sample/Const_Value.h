@@ -20,7 +20,7 @@ public:
 
 #define ID_TEX_MARIO			0
 #define ID_TEX_ENEMY			10
-#define ID_TEX_MISC				20
+#define ID_TEX_MISC				2
 #define ID_TEX_SIMON			1
 #define ID_TEX_WHIP				11
 #define	ID_TEX_MAP1				9
@@ -31,7 +31,7 @@ public:
 #define	ID_TEX_SWORD			4
 #define ID_TEX_SPARK			3
 #define ID_TEX_MAP2				12
-#define ID_TEX_MAP3				15
+#define ID_TEX_MAP3				32
 #define ID_TEX_ITEM				13
 #define ID_TEX_BITEM			14
 #define ID_TEX_STATIC_OBJ		16
@@ -49,7 +49,7 @@ public:
 #define ID_TEX_BALL			28
 #define ID_TEX_FONT			29
 #define	ID_TEX_BOARD		30
-
+#define ID_TEX_INTRO		31
 #define MAP1				"content\\tilemap\\map1.txt"
 #define MAP2				"content\\tilemap\\map2.txt"
 #define MAP3				"content\\tilemap\\map3.txt"
@@ -96,6 +96,7 @@ public:
 #define SIMON_STATE_GODOWN_ATTACK	910
 #define SIMON_STATE_ATTACK			700
 #define SIMON_STATE_COLLECT			800
+#define SIMON_STATE_TURN_BACK		401
 
 #define SIMON_ANI_IDLE				4
 #define SIMON_ANI_WALKING			8
@@ -110,6 +111,7 @@ public:
 #define SIMON_ANI_GOUP_ATTACK		9
 #define SIMON_ANI_GODOWN_ATTACK		10
 #define SIMON_ANI_TAKEDAMAGE		11
+#define SIMON_ANI_TURN_BACK			13
 
 
 #define SIMON_BIG_BBOX_WIDTH		60

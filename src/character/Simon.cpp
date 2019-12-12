@@ -27,7 +27,7 @@ Simon::Simon(vector<LPGAMEOBJECT> *listeffect)
 {
 	LoadResourceHelper::Loadspritefromfile("content\\characters\\player\\player_sprites.txt", ID_TEX_SIMON);
 	LoadResourceHelper::Loadanimationfromfile("content\\characters\\player\\player_ani\\allani.txt", this);
-	Health = 1;// SIMON_DEFAULT_HEALTH;
+	Health = SIMON_DEFAULT_HEALTH;
 	level = SIMON_DEFAULT_LEVEL;
 	NumofLife = SIMON_DEFAULT_TIME_COMEBACK;
 	this->listeffect = listeffect;
@@ -57,7 +57,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 	{
 		startinvisible = 0;
 		invisible = false;
-		Sound::getInstance()->play("InvisibilityPotion_End", false, 1);
+		//Sound::getInstance()->play("InvisibilityPotion_End", false, 1);
 	}
 	if (GetTickCount() - pause_start > SIMON_CLOCKUP_TIME)
 	{
@@ -171,14 +171,14 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 			if (temp_nx == -1 && x - targetX > 0)
 			{
 				SetState(SIMON_STATE_WALKING_LEFT);
-				x += dt * vx;
+				x += nx*speedauto;
 				
 			}
 			//walking to right
 			else if (temp_nx == 1 && x - targetX < 0)
 			{
 				SetState(SIMON_STATE_WALKING_RIGHT);
-				x += dt * vx;
+				x +=  nx*speedauto;
 				
 			}
 			//end of auto
@@ -577,6 +577,8 @@ void Simon::Render()
 		animations[ani]->GetFrame(1)->GetSprite()->Draw(x, y, alpha, nx);
 		return;
 	}
+	if (state == SIMON_STATE_TURN_BACK)
+		ani = SIMON_ANI_TURN_BACK;
 	animations[ani]->Render(x, y, alpha, nx);
 	RenderBoundingBox();
 	//DebugOut(L"ani :%d --", ani);
@@ -783,6 +785,9 @@ void Simon::SetState(int state)
 	case SIMON_STATE_IDLE:
 		vx = 0;
 		break;
+	case SIMON_STATE_TURN_BACK:
+		vx = 0;
+		vy = 0;
 	default:
 		vx = 0;
 	}
@@ -803,7 +808,7 @@ void Simon::comeback()
 	Camera::getInstance()->SetFollowtoSimon(true);
 	y = OFFSET_Y;
 	
-	Health = 1;// SIMON_DEFAULT_HEALTH;
+	Health = SIMON_DEFAULT_HEALTH;
 	Sound::getInstance()->play("bacbackgroundmusic", true, 0);
 	Sound::getInstance()->stop("backgroundmusic_boss");
 	Sound::getInstance()->stop("Life_Lost");
@@ -871,10 +876,11 @@ void Simon::StartCollect()
 	}
 }
 
-void Simon::startAutowalk(int lastdirect, float targetX)
+void Simon::startAutowalk(int lastdirect, float targetX, float speed)
 {
 	if (!autoclimbing)
 		dofirst = 1;
+	speedauto = speed;
 	// according to current locate to determine nx when walking
 	this->targetX = targetX;
 	//stair direct is left

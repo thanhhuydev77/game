@@ -142,5 +142,5 @@ void CGameObject::AddAnimation(int aniId)
 
 CGameObject::~CGameObject()
 {
-
+	
 }

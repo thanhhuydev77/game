@@ -82,9 +82,10 @@ class Simon : public CGameObject
 	DWORD pause_start;
 	bool doubleshot;
 	vector<LPGAMEOBJECT> *listeffect;
-	Simon(vector<LPGAMEOBJECT> *listeffect);
+	
 	bool destroyall;
 public:
+	Simon(vector<LPGAMEOBJECT> *listeffect = NULL);
 	void setclimbingdistance(int cd) { climbbing_distance = cd; }
 	static Simon* getinstance(vector<LPGAMEOBJECT> *listeffect);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *colliable_objects = NULL);
@@ -117,6 +118,7 @@ public:
 	void setcanclimb(bool icanclimb, bool up);
 	bool inAutoMode() { return (autoclimbing || autowalking); }
 	void comeback();
+	float speedauto;
 	void StartAttack();
 	void resetToDefault();
 	void StartmonoJump();
@@ -125,7 +127,7 @@ public:
 	void startclimbup();
 	void startFalling();
 	void startclimbdown();
-	void startAutowalk(int lastdirect, float targetX);
+	void startAutowalk(int lastdirect, float targetX,float speed = SIMON_WALKING_SPEED*15);
 	void startAutoClimb(int lastdirect, float targetY);
 	void Upgrate();
 	void setstateendmap1(bool signal) { endmap1 = signal; }

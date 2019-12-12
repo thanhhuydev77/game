@@ -68,6 +68,8 @@ void Sound::loadcontent()
 	loadSound("content\\music\\Stage_01_Vampire_Killer.wav", "backgroundmusic");
 	loadSound("content\\music\\Boss_Battle_Poison_Mind.wav", "backgroundmusic_boss");
 	loadSound("content\\music\\Life_Lost.wav", "Life_Lost");
+	loadSound("content\\music\\Game_Start_Prologue.wav", "Game_Start_Prologue");
+	
 	
 	
 }

@@ -204,7 +204,7 @@ void SceneGame::collisionweapond()
 				{
 				case 1:
 					if (makeitem == 1)
-						dynamic_cast<Ghost*>(enemy)->addSubItem(sm);
+					dynamic_cast<Ghost*>(enemy)->addSubItem(sm);
 					dynamic_cast<Ghost*>(enemy)->takedamage();
 					listeffect.push_back(new Effect(Const_Value::effect_type::sparks, enemy->getx(), enemy->gety() + 10, 0.0f, 0.0f));
 					break;
@@ -222,7 +222,7 @@ void SceneGame::collisionweapond()
 					break;
 				case 4:
 					if (makeitem == 1)
-						dynamic_cast<Fishmen*>(enemy)->addSubItem(sm);
+					dynamic_cast<Fishmen*>(enemy)->addSubItem(sm);
 					dynamic_cast<Fishmen*>(enemy)->takedamage();
 					listeffect.push_back(new Effect(Const_Value::effect_type::sparks, enemy->getx(), enemy->gety() + 10, 0.0f, 0.0f));
 					break;
@@ -231,14 +231,13 @@ void SceneGame::collisionweapond()
 					{
 						dynamic_cast<Boss*>(enemy)->takedamage(1*simon->damageshot());
 						lasttimedamage = GetTickCount();
-						Sound::getInstance()->play("hit", false, 1);
 						listeffect.push_back(new Effect(Const_Value::effect_type::sparks, enemy->getx(), enemy->gety() + 10, 0.0f, 0.0f));
 					}
 					break;
 				default:
 					break;
 				}
-
+				Sound::getInstance()->play("hit", false, 1);
 				if (resetsword)
 					sword->reset();
 				break;
@@ -876,7 +875,7 @@ void SceneGame::LoadContent(int map)
 	float x, y;
 	BrickObjects.at(0)->GetPosition(x, y);
 	groundY = y;
-	simon->SetPosition(2900,y-SIMON_BIG_BBOX_HEIGHT);
+	simon->SetPosition(0,y-SIMON_BIG_BBOX_HEIGHT);
 	objects.push_back(simon);
 	//init sword and whip
 	sword = new Sword(simon);
@@ -902,7 +901,6 @@ void SceneGame::LoadContent(int map)
 
 void SceneGame::Draw()
 {
-	
 	//DebugOut(L"\ncrossing-%d", simon->isdestroyall());
 	if(simon->Gameover())
 	{

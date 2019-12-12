@@ -11,6 +11,7 @@
 #include "../Scene/SceneManager.h"
 #include "../Scene/SceneGame.h"
 #include"../Scene/SceneExample.h"
+#include "../Scene/SceneIntro.h"
 SceneGame *scene1;
 
 CGame *game;
@@ -57,8 +58,8 @@ LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 void LoadResources()
 {
 	scenemanager = SceneManager::getInstance();
-	scenemanager->ReplaceScene(new SceneGame());
-	scenemanager->GetCurrentScene()->LoadContent(2);
+	scenemanager->ReplaceScene(new SceneIntro());
+	scenemanager->GetCurrentScene()->LoadContent(1);
 }
 
 /*

@@ -133,6 +133,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Scene\SceneIntro.h" />
     <ClInclude Include="src\sample\Sound.h" />
     <ClInclude Include="src\sample\Board.h" />
     <ClInclude Include="src\boss\Boss.h" />
@@ -174,6 +175,7 @@
     <ClInclude Include="src\item\StaticObject.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Scene\SceneIntro.cpp" />
     <ClCompile Include="src\sample\Sound.cpp" />
     <ClCompile Include="src\sample\Board.cpp" />
     <ClCompile Include="src\boss\Boss.cpp" />
