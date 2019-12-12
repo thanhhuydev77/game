@@ -12,9 +12,9 @@ Boss::Boss(CGameObject * simon, vector <CGameObject*> * listWeaponOfEnemy)
 	LoadResourceHelper::Loadanimationfromfile("content\\effect\\flame_ani.txt", this);
 	this->simon = simon;
 	this->listWeaponOfEnemy = listWeaponOfEnemy;
-	
+
 	reset();
-	
+
 }
 
 
@@ -26,14 +26,14 @@ void Boss::start_disappear()
 {
 	disappearing = true;
 	disappear_start = GetTickCount();
-	
+
 }
 
 void Boss::takedamage(int damage)
 {
 	Health -= damage;
-	if(Health <= 0)
-	start_disappear();
+	if (Health <= 0)
+		start_disappear();
 }
 
 void Boss::reset()
@@ -72,24 +72,17 @@ void Boss::start_curving()
 {
 	xBefore = x;
 	yBefore = y;
-	//float x1 = x;
-	//float y1 = y;
 	float simonleft = simon->getx();
 	float simonbottom = simon->gety() + SIMON_BIG_BBOX_HEIGHT;
 
-	if (simonleft < x) // simon bên trái boss
+	if (simonleft < x) // simon on left boss
 		xTarget = Camera::getInstance()->Getx() - 100 + rand() % ((int)(simonleft - Camera::getInstance()->Getx() + 100));
-	else // simon bên phải boss
+	else // simon on right boss
 		xTarget = simonleft + SIMON_BIG_BBOX_WIDTH + rand() % ((int)(Camera::getInstance()->Getx() + Camera::getInstance()->GetWidth() - (simon->getx() + SIMON_BIG_BBOX_WIDTH) + 100));
-
 	yTarget = simonbottom - 50;
-
-	//x3 = xTarget;
-	//y3 = yTarget;
-	DebugOut(L"xtarget: %d , ytarget :%d", (int)xTarget, (int)yTarget);
+	//DebugOut(L"xtarget: %d , ytarget :%d", (int)xTarget, (int)yTarget);
 	vx = -(x - xTarget) / (abs(xTarget - xBefore)*1000.0f / 150); // vận tốc cần để đi đến Target // quy ước: cứ 1 giây đi 150px
 	vy = (yTarget - yBefore) / 650;
-	//isUseBezierCurves = true;
 	processstate = BOSS_PROCESS_CURVES;
 }
 
@@ -110,9 +103,7 @@ void Boss::startstraight()
 	yTarget = 180.0f + rand() % (190 - 80);
 
 	//	DebugOut(L"StatusProcessing = %d, Target (%f, %f) \n", StatusProcessing, xTarget, yTarget);
-
-
-	vx = (xTarget - xBefore) / (1000); // cho đi 1 giây
+	vx = (xTarget - xBefore) / (1000);
 	vy = (yTarget - yBefore) / (1000);
 }
 
@@ -124,13 +115,13 @@ void Boss::startattack()
 	float xAttack = x + BOSS_BBOX_WIDTH / 2;
 	float yAttack = y + BOSS_BBOX_HEIGHT / 2;
 
-	float heightwithsimon = simon->gety() + (SIMON_BIG_BBOX_HEIGHT/2) - yAttack;
-	float widthwithsimon = abs(simon->getx()+(SIMON_BIG_BBOX_WIDTH/2) - xAttack);
+	float heightwithsimon = simon->gety() + (SIMON_BIG_BBOX_HEIGHT / 2) - yAttack;
+	float widthwithsimon = abs(simon->getx() + (SIMON_BIG_BBOX_WIDTH / 2) - xAttack);
 	float angle = heightwithsimon / widthwithsimon;
-	DebugOut(L"angle :%f", angle);
+	//DebugOut(L"angle :%f", angle);
 	if (xAttack < simon->getx())
 		DirectionWeapon = 1;
-	else 
+	else
 	{
 		DirectionWeapon = -1;
 	}
@@ -140,7 +131,7 @@ void Boss::startattack()
 		listWeaponOfEnemy->push_back(weapon);
 		dynamic_cast<Fireball*>(weapon)->setspeed(0.12);
 	}
-	//co roi nhung da ket thuc roi
+	//finish --> restart
 	if (dynamic_cast<Fireball*>(weapon)->isFinish())
 	{
 		dynamic_cast<Fireball*>(weapon)->restart(xAttack, yAttack, DirectionWeapon, angle);
@@ -148,24 +139,7 @@ void Boss::startattack()
 	}
 	else
 		return;
-
-	//// khoảng cách đạn bắn trúng simon
-	//float S = sqrt((xAttack - simon->getx()) *(xAttack - simon->getx()) + (yAttack - simon->gety())*(y - simon->gety())); //s=sqrt(x^2+y^2)
-
-	//// thời gian bắn trúng nếu dùng vận tốc FIREBALL_SPEED
-	//float t = S / FIREBALL_SPEED;
-
-	//weapon->SetSpeed(DirectionWeapon* abs(xAttack - simon->getx()) / t, abs(yAttack - simon->gety()) / t);
-	//weapon->Attack(xAttack, yAttack, 1);
-
 	processstate = BOSS_PROCESS_ATTACK;
-
-	//DebugOut(L"vx = %f , vy = %f , isFinish = %d\n", weapon->GetVx(), weapon->GetVy(), weapon->GetFinish());
-
-
-	//DebugOut(L"!------------------------!\n\n");
-
-	//Sound::GetInstance()->Play(eSound::soundHit);
 
 	TimeWaited = 0;
 	isWaiting = true;
@@ -173,7 +147,7 @@ void Boss::startattack()
 
 void Boss::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	DebugOut(L"\nboss health:%d \n",Health);
+	//DebugOut(L"\nboss health:%d \n", Health);
 	if (state != BOSS_STATE_WAKE)
 		return;
 	if (disappearing)
@@ -194,50 +168,40 @@ void Boss::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		return;
 	switch (processstate)
 	{
-		/*case BOSS_PROCESS_SLEEP:
-		{
-
-			break;
-		}
-	*/
-	case BOSS_PROCESS_START_1: // đi xuống
+	case BOSS_PROCESS_START_1:
 	{
-		DebugOut(L"start 1\n");
-		// bắt đầu thì đi xuống 1 đoạn ngắn
+		//DebugOut(L"start 1\n");
 		if (y >= yTarget)
 		{
 			vy = 0;
-			processstate = BOSS_PROCESS_START_2; // qua trạng thái di chuyển đến cửa sổ
+			processstate = BOSS_PROCESS_START_2;
 
 			xBefore = x;
 			yBefore = y;
 
-			xTarget = 5480;
-			yTarget = 201;
+			xTarget = x + 190;
+			yTarget = y + 51;
 
-			vx = ((xTarget - xBefore) / (1500.0f)); // Vận tốc cần để đi đến target trong 1.5s
-			vy = 0.12f; // tạo độ cong
+			vx = ((xTarget - xBefore) / (1500.0f));
+			vy = 0.12f;
 		}
 		break;
 	}
-
-	case BOSS_PROCESS_START_2: // đi cong xuống ngay cửa sổ
+	case BOSS_PROCESS_START_2:
 	{
-		DebugOut(L"start 2\n");
+		//DebugOut(L"start 2\n");
 		if (!isWaiting)
 		{
-			// tạo độ cong
 			vy -= 0.0001f * dt;
 			if (vy < 0)
 				vy = 0;
-			// tạo độ cong
 
-			if (x >= xTarget) // di chuyển xong đến mục tiêu 2
+			if (x >= xTarget)
 			{
 				vx = 0;
 				vy = 0;
-				isWaiting = true; // bật trạng thái chờ
-				TimeWaited = 0; // reset lại time đã chờ
+				isWaiting = true;
+				TimeWaited = 0;
 			}
 		}
 		else
@@ -245,7 +209,7 @@ void Boss::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			TimeWaited += dt;
 			if (TimeWaited >= (UINT)(2000 + rand() % 1500))
 			{
-				isWaiting = false; // ngừng chờ
+				isWaiting = false;
 
 				start_curving();
 			}
@@ -257,13 +221,12 @@ void Boss::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	case BOSS_PROCESS_CURVES:
 	{
-		DebugOut(L"curving\n");
+		//DebugOut(L"curving\n");
 
-		if (abs(x - xBefore) >= abs(xTarget - xBefore)) // đi xong thid đi thẳng
+		if (abs(x - xBefore) >= abs(xTarget - xBefore))
 		{
 			vx = 0;
 			vy = 0;
-			isUseBezierCurves = false;
 
 			startstraight();
 
@@ -274,7 +237,7 @@ void Boss::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			vy = 0;
 		else
 			vy += (y - yTarget) / 50000;
-		DebugOut(L"\nvy curve: %f", vy);
+		//DebugOut(L"\nvy curve: %f", vy);
 		break;
 	}
 
@@ -282,7 +245,7 @@ void Boss::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		DebugOut(L"straign1 1\n");
 		if (abs(x - xBefore) >= abs(xTarget - xBefore) ||
-			abs(y - yBefore) >= abs(yTarget - yBefore)) // đi xong thì đi thẳng theo hướng random
+			abs(y - yBefore) >= abs(yTarget - yBefore))
 		{
 			vx = vy = 0;
 
@@ -293,58 +256,53 @@ void Boss::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 
 	case BOSS_PROCESS_STRAIGHT_2:
-	{DebugOut(L"straign 2\n");
-	if (!isWaiting)
 	{
-		if (abs(x - xBefore) >= abs(xTarget - xBefore) ||
-			abs(y - yBefore) >= abs(yTarget - yBefore)) // đi xongthì dừng
+		DebugOut(L"straign 2\n");
+		if (!isWaiting)
 		{
-			vx = vy = 0;
-
-
-			isWaiting = true; // bật trạng thái chờ
-			TimeWaited = 0; // reset lại time đã chờ
-		}
-	}
-	else
-	{
-		TimeWaited += dt;
-		if (TimeWaited >= 3000)
-		{
-			isWaiting = false; // ngừng chờ
-
-			int random = rand() % 3;
-			switch (random)
+			if (abs(x - xBefore) >= abs(xTarget - xBefore) ||
+				abs(y - yBefore) >= abs(yTarget - yBefore))
 			{
-			case 0: //33 %
-				startattack();
-				break;
+				vx = vy = 0;
 
-			default: // 66%
-				start_curving();
-				break;
+
+				isWaiting = true;
+				TimeWaited = 0;
 			}
 		}
 		else
 		{
-			//ProcessSmart();
+			TimeWaited += dt;
+			if (TimeWaited >= 3000)
+			{
+				isWaiting = false;
+
+				int random = rand() % 3;
+				switch (random)
+				{
+				case 0: //33 %
+					startattack();
+					break;
+
+				default: // 66%
+					start_curving();
+					break;
+				}
+			}
 		}
-	}
-
-
-	break;
+		break;
 	}
 
 	case BOSS_PROCESS_ATTACK:
 	{
-		DebugOut(L"attack \n");
+		//DebugOut(L"attack \n");
 		if (isWaiting)
 		{
 			TimeWaited += dt;
 			if (TimeWaited >= 1500)
 			{
-				isWaiting = false; // ngừng chờ
-				startstraight(); // qua trạng thái đi thẳng
+				isWaiting = false;
+				startstraight();
 			}
 		}
 		break;
@@ -359,7 +317,7 @@ void Boss::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	CGameObject::Update(dt);
 	x += dx;
 	y += dy;
-	
+
 
 	if (!Camera::getInstance()->checkOutCamera(x, y, x + BOSS_BBOX_WIDTH, y + BOSS_BBOX_HEIGHT)) // ra khỏi cam thì xử lí hướng tiếp theo
 	{
@@ -367,7 +325,6 @@ void Boss::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		{
 		case BOSS_PROCESS_CURVES:
 		{
-			isUseBezierCurves = false;
 			startstraight();
 			break;
 		}
@@ -395,7 +352,6 @@ void Boss::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 			break;
 		}
-
 		}
 
 	}
@@ -423,22 +379,25 @@ void Boss::GetBoundingBox(float & left, float & top, float & right, float & bott
 void Boss::Render()
 
 {
+	if (!Camera::getInstance()->checkInCamera(x, y, x + BOSS_BBOX_WIDTH, y + BOSS_BBOX_HEIGHT))
+	{
+		return;
+	}
+	if (disappearing)
+	{
+		animations[ANI_FLAME]->Render(x, y, 255);
+		animations[ANI_FLAME]->Render(x + FLAME_WIDTH, y, 255);
+		animations[ANI_FLAME]->Render(x + 2*FLAME_WIDTH, y, 255);
+		animations[ANI_FLAME]->Render(x, y + FLAME_HEIGHT, 255);
+		animations[ANI_FLAME]->Render(x + FLAME_WIDTH, y + FLAME_HEIGHT, 255);
+		animations[ANI_FLAME]->Render(x + 2 * FLAME_WIDTH, y + FLAME_HEIGHT, 255);
 
-	 if (disappearing)
-		{
-		animations[2]->Render(x , y, 255);
-		animations[2]->Render(x +18, y, 255);
-		animations[2]->Render(x + 32, y, 255);
-		animations[2]->Render(x, y+32, 255);
-		animations[2]->Render(x + 18, y+32, 255);
-		animations[2]->Render(x + 32, y+32, 255);
-
-		}
-	 else {
-		 if (state == BOSS_STATE_SLEEP)
-			 animations[0]->Render(x, y, 255);
-		 else
-			 if (state == BOSS_STATE_WAKE)
-				 animations[1]->Render(x, y, 255);
-	 }
+	}
+	else {
+		if (state == BOSS_STATE_SLEEP)
+			animations[ANI_SLEEP]->Render(x, y, 255);
+		else
+			if (state == BOSS_STATE_WAKE)
+				animations[ANI_WAKE]->Render(x, y, 255);
+	}
 }

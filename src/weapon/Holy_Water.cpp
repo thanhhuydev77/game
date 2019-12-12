@@ -43,6 +43,7 @@ void Holy_Water::StartAttack()
 	state = WEPOND_STATE_ACTIVE;
 	vx = HOLYWATER_SPEED_X * nx;
 	vy = -HOLYWATER_SPEED_Y;
+	Sound::getInstance()->play("holywater", false, 1);
 }
 
 void Holy_Water::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)

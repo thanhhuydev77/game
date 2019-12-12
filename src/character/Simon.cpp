@@ -17,15 +17,17 @@ void Simon::takedamage(int damage, int direct)
 		StartUntouchable();
 	}
 	if (Health <= 0)
+	{
+		Sound::getInstance()->play("Life_Lost", false,2);
 		timeDie = GetTickCount();
-
+	}
 }
 
 Simon::Simon(vector<LPGAMEOBJECT> *listeffect)
 {
 	LoadResourceHelper::Loadspritefromfile("content\\characters\\player\\player_sprites.txt", ID_TEX_SIMON);
 	LoadResourceHelper::Loadanimationfromfile("content\\characters\\player\\player_ani\\allani.txt", this);
-	Health = SIMON_DEFAULT_HEALTH;
+	Health = 1;// SIMON_DEFAULT_HEALTH;
 	level = SIMON_DEFAULT_LEVEL;
 	NumofLife = SIMON_DEFAULT_TIME_COMEBACK;
 	this->listeffect = listeffect;
@@ -55,6 +57,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 	{
 		startinvisible = 0;
 		invisible = false;
+		Sound::getInstance()->play("InvisibilityPotion_End", false, 1);
 	}
 	if (GetTickCount() - pause_start > SIMON_CLOCKUP_TIME)
 	{
@@ -136,7 +139,9 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 	if (Health <= 0)
 	{
 		state = SIMON_STATE_DIE;
+		
 		return;
+		
 	}
 #pragma endregion
 
@@ -167,12 +172,14 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 			{
 				SetState(SIMON_STATE_WALKING_LEFT);
 				x += dt * vx;
+				
 			}
 			//walking to right
 			else if (temp_nx == 1 && x - targetX < 0)
 			{
 				SetState(SIMON_STATE_WALKING_RIGHT);
 				x += dt * vx;
+				
 			}
 			//end of auto
 			else
@@ -372,9 +379,6 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 							{
 								if (ny > 0)
 								{
-									//y += SIMON_SPACING_ONTOP+1.0f;
-									//resetToDefault();
-									//resetAnimation();
 									vy = 0;
 								}
 								else
@@ -423,7 +427,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 
 					}
 					//only allow go to right when meet door
-					else if (dynamic_cast<StaticObject *>(e->obj) && nx == -1)
+					else if (dynamic_cast<StaticObject *>(e->obj) && nx == -1 &&!isJumping())
 					{
 						startAutowalk(-nx, x + 120);
 						dynamic_cast<StaticObject *>(e->obj)->start_open();
@@ -448,15 +452,6 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 						}
 
 					}
-					/*else if ((dynamic_cast<Ghost *>(e->obj) || dynamic_cast<Panther *>(e->obj) || dynamic_cast<Fishmen *>(e->obj) || dynamic_cast<Bat *>(e->obj) || dynamic_cast<Fireball *>(e->obj)) && untouchable == 0)
-					{
-						if (nx != 0)
-							takedamage(10, -nx);
-						else
-							takedamage(10, 1);
-						if (dynamic_cast<Bat *>(e->obj))
-							dynamic_cast<Bat *>(e->obj)->takedamage();
-					}*/
 				}
 			}
 			// clean up collision events
@@ -608,6 +603,7 @@ void Simon::collisionwithenemy(vector<LPGAMEOBJECT> *list)
 		LPCOLLISIONEVENT e = coEventsResult[i];
 		if (!untouchable && !invisible)
 		{
+			Sound::getInstance()->play("hurting", false, 1);
 			if (dynamic_cast<Boss*>(e->obj))
 			{
 				if (nx != 0)
@@ -638,16 +634,20 @@ void Simon::collisionwithSmallItem(CGameObject * si)
 	case Const_Value::small_item_type::smallheart: //small heart
 		lh->SetState(ITEM_STATE_UNACTIVE);
 		lh->SetPosition(-100 - SMALL_HEART_BBOX_WIDTH, 0);
+		Sound::getInstance()->play("collectitem", false, 1);
 		break;
 	case Const_Value::small_item_type::largeheart: //large heart
 		lh->SetState(ITEM_STATE_UNACTIVE);
 		lh->SetPosition(-100 - LARGE_HEART_BBOX_WIDTH, 0);
+		Sound::getInstance()->play("collectitem", false, 1);
 		break;
 	case Const_Value::small_item_type::whippowerup: // whip power up
 		lh->SetState(ITEM_STATE_UNACTIVE);
 		lh->SetPosition(-100 - WHIP_POWER_UP_BBOX_WIDTH, 0);
 		this->StartCollect();
+		Sound::getInstance()->play("collectweapon", false, 1);
 		this->Upgrate();
+
 		break;
 	case Const_Value::holywateritem: // holy water
 		lh->SetState(ITEM_STATE_UNACTIVE);
@@ -656,6 +656,7 @@ void Simon::collisionwithSmallItem(CGameObject * si)
 			this->currentsubWeapondTurn += 5;
 		else
 			this->currentsubWeapondTurn = 5;
+		Sound::getInstance()->play("collectweapon", false, 1);
 		currentsubwepond = Const_Value::Weapond::holywater;
 		break;
 	case Const_Value::small_item_type::sworditem: //sword
@@ -665,6 +666,7 @@ void Simon::collisionwithSmallItem(CGameObject * si)
 			this->currentsubWeapondTurn += 5;
 		else
 			this->currentsubWeapondTurn = 5;
+		Sound::getInstance()->play("collectweapon", false, 1);
 		currentsubwepond = Const_Value::Weapond::sword;
 		break;
 	case Const_Value::small_item_type::axeitem:
@@ -674,6 +676,8 @@ void Simon::collisionwithSmallItem(CGameObject * si)
 			this->currentsubWeapondTurn += 5;
 		else
 			this->currentsubWeapondTurn = 5;
+		
+			Sound::getInstance()->play("collectweapon", false, 1);
 		currentsubwepond = Const_Value::Weapond::axe;
 		break;
 	case Const_Value::whitemoneybag:
@@ -681,6 +685,7 @@ void Simon::collisionwithSmallItem(CGameObject * si)
 	case Const_Value::bluemoneybag:
 	{
 		int randnum = rand() % 4;
+		Sound::getInstance()->play("display_monney", false, 1);
 		switch (randnum)
 		{
 		case 0:
@@ -711,32 +716,38 @@ void Simon::collisionwithSmallItem(CGameObject * si)
 		lh->SetState(ITEM_STATE_UNACTIVE);
 		lh->SetPosition(-100 - CROSS_BBOX_WIDTH, 0);
 		startcollectCross();
+		Sound::getInstance()->play("holycross", false, 1);
 		break;
 	case Const_Value::small_item_type::invisiblepot:
 		lh->SetState(ITEM_STATE_UNACTIVE);
 		lh->SetPosition(-100 - INVISIBLEPOT_BBOX_WIDTH, 0);
 		startInvisible();
+		Sound::getInstance()->play("InvisibilityPotion_Begin", false, 1);
 		break;
 	case Const_Value::small_item_type::stopwatch:
 		lh->SetState(ITEM_STATE_UNACTIVE);
 		lh->SetPosition(-100 - STOPWATCH_BBOX_WIDTH, 0);
 		startPause();
+		Sound::getInstance()->play("StopWatch", false,1);
 		break;
 	case Const_Value::small_item_type::doubleshot:
 		lh->SetState(ITEM_STATE_UNACTIVE);
 		lh->SetPosition(-100 - DOUBLESHOT_BBOX_WIDTH, 0);
 		doubleshot = true;
+		Sound::getInstance()->play("collectitem", false, 1);
 		break;
 	case Const_Value::small_item_type::chicken:
 		lh->SetState(ITEM_STATE_UNACTIVE);
 		lh->SetPosition(-100 - CHICKEN_BBOX_WIDTH, 0);
-		Health = (Health + 30 > 100) ? 100 : (Health + 30);
+		Health = (Health + 6 > SIMON_DEFAULT_HEALTH) ? SIMON_DEFAULT_HEALTH : (Health + 6);
 		doubleshot = true;
+		Sound::getInstance()->play("collectitem", false, 1);
 		break;
 	case Const_Value::small_item_type::ball:
 		lh->SetState(ITEM_STATE_UNACTIVE);
 		lh->SetPosition(-100 - AXE_BBOX_WIDTH, 0);
 		isGameOver = true;
+		Sound::getInstance()->play("collectitem", false, 1);
 		break;
 	default:
 		break;
@@ -787,12 +798,15 @@ void Simon::setcanclimb(bool icanclimb, bool up)
 
 void Simon::comeback()
 {
-	DebugOut(L"\nsimon die");
+	//DebugOut(L"\nsimon die");
 	x = Camera::getInstance()->getstarpositionofcurrentarea();
 	Camera::getInstance()->SetFollowtoSimon(true);
 	y = OFFSET_Y;
 	
-	Health = 100;
+	Health = 1;// SIMON_DEFAULT_HEALTH;
+	Sound::getInstance()->play("bacbackgroundmusic", true, 0);
+	Sound::getInstance()->stop("backgroundmusic_boss");
+	Sound::getInstance()->stop("Life_Lost");
 	resetToDefault();
 	vx = 0;
 	vy = 0;

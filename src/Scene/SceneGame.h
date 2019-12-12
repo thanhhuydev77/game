@@ -26,6 +26,8 @@
 #include "../weapon/Holy_Water.h"
 #include "../effect/Effect.h"
 #include "../boss/Boss.h"
+#include "../sample/Board.h"
+#include "../sample/Sound.h"
 using namespace std;
 
 class SceneGame : public Scene
@@ -36,7 +38,7 @@ private:
 	CGame *games;
 	Simon *simon;
 	Whip  *whip;
-
+	Board *board;
 	Boss *boss;
 	SmallItem *smb;
 	Axe *axe;

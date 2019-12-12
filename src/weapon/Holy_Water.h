@@ -2,6 +2,7 @@
 #include "../sample/GameObject.h"
 #include "../map/Invisibleobject.h"
 #include "../character/Simon.h"
+#include "../sample/Sound.h"
 class Holy_Water :
 	public CGameObject
 {

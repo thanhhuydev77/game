@@ -48,7 +48,9 @@ public:
 
 	int IsKeyDown(int KeyCode);
 	void ProcessKeyboard();
-
+	HWND getHWND() {
+		return hWnd;
+	}
 	static void SweptAABB(
 		float ml,			// move left 
 		float mt,			// move top

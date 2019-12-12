@@ -51,6 +51,7 @@ void Sword::StartAttack()
 		waiting = true;
 		attack_start = GetTickCount();
 		UpdatePositionRelateToObject(dt);
+		Sound::getInstance()->play("usingdagger", false, 1);
 	}
 }
 

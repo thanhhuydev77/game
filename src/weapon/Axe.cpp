@@ -36,7 +36,7 @@ void Axe::StartAttack()
 	state = WEPOND_STATE_ACTIVE;
 	vx = THROWINGAXE_SPEED_X * nx;
 	vy = -THROWINGAXE_SPEED_Y;
-
+	Sound::getInstance()->play("Axe", false, 1);
 }
 
 void Axe::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)

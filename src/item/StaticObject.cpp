@@ -20,6 +20,7 @@ void StaticObject::start_open()
 	opening = true;
 	disappear_start = GetTickCount();
 	state = ITEM_STATE_ACTIVE;
+	Sound::getInstance()->play("opendoor", false, 1);
 }
 
 void StaticObject::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)

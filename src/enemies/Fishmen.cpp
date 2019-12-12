@@ -127,15 +127,18 @@ void Fishmen::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		CGameObject::Update(dt);
 		if ((abs((int)y - WATER_LEVEL_HEIGHT) < 5 && vy < 0 ))
 		{
+
 			listeffect->push_back(new Effect(Const_Value::effect_type::water, x, y-30, -0.15f, 0.15f));
 			listeffect->push_back(new Effect(Const_Value::effect_type::water, x+FISHMEN_BBOX_WIDTH, y-30,0.15f, 0.15f));
+			Sound::getInstance()->play("splashwater", false, 1);
 		}
-		
-			if ((abs((int)y + FISHMEN_BBOX_HEIGHT - WATER_LEVEL_HEIGHT) < 5 && vy > 0))
+
+		if ((abs((int)y + FISHMEN_BBOX_HEIGHT - WATER_LEVEL_HEIGHT) < 5 && vy > 0))
 			{
 				listeffect->push_back(new Effect(Const_Value::effect_type::water, x, y +FISHMEN_BBOX_HEIGHT- 30, -0.15f, 0.15f));
 				listeffect->push_back(new Effect(Const_Value::effect_type::water, x + FISHMEN_BBOX_WIDTH, y+FISHMEN_BBOX_HEIGHT - 30, 0.15f, 0.15f));
-			}
+				Sound::getInstance()->play("splashwater", false, 1);
+		}
 #pragma region Xu li va cham Brick
 		vector<LPCOLLISIONEVENT> coEvents;
 		vector<LPCOLLISIONEVENT> coEventsResult;

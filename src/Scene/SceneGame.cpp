@@ -122,13 +122,17 @@ void SceneGame::collisionweapond()
 
 				bounditem->start_disappear();
 				if (bounditem->getType() == Const_Value::bound_item_type::Bratizer || bounditem->getType() == Const_Value::bound_item_type::candle)
+				{
+					Sound::getInstance()->play("hit", false, 1);
 					listeffect.push_back(new Effect(Const_Value::effect_type::sparks, bounditem->getx(), bounditem->gety(), 0.0f, 0.0f));
+				}
 				if (bounditem->getType() == Const_Value::bound_item_type::breakableBrick)
 				{
 					listeffect.push_back(new Effect(Const_Value::effect_type::broken, bounditem->getx(), bounditem->gety(), -0.125f, 0.0f));
 					listeffect.push_back(new Effect(Const_Value::effect_type::broken, bounditem->getx(), bounditem->gety(), -0.1125f, 0.2f));
 					listeffect.push_back(new Effect(Const_Value::effect_type::broken, bounditem->getx(), bounditem->gety(), 0.1125f, 0.2f));
 					listeffect.push_back(new Effect(Const_Value::effect_type::broken, bounditem->getx(), bounditem->gety(), 0.125f, 0.0f));
+					Sound::getInstance()->play("broken_brick", false, 1);
 				}
 				if (bounditem->getType() == Const_Value::bound_item_type::BreakableBlock)
 				{
@@ -138,8 +142,9 @@ void SceneGame::collisionweapond()
 					listeffect.push_back(new Effect(Const_Value::effect_type::broken, bounditem->getx(), bounditem->gety() + 20, -0.125f, 0.08f));
 					listeffect.push_back(new Effect(Const_Value::effect_type::broken, bounditem->getx(), bounditem->gety() + 20, 0.125f, -0.15f));
 					listeffect.push_back(new Effect(Const_Value::effect_type::broken, bounditem->getx(), bounditem->gety() + 20, 0.125f, 0.08f));
-
+					Sound::getInstance()->play("broken_brick", false, 1);
 				}
+				
 				if (resetsword)
 					sword->reset();
 				break;
@@ -226,9 +231,9 @@ void SceneGame::collisionweapond()
 					{
 						dynamic_cast<Boss*>(enemy)->takedamage(1*simon->damageshot());
 						lasttimedamage = GetTickCount();
+						Sound::getInstance()->play("hit", false, 1);
 						listeffect.push_back(new Effect(Const_Value::effect_type::sparks, enemy->getx(), enemy->gety() + 10, 0.0f, 0.0f));
 					}
-					return;
 					break;
 				default:
 					break;
@@ -314,6 +319,11 @@ void SceneGame::Update(DWORD dt)
 			else if (type == Const_Value::in_obj_type::activeboss) // create boss
 			{
 				boss->startup();
+				Sound::getInstance()->stop("backgroundmusic");
+				Sound::getInstance()->play("backgroundmusic_boss", true, 0);
+				for (UINT i = 0; i < allEnemies.size(); i++)
+					if (!dynamic_cast<Boss*>(allEnemies[i]))
+						allEnemies[i]->takedamage();
 				Camera::getInstance()->SetFollowtoSimon(false);
 				break;
 			}
@@ -681,6 +691,9 @@ void SceneGame::Update(DWORD dt)
 				int directionFishmen = vtx < simon->getx() ? 1 : -1;
 				allEnemies.push_back(new Fishmen(vtx, vty, directionFishmen, simon, &allfireball, &listeffect));
 				CountEnemyFishmen++;
+				
+				Sound::getInstance()->play("splashwater",false,200);
+				TimeWaitCreateFishmen = 2000 + (rand() % 2000);
 
 				TimeWaitCreateFishmen = 2000 + (rand() % 2000);
 			}
@@ -827,12 +840,15 @@ void SceneGame::Update(DWORD dt)
 	boss->Update(dt);
 	holywater->Update(dt, &BrickObjects);
 	Camera::getInstance()->Update(dt, simon);
-
+	DebugOut(L"Simon Health:%d -- Boss Health:%d\n", simon->Health,boss->Health);
 #pragma endregion
 }
 
 void SceneGame::LoadContent(int map)
 {
+	//Sound::getInstance()->play("broken_brick", false, 200);
+
+	Sound::getInstance()->play("backgroundmusic", true, 0);
 	Camera::getInstance()->Setsize(mapwidth, SCREEN_HEIGHT);
 	currentGrids.clear();
 	games = CGame::GetInstance();
@@ -860,7 +876,7 @@ void SceneGame::LoadContent(int map)
 	float x, y;
 	BrickObjects.at(0)->GetPosition(x, y);
 	groundY = y;
-	simon->SetPosition(2900, 120);
+	simon->SetPosition(2900,y-SIMON_BIG_BBOX_HEIGHT);
 	objects.push_back(simon);
 	//init sword and whip
 	sword = new Sword(simon);
@@ -880,16 +896,26 @@ void SceneGame::LoadContent(int map)
 	ItemObjects.push_back(smb);
 	allEnemies.push_back(boss);
 	currentGrids = Grid::getInstace()->checkingrid();
-
+	board = new Board();
 
 }
 
 void SceneGame::Draw()
 {
-
+	
 	//DebugOut(L"\ncrossing-%d", simon->isdestroyall());
-	if (simon->Gameover() || simon->isdestroyall())
-		return;
+	if(simon->Gameover())
+	{
+		
+	}
+	else
+	if (simon->isdestroyall())
+	{
+		CGame::GetInstance()->Draw(0, 0, CTextures::GetInstance()->Get(ID_TEX_MISC), 0, 0,999,999, 255);
+	}
+	else
+	{
+
 
 	this->RenderBackground();
 	for (unsigned int i = 0; i < objects.size(); i++)
@@ -907,8 +933,8 @@ void SceneGame::Draw()
 	axe->Render();
 	boss->Render();
 	holywater->Render();
-
-
+	board->Render();
+	}
 }
 
 void SceneGame::OnKeyDown(int KeyCode)
@@ -1052,7 +1078,7 @@ void SceneGame::OnKeyDown(int KeyCode)
 	{
 		
 		Camera::getInstance()->setcurrentarea(2);
-		simon->SetPosition(5267,140);
+		simon->SetPosition(4100,101);
 		break;
 	}
 	}

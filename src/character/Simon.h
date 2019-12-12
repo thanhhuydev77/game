@@ -20,6 +20,7 @@
 #include "../enemies/Panther.h"
 #include "../weapon/Axe.h"
 #include "../boss/Boss.h"
+#include "../sample/Sound.h"
 using namespace std;
 class Simon : public CGameObject
 {

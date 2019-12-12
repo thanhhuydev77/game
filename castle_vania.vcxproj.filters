@@ -38,6 +38,8 @@
     <ClInclude Include="src\weapon\Holy_Water.h" />
     <ClInclude Include="src\sample\Grid.h" />
     <ClInclude Include="src\boss\Boss.h" />
+    <ClInclude Include="src\sample\Board.h" />
+    <ClInclude Include="src\sample\Sound.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header">
@@ -89,6 +91,8 @@
     <ClCompile Include="src\weapon\Holy_Water.cpp" />
     <ClCompile Include="src\sample\Grid.cpp" />
     <ClCompile Include="src\boss\Boss.cpp" />
+    <ClCompile Include="src\sample\Board.cpp" />
+    <ClCompile Include="src\sample\Sound.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="content\textures\bbox.png" />

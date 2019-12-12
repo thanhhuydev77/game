@@ -171,6 +171,7 @@ void Whip::StartAttack()
 		state = WEPOND_STATE_ACTIVE;
 		attack_start = GetTickCount();
 		animations[level - 1]->reset();
+		Sound::getInstance()->play("usingwhip", false, 1);
 	}
 }
 

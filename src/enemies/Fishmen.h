@@ -3,6 +3,7 @@
 #include "../weapon/Fireball.h"
 #include "../map/Invisibleobject.h"
 #include "../effect/Effect.h"
+#include "../sample/Sound.h"
 class Fishmen :
 	public CGameObject
 {

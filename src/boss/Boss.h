@@ -3,6 +3,9 @@
 #include "../utility/LoadResourceHelper.h"
 #include "../camera/Camera.h"
 class Boss :
+#define ANI_WAKE   1
+#define ANI_SLEEP  0
+#define	ANI_FLAME  2
 	public CGameObject
 {
 	float xBefore;
@@ -11,7 +14,6 @@ class Boss :
 	float xTarget;
 	float yTarget;
 	DWORD TimeWaited; 
-	bool isUseBezierCurves;
 	bool isWaiting;
 	CGameObject *simon;
 	CGameObject * weapon;

@@ -26,3 +26,5 @@ ID_TEX_HOLYWATER	content\\textures\\Holy_Water.png	255 255 255
 ID_TEX_EFFECT	 	content\\textures\\all_effect.png	255 255 255
 ID_TEX_BOSS		content\\textures\\GiantBat.png   	255 255 255
 ID_TEX_BALL		content\\textures\\Crystal_Ball.png   	255 255 255
+ID_TEX_FONT		content\\textures\\Font.png	   	255 0 255
+ID_TEX_BOARD		content\\textures\\blackboard.png	255 255 255

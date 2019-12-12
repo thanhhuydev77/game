@@ -8,7 +8,7 @@ public:
 
 #define WINDOW_CLASS_NAME	L"CASTLEVANIA"
 #define MAIN_WINDOW_TITLE	L"CASTLEVANIA"
-#define BACKGROUND_COLOR	D3DCOLOR_XRGB(255, 255, 255)
+#define BACKGROUND_COLOR	D3DCOLOR_XRGB(255,255,255)
 #define SCREEN_WIDTH		200
 #define SCREEN_HEIGHT		200
 #define MAX_FRAME_RATE		120
@@ -47,12 +47,20 @@ public:
 #define ID_TEX_EFFECT		26
 #define ID_TEX_BOSS			27
 #define ID_TEX_BALL			28
+#define ID_TEX_FONT			29
+#define	ID_TEX_BOARD		30
+
 #define MAP1				"content\\tilemap\\map1.txt"
 #define MAP2				"content\\tilemap\\map2.txt"
 #define MAP3				"content\\tilemap\\map3.txt"
 
 #define OFFSET_Y		100
 #pragma endregion
+#pragma region Font
+#define FONT_WIDTH			13
+#define FONT_HEIGHT			13
+#pragma endregion
+
 #pragma region Simon
 #define DEADSTAGE					2000
 #define SIMON_UNTOUCHABLE_TIME		2000
@@ -66,12 +74,12 @@ public:
 #define SIMON_TIME_ATTACK_OFF		40
 #define SIMON_TIME_COLLECT			1000
 #define SIMON_WALKING_SPEED			0.11f 
-#define SIMON_JUMP_SPEED_Y			0.28f
-#define SIMON_JUMP_SPEED_X			0.1f
+#define SIMON_JUMP_SPEED_Y			0.4f
+#define SIMON_JUMP_SPEED_X			0.12f
 #define SIMON_HURT_SPEED_X			0.04f
-#define SIMON_HURT_SPEED_Y			0.20f
+#define SIMON_HURT_SPEED_Y			0.30f
 #define SIMON_JUMP_DEFLECT_SPEED	0.2f
-#define SIMON_GRAVITY				0.0005f
+#define SIMON_GRAVITY				0.001f
 #define SIMON_DIE_DEFLECT_SPEED		0.5f
 #define SIMON_MAX_LEVEL				3
 #define SIMON_STATE_IDLE			0
@@ -236,7 +244,8 @@ static enum Weapond { whip, sword, axe,holywater };
 #define BLOCK_BBOX_HEIGHT			64
 #define DOOR_BBOX_WIDTH				24
 #define DOOR_BBOX_HEIGHT			96
-
+#define FLAME_WIDTH					18
+#define FLAME_HEIGHT				32
 #pragma endregion
 #pragma region whip
 
